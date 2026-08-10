@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { BottomNav, StatsBar } from '@/shared/ui'
 import { getPath, type LearningPath } from '@/shared/lib/api'
-import { PathNodeButton } from './PathNodeButton'
+import { LessonChapterCard } from './LessonChapterCard'
 
 export function LearningPathView() {
   const [path, setPath] = useState<LearningPath | null>(null)
@@ -62,7 +62,7 @@ export function LearningPathView() {
                 borderRadius: '22px',
                 padding: '1.15rem 1.25rem',
                 boxShadow: 'var(--shadow)',
-                marginBottom: '2rem',
+                marginBottom: '1.5rem',
               }}
             >
               <div style={{ opacity: 0.9, fontWeight: 800, letterSpacing: '0.06em', fontSize: '0.8rem' }}>
@@ -75,25 +75,28 @@ export function LearningPathView() {
             </section>
 
             <section
+              aria-label="Lesson chapters"
               style={{
-                display: 'grid',
-                gap: '1.75rem',
-                justifyItems: 'center',
-                padding: '0.5rem 0 1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.75rem',
+                padding: '0.25rem 0 1.5rem',
               }}
             >
-              {path.nodes.map((node, index) => (
-                <div
-                  key={node.lessonId}
-                  style={{
-                    width: '100%',
-                    display: 'grid',
-                    justifyItems: index % 2 === 0 ? 'center' : index % 4 === 1 ? 'start' : 'end',
-                    paddingInline: '12%',
-                  }}
-                >
-                  <PathNodeButton node={node} />
-                </div>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--muted)',
+                  marginBottom: '0.15rem',
+                }}
+              >
+                Chapters
+              </div>
+              {path.nodes.map(node => (
+                <LessonChapterCard key={node.lessonId} node={node} />
               ))}
             </section>
           </>

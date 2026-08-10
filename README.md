@@ -5,7 +5,8 @@ Beginner-friendly **Classical Syriac Aramaic** learning web app.
 - **Frontend:** Next.js (App Router) + TypeScript — feature modules under `src/features/`
 - **Backend:** Java Spring Boot 4 — hexagonal layout (`domain` / `application` / `infrastructure`)
 
-UX references: `docs/references/`. Architecture notes: `docs/ARCHITECTURE.md`.
+UX references: `docs/references/`. Architecture notes: `docs/ARCHITECTURE.md`.  
+Production (Render + Vercel): `docs/PRODUCTION.md`. Color / anti-Duolingo palette: `docs/COLOR.md`.
 
 ## Quick start
 
