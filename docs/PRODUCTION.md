@@ -37,6 +37,9 @@ Lessons should load against `http://localhost:8080` by default.
 
 ## 1. Deploy the Java API on Render
 
+Render has **no native Java runtime** (only Node, Python, Go, Rust, Ruby, Elixir, Docker).  
+Use **Docker** — `backend/Dockerfile` builds the Spring Boot JAR inside the image.
+
 ### 1.1 Create the service
 
 1. [Render Dashboard](https://dashboard.render.com) → **New** → **Web Service**
@@ -46,14 +49,14 @@ Lessons should load against `http://localhost:8080` by default.
 | Field | Value |
 |--------|--------|
 | Name | `aramigo-api` (or similar) |
-| Region | closest to you |
+| Region | closest to you (e.g. Frankfurt) |
 | Root Directory | `backend` |
-| Runtime | **Java** |
-| Build Command | `./mvnw -DskipTests package` |
-| Start Command | `java -jar target/aramigo-api-0.0.1-SNAPSHOT.jar` |
+| Language / Runtime | **Docker** |
+| Dockerfile Path | `Dockerfile` (default; lives in `backend/`) |
+| Build / Start Command | leave empty (Docker `ENTRYPOINT` runs the jar) |
 | Instance | **Free** |
 
-> If Render’s Java runtime is awkward, use **Docker** instead (optional `backend/Dockerfile` later). Free tier still applies.
+Render builds from the Dockerfile on each deploy. First build can take several minutes (Maven download).
 
 ### 1.2 Environment variables (Render)
 
