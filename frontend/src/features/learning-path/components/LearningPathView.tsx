@@ -1,19 +1,38 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { BottomNav, StatsBar } from '@/shared/ui'
-import { getPath, type LearningPath } from '@/shared/lib/api'
-import { LessonChapterCard } from './LessonChapterCard'
+import { AccountBar } from '@/features/auth'
+import { ApiError, getPath, type LearningPath } from '@/shared/lib/api'
+import { LessonNode } from './LessonNode'
+
+/** Serpentine offsets, repeating every six nodes. */
+const OFFSETS = [0, 48, 72, 48, 0, -48, -72, -48]
 
 export function LearningPathView() {
   const [path, setPath] = useState<LearningPath | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  const [reloadKey, setReloadKey] = useState(0)
+
   useEffect(() => {
+    let cancelled = false
     getPath()
-      .then(setPath)
-      .catch(err => setError(err instanceof Error ? err.message : 'Could not load path'))
-  }, [])
+      .then(data => {
+        if (cancelled) return
+        setPath(data)
+        setError(null)
+      })
+      .catch(err => {
+        if (cancelled) return
+        setError(err instanceof ApiError ? err.message : 'Could not load your learning path.')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [reloadKey])
+
+  const reload = useCallback(() => setReloadKey(key => key + 1), [])
 
   return (
     <div style={{ minHeight: '100vh', display: 'grid', gridTemplateRows: '1fr auto' }}>
@@ -24,20 +43,25 @@ export function LearningPathView() {
             justifyContent: 'space-between',
             alignItems: 'center',
             gap: '1rem',
-            marginBottom: '1.25rem',
+            marginBottom: '1rem',
           }}
         >
           <div>
             <div className="brand-font" style={{ fontSize: '1.7rem', color: 'var(--brand)' }}>
               AramiGo
             </div>
-            <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Classical Syriac · beginners</div>
+            <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
+              Classical Syriac · beginners
+            </div>
           </div>
           {path && <StatsBar stats={path.stats} />}
         </header>
 
+        <AccountBar onAccountChanged={reload} />
+
         {error && (
           <div
+            role="alert"
             style={{
               background: 'rgba(224, 122, 95, 0.12)',
               border: '1px solid var(--danger)',
@@ -45,62 +69,78 @@ export function LearningPathView() {
               padding: '1rem',
               borderRadius: 'var(--radius)',
               marginBottom: '1rem',
+              display: 'grid',
+              gap: '0.75rem',
+              justifyItems: 'start',
             }}
           >
-            {error}
-            <div style={{ marginTop: '0.5rem', color: 'var(--muted)', fontSize: '0.9rem' }}>
-              Is the Spring Boot API running on port 8080?
-            </div>
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={reload}
+              style={{
+                border: '1px solid var(--danger)',
+                background: 'transparent',
+                color: 'var(--danger)',
+                borderRadius: 12,
+                padding: '0.4rem 0.9rem',
+                fontWeight: 700,
+              }}
+            >
+              Try again
+            </button>
           </div>
         )}
 
-        {path && (
-          <>
-            <section
+        {path?.units.map(unit => (
+          <section key={`${unit.sectionNumber}-${unit.unitNumber}`} style={{ marginBottom: '2rem' }}>
+            <div
               style={{
-                background: 'linear-gradient(135deg, #3f9f84, #2a6f5c 55%, #8f7435)',
+                background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
                 borderRadius: '22px',
                 padding: '1.15rem 1.25rem',
                 boxShadow: 'var(--shadow)',
-                marginBottom: '1.5rem',
-              }}
-            >
-              <div style={{ opacity: 0.9, fontWeight: 800, letterSpacing: '0.06em', fontSize: '0.8rem' }}>
-                SECTION {path.sectionNumber}, UNIT {path.unitNumber}
-              </div>
-              <h1 className="brand-font" style={{ margin: '0.35rem 0 0.25rem', fontSize: '1.65rem' }}>
-                {path.title}
-              </h1>
-              <p style={{ margin: 0, opacity: 0.92 }}>{path.description}</p>
-            </section>
-
-            <section
-              aria-label="Lesson chapters"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-                padding: '0.25rem 0 1.5rem',
+                marginBottom: '1.75rem',
               }}
             >
               <div
                 style={{
-                  fontSize: '0.75rem',
+                  opacity: 0.9,
                   fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: 'var(--muted)',
-                  marginBottom: '0.15rem',
+                  letterSpacing: '0.06em',
+                  fontSize: '0.8rem',
                 }}
               >
-                Chapters
+                SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
               </div>
-              {path.nodes.map(node => (
-                <LessonChapterCard key={node.lessonId} node={node} />
+              <h1
+                className="brand-font"
+                style={{ margin: '0.35rem 0 0.25rem', fontSize: '1.65rem' }}
+              >
+                {unit.title}
+              </h1>
+              <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
+            </div>
+
+            <ol
+              aria-label={`Lessons in unit ${unit.unitNumber}`}
+              style={{
+                listStyle: 'none',
+                margin: 0,
+                padding: 0,
+                display: 'grid',
+                gap: '1.5rem',
+                justifyItems: 'center',
+              }}
+            >
+              {unit.nodes.map((node, index) => (
+                <li key={node.lessonId}>
+                  <LessonNode node={node} offset={OFFSETS[index % OFFSETS.length]} />
+                </li>
               ))}
-            </section>
-          </>
-        )}
+            </ol>
+          </section>
+        ))}
 
         {!path && !error && (
           <p style={{ color: 'var(--muted)', textAlign: 'center', marginTop: '3rem' }}>

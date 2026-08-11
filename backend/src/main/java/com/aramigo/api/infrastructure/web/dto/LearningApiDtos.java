@@ -13,18 +13,27 @@ public final class LearningApiDtos {
 
   private LearningApiDtos() {}
 
-  public record LearnerStatsResponse(int energy, int gems, int streak) {}
+  public record LearnerStatsResponse(
+      int energy, int maxEnergy, int gems, int streak, long secondsUntilNextEnergy) {}
 
   public record PathNodeResponse(
-      long lessonId, int position, String title, NodeKind nodeKind, NodeStatus status) {}
+      long lessonId,
+      int position,
+      String title,
+      NodeKind nodeKind,
+      NodeStatus status,
+      int exerciseCount,
+      int solvedCount) {}
 
-  public record LearningPathResponse(
+  public record PathUnitResponse(
       int sectionNumber,
       int unitNumber,
       String title,
       String description,
-      LearnerStatsResponse stats,
       List<PathNodeResponse> nodes) {}
+
+  public record LearningPathResponse(
+      LearnerStatsResponse stats, List<PathUnitResponse> units) {}
 
   public record ExerciseResponse(
       long id,
@@ -33,6 +42,7 @@ public final class LearningApiDtos {
       String tip,
       String aramaicScript,
       String transliteration,
+      String audioText,
       List<String> wordBank) {}
 
   public record LessonSessionResponse(
@@ -52,5 +62,8 @@ public final class LearningApiDtos {
   public record CompleteLessonResponse(
       int energyReward, int gemsReward, LearnerStatsResponse stats) {}
 
-  public record ErrorResponse(String status, String message) {}
+  public record ProfileResponse(
+      boolean signedIn, String displayName, LearnerStatsResponse stats) {}
+
+  public record ErrorResponse(String status, String code, String message) {}
 }

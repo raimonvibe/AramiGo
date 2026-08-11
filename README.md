@@ -49,23 +49,47 @@ App: http://localhost:3000
 | Ports & Adapters | Backend package layout |
 | Strategy | `AnswerMatchingPolicy` |
 | Repository | `*RepositoryPort` + JPA adapters |
-| Factory | `BeginnerSyriacCurriculumFactory` |
+| Data-driven seed | `curriculum/*.json` + `CurriculumDataSeeder` (slug upsert) |
 | Decorator | `TransactionalLearningFacade` |
 | DTO at the edge | `infrastructure/web/dto` |
 
 ## API
 
+Every request carries an identity: `X-Guest-Key` for anonymous learners, or
+`Authorization: Bearer <Google ID token>` once signed in.
+
 | Method | Path | Purpose |
 |--------|------|---------|
 | GET | `/health` | Liveness (Render + keepalive) |
-| GET | `/api/path` | Unit path + learner stats |
+| GET | `/api/path` | All units + learner stats |
 | GET | `/api/lessons/{id}` | Lesson session |
 | POST | `/api/exercises/check` | `{ exerciseId, tokens }` |
-| POST | `/api/lessons/complete` | `{ lessonId }` |
+| POST | `/api/lessons/complete` | `{ lessonId }` — requires every exercise solved |
+| GET | `/api/me` | Profile + stats |
+| POST | `/api/auth/link` | Merge guest progress into a signed-in account |
+
+Errors are always `{ status, code, message }`; the `message` is written for a learner.
+
+## Adding lessons
+
+Content lives in `backend/src/main/resources/curriculum/*.json` — not in Java.
+Add or edit a file and restart; the seeder upserts by `slug`, so existing ids and
+learner progress survive content edits, and anything removed from the files is pruned.
+
+## Configuration
+
+Copy `backend/.env.example` and `frontend/.env.example`. The two that matter:
+
+- `DATABASE_URL` — without it the API uses in-memory H2 and loses progress on restart
+- `GOOGLE_CLIENT_ID` / `NEXT_PUBLIC_GOOGLE_CLIENT_ID` — unset means guests-only, which works fine
 
 ## Keep Render awake (free tier)
 
-Free Render web services sleep after ~15 minutes idle.  
+Free Render web services sleep after ~15 minutes idle. (This does **not** apply to
+free Render Postgres, which expires 30 days after creation no matter how often you
+ping it — see `docs/PRODUCTION.md` for database options.)
+
+
 `.github/workflows/keepalive.yml` pings `/health` every 10 minutes via GitHub Actions.
 
 1. Push this project to GitHub (Actions enabled).

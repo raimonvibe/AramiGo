@@ -11,6 +11,12 @@ import org.junit.jupiter.api.Test;
 
 class TokenAnswerMatchingPolicyTest {
 
+  /** shlomo ("peace"): shin-lamadh-mim-alaph, in logical order. */
+  private static final String SHLOMO = "\u072B\u0720\u0721\u0710";
+
+  /** The same word with vowel pointing, as a pointed manuscript writes it. */
+  private static final String SHLOMO_POINTED = "\u072B\u0720\u0735\u0721\u0735\u0710";
+
   private AnswerMatchingPolicy policy;
 
   @BeforeEach
@@ -39,5 +45,47 @@ class TokenAnswerMatchingPolicyTest {
   @Test
   void friendlyHintListsAlternatives() {
     assertEquals("hello or peace", policy.friendlyHint("hello|peace"));
+  }
+
+  @Test
+  void vowelPointingDoesNotChangeTheAnswer() {
+    assertTrue(policy.matches(SHLOMO, List.of(SHLOMO_POINTED)));
+    assertTrue(policy.matches(SHLOMO_POINTED, List.of(SHLOMO)));
+  }
+
+  @Test
+  void repeatedWordsGetAChipEach() {
+    List<String> bank = policy.bankTokensFromAnswers("li lahma li");
+
+    assertEquals(3, bank.size(), "a sentence using a word twice needs two chips for it");
+    assertEquals(2, bank.stream().filter("li"::equals).count());
+  }
+
+  @Test
+  void alternativesShareChipsRatherThanDoublingThem() {
+    List<String> bank = policy.bankTokensFromAnswers("hello|peace");
+
+    assertEquals(List.of("hello", "peace"), bank);
+  }
+
+  @Test
+  void aSentenceIsBuildableFromItsOwnWordBank() {
+    String answer = "li lahma li";
+    List<String> bank = policy.bankTokensFromAnswers(answer);
+
+    // The chips are shuffled before display, so what matters is that the bank
+    // holds exactly the tokens the answer needs — including the repeat.
+    assertEquals(sorted(List.of("li", "lahma", "li")), sorted(bank));
+    assertTrue(policy.matches(answer, List.of("li", "lahma", "li")));
+  }
+
+  private static List<String> sorted(List<String> tokens) {
+    return tokens.stream().sorted().toList();
+  }
+
+  @Test
+  void blankSpecIsNotASingleWordPrompt() {
+    assertFalse(policy.isSingleWordPrompt(""));
+    assertFalse(policy.isSingleWordPrompt(null));
   }
 }

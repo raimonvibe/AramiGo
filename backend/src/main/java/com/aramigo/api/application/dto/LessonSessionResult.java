@@ -8,6 +8,10 @@ import com.aramigo.api.domain.model.LearnerStats;
 public record LessonSessionResult(
     long lessonId, String title, LearnerStats stats, List<ExerciseView> exercises) {
 
+  /**
+   * What the client is allowed to see. {@code transliteration} is withheld for
+   * exercise types where printing it would be the answer.
+   */
   public record ExerciseView(
       long id,
       ExerciseType type,
@@ -15,5 +19,6 @@ public record LessonSessionResult(
       String tip,
       String aramaicScript,
       String transliteration,
+      String audioText,
       List<String> wordBank) {}
 }

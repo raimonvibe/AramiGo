@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 
 const items = [
   { href: '/', label: 'Path', icon: '⌂' },
-  { href: '/#practice', label: 'Practice', icon: '✦' },
-  { href: '/#about', label: 'About', icon: '◌' },
+  { href: '/alphabet', label: 'Alphabet', icon: '✧' },
+  { href: '/about', label: 'About', icon: '◌' },
 ]
 
 export function BottomNav() {
@@ -32,6 +32,7 @@ export function BottomNav() {
           <Link
             key={item.href}
             href={item.href}
+            aria-current={active ? 'page' : undefined}
             style={{
               display: 'grid',
               placeItems: 'center',

@@ -1,5 +1,11 @@
 import type { LearnerStats } from '@/shared/lib/api'
 
+function energyHint(stats: LearnerStats): string {
+  if (stats.energy >= stats.maxEnergy) return 'Energy: full'
+  const minutes = Math.ceil(stats.secondsUntilNextEnergy / 60)
+  return `Energy: ${stats.energy} of ${stats.maxEnergy} — next point in about ${minutes} min`
+}
+
 export function StatsBar({ stats }: { stats: LearnerStats }) {
   return (
     <div
@@ -11,13 +17,13 @@ export function StatsBar({ stats }: { stats: LearnerStats }) {
         fontWeight: 700,
       }}
     >
-      <span title="Streak" style={{ color: 'var(--streak)' }}>
+      <span title={`Streak: ${stats.streak} day${stats.streak === 1 ? '' : 's'}`} style={{ color: 'var(--streak)' }}>
         ✦ {stats.streak}
       </span>
-      <span title="Gems" style={{ color: 'var(--gem)' }}>
+      <span title={`Gems: ${stats.gems}`} style={{ color: 'var(--gem)' }}>
         ◆ {stats.gems}
       </span>
-      <span title="Energy" style={{ color: 'var(--energy)' }}>
+      <span title={energyHint(stats)} style={{ color: 'var(--energy)' }}>
         ⚡ {stats.energy}
       </span>
     </div>

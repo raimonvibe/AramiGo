@@ -3,31 +3,28 @@ package com.aramigo.api.domain.model;
 /**
  * One prompt inside a lesson.
  *
- * {@code correctTokens} may list alternate accepted answers separated by {@code |}.
+ * <p>{@code slug} is the stable natural key from the curriculum data files, so
+ * re-seeding edited content keeps database ids (and therefore learner progress)
+ * pointing at the same exercise.
+ *
+ * <p>{@code correctTokens} may list alternate accepted answers separated by {@code |}.
  */
-public class Exercise {
+public record Exercise(
+    Long id,
+    String slug,
+    Long lessonId,
+    int position,
+    ExerciseType type,
+    String prompt,
+    String aramaicScript,
+    String transliteration,
+    String correctTokens,
+    String distractorTokens) {
 
-  private Long id;
-  private final Long lessonId;
-  private final int position;
-  private final ExerciseType type;
-  private final String prompt;
-  private final String aramaicScript;
-  private final String transliteration;
-  private final String correctTokens;
-  private final String distractorTokens;
-
-  public Exercise(
-      Long lessonId,
-      int position,
-      ExerciseType type,
-      String prompt,
-      String aramaicScript,
-      String transliteration,
-      String correctTokens,
-      String distractorTokens) {
-    this(
-        null,
+  public Exercise withIdentity(Long id, Long lessonId) {
+    return new Exercise(
+        id,
+        slug,
         lessonId,
         position,
         type,
@@ -38,64 +35,15 @@ public class Exercise {
         distractorTokens);
   }
 
-  public Exercise(
-      Long id,
-      Long lessonId,
-      int position,
-      ExerciseType type,
-      String prompt,
-      String aramaicScript,
-      String transliteration,
-      String correctTokens,
-      String distractorTokens) {
-    this.id = id;
-    this.lessonId = lessonId;
-    this.position = position;
-    this.type = type;
-    this.prompt = prompt;
-    this.aramaicScript = aramaicScript;
-    this.transliteration = transliteration;
-    this.correctTokens = correctTokens;
-    this.distractorTokens = distractorTokens;
+  /**
+   * True when showing the transliteration alongside the prompt would hand the
+   * learner the answer instead of making them listen or read the script.
+   */
+  public boolean transliterationGivesAwayAnswer() {
+    return type == ExerciseType.LISTEN_BUILD_ARAMAIC || type == ExerciseType.TRANSLATE_TO_ARAMAIC;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void assignId(Long id) {
-    this.id = id;
-  }
-
-  public Long getLessonId() {
-    return lessonId;
-  }
-
-  public int getPosition() {
-    return position;
-  }
-
-  public ExerciseType getType() {
-    return type;
-  }
-
-  public String getPrompt() {
-    return prompt;
-  }
-
-  public String getAramaicScript() {
-    return aramaicScript;
-  }
-
-  public String getTransliteration() {
-    return transliteration;
-  }
-
-  public String getCorrectTokens() {
-    return correctTokens;
-  }
-
-  public String getDistractorTokens() {
-    return distractorTokens;
+  public boolean hasAudioPrompt() {
+    return type == ExerciseType.LISTEN_CHOOSE_MEANING || type == ExerciseType.LISTEN_BUILD_ARAMAIC;
   }
 }
