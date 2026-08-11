@@ -1,0 +1,206 @@
+{
+  "slug": "s1-u2",
+  "sectionNumber": 1,
+  "unitNumber": 2,
+  "title": "Numbers and family",
+  "description": "Count a little, name close kin, and hear short family phrases",
+  "lessons": [
+    {
+      "slug": "s1-u2-numbers",
+      "title": "One to three",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u2-numbers-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܚܕ",
+          "transliteration": "had",
+          "correctTokens": "one",
+          "distractorTokens": "two three"
+        },
+        {
+          "slug": "s1-u2-numbers-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܪܝܢ",
+          "transliteration": "trein",
+          "correctTokens": "two",
+          "distractorTokens": "one three"
+        },
+        {
+          "slug": "s1-u2-numbers-3",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each number",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܚܕ=one ܬܪܝܢ=two ܬܠܬܐ=three",
+          "distractorTokens": "four five"
+        },
+        {
+          "slug": "s1-u2-numbers-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܬܠܬܐ",
+          "transliteration": "tloto",
+          "correctTokens": "ܬܠܬܐ",
+          "distractorTokens": "ܚܕ ܬܪܝܢ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u2-family",
+      "title": "Father and mother",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u2-family-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܒܐ",
+          "transliteration": "abo",
+          "correctTokens": "father",
+          "distractorTokens": "mother son"
+        },
+        {
+          "slug": "s1-u2-family-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܡܐ",
+          "transliteration": "emo",
+          "correctTokens": "mother",
+          "distractorTokens": "father brother"
+        },
+        {
+          "slug": "s1-u2-family-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "How do you say \"father\"?",
+          "aramaicScript": null,
+          "transliteration": "abo",
+          "correctTokens": "ܐܒܐ",
+          "distractorTokens": "ܐܡܐ ܒܪܐ"
+        },
+        {
+          "slug": "s1-u2-family-4",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܒܪܐ",
+          "transliteration": "bro",
+          "correctTokens": "son",
+          "distractorTokens": "father mother"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u2-treasure",
+      "title": "Family treasure",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u2-treasure-1",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match the family words",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܐܒܐ=father ܐܡܐ=mother ܒܪܐ=son",
+          "distractorTokens": "water brother"
+        },
+        {
+          "slug": "s1-u2-treasure-2",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܐܒܐ",
+          "transliteration": "abo",
+          "correctTokens": "ܐܒܐ",
+          "distractorTokens": "ܐܡܐ ܒܪܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u2-phrases",
+      "title": "My father",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u2-phrases-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܒܝ",
+          "transliteration": "abi",
+          "correctTokens": "my father",
+          "distractorTokens": "my mother one"
+        },
+        {
+          "slug": "s1-u2-phrases-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܡܝ",
+          "transliteration": "emi",
+          "correctTokens": "my mother",
+          "distractorTokens": "my father two"
+        },
+        {
+          "slug": "s1-u2-phrases-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"my father\"",
+          "aramaicScript": null,
+          "transliteration": "abi",
+          "correctTokens": "ܐܒܝ",
+          "distractorTokens": "ܐܡܝ ܒܪܐ"
+        },
+        {
+          "slug": "s1-u2-phrases-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܐܡܝ",
+          "transliteration": "emi",
+          "correctTokens": "ܐܡܝ",
+          "distractorTokens": "ܐܒܝ ܐܒܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u2-practice",
+      "title": "Family practice",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u2-practice-1",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܒܝ",
+          "transliteration": "abi",
+          "correctTokens": "my father",
+          "distractorTokens": "my mother three"
+        },
+        {
+          "slug": "s1-u2-practice-2",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each phrase",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܐܒܝ=my father;ܐܡܝ=my mother",
+          "distractorTokens": "son brother"
+        },
+        {
+          "slug": "s1-u2-practice-3",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܐܡܝ",
+          "transliteration": "emi",
+          "correctTokens": "ܐܡܝ",
+          "distractorTokens": "ܐܒܝ ܬܪܝܢ"
+        },
+        {
+          "slug": "s1-u2-practice-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "How do you say \"three\"?",
+          "aramaicScript": null,
+          "transliteration": "tloto",
+          "correctTokens": "ܬܠܬܐ",
+          "distractorTokens": "ܚܕ ܬܪܝܢ"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { BottomNav } from '@/shared/ui'
+import { BottomNav, SiteFooter } from '@/shared/ui'
 
 /**
  * The 22 letters of the Syriac abjad in traditional order.
@@ -81,6 +81,7 @@ export default function AlphabetPage() {
           ))}
         </ul>
       </main>
+      <SiteFooter />
       <BottomNav />
     </div>
   )

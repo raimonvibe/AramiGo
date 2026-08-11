@@ -40,10 +40,15 @@ public record Exercise(
    * learner the answer instead of making them listen or read the script.
    */
   public boolean transliterationGivesAwayAnswer() {
-    return type == ExerciseType.LISTEN_BUILD_ARAMAIC || type == ExerciseType.TRANSLATE_TO_ARAMAIC;
+    return type == ExerciseType.LISTEN_BUILD_ARAMAIC
+        || type == ExerciseType.TRANSLATE_TO_ARAMAIC
+        || type == ExerciseType.TAP_WHAT_YOU_HEAR
+        || type == ExerciseType.MATCH_PAIRS;
   }
 
   public boolean hasAudioPrompt() {
-    return type == ExerciseType.LISTEN_CHOOSE_MEANING || type == ExerciseType.LISTEN_BUILD_ARAMAIC;
+    return type == ExerciseType.LISTEN_CHOOSE_MEANING
+        || type == ExerciseType.LISTEN_BUILD_ARAMAIC
+        || type == ExerciseType.TAP_WHAT_YOU_HEAR;
   }
 }

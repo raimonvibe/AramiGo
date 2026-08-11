@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { BottomNav, StatsBar } from '@/shared/ui'
+import { BottomNav, StatsBar, SiteFooter } from '@/shared/ui'
 import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
 import { LessonNode } from './LessonNode'
@@ -218,6 +218,7 @@ export function LearningPathView() {
           </p>
         )}
       </main>
+      <SiteFooter />
       <BottomNav />
     </div>
   )

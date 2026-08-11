@@ -163,6 +163,21 @@ class LearningApplicationServiceTest {
     assertEquals(1, node.solvedCount());
   }
 
+  @Test
+  void profileReportsLessonProgress() {
+    var before = service.profile(GUEST, null);
+    assertEquals(0, before.completedLessons());
+    assertEquals(2, before.totalLessons());
+
+    solveLessonOne();
+    service.completeLesson(GUEST, lessonOne.id());
+
+    var after = service.profile(GUEST, null);
+    assertEquals(1, after.completedLessons());
+    assertEquals(2, after.totalLessons());
+    assertEquals(10, after.stats().gems());
+  }
+
   private void solveLessonOne() {
     service.checkAnswer(GUEST, firstExercise.id(), List.of("hello"));
     service.checkAnswer(GUEST, secondExercise.id(), List.of("peace"));

@@ -36,6 +36,15 @@
           "transliteration": "shlomo",
           "correctTokens": "ܫܠܡܐ",
           "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-greetings-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܫܠܡܐ",
+          "transliteration": "shlomo",
+          "correctTokens": "ܫܠܡܐ",
+          "distractorTokens": "ܒܪܝܟ ܠܚܡܐ"
         }
       ]
     },
@@ -70,6 +79,15 @@
           "transliteration": "eno",
           "correctTokens": "ܐܢܐ",
           "distractorTokens": "ܐܢܬ ܫܠܡܐ"
+        },
+        {
+          "slug": "s1-u1-names-4",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word to its meaning",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܐܢܐ=I ܐܢܬ=you",
+          "distractorTokens": "water peace"
         }
       ]
     },
@@ -86,6 +104,15 @@
           "transliteration": "shlomo alayk",
           "correctTokens": "peace upon you",
           "distractorTokens": "bread house"
+        },
+        {
+          "slug": "s1-u1-treasure-2",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܫܠܡܐ ܥܠܝܟ",
+          "transliteration": "shlomo alayk",
+          "correctTokens": "ܫܠܡܐ ܥܠܝܟ",
+          "distractorTokens": "ܠܚܡܐ ܡܝܐ"
         }
       ]
     },
@@ -120,6 +147,15 @@
           "transliteration": "it li lahma",
           "correctTokens": "ܐܝܬ ܠܝ ܠܚܡܐ",
           "distractorTokens": "ܐܢܬ ܫܬܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-sentences-4",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word to its meaning",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܠܚܡܐ=bread ܡܝܐ=water",
+          "distractorTokens": "house peace"
         }
       ]
     },
@@ -154,6 +190,24 @@
           "transliteration": "shlomo alayk",
           "correctTokens": "ܫܠܡܐ ܥܠܝܟ",
           "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-practice-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܒܪܝܟ",
+          "transliteration": "brikh",
+          "correctTokens": "ܒܪܝܟ",
+          "distractorTokens": "ܫܠܡܐ ܐܢܐ"
+        },
+        {
+          "slug": "s1-u1-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܒܪܝܟ ܫܡܟ",
+          "transliteration": "brikh shmakh",
+          "correctTokens": "ܒܪܝܟ ܫܡܟ",
+          "distractorTokens": "ܐܢܐ ܠܚܡܐ"
         }
       ]
     }

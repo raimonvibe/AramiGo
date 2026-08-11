@@ -17,17 +17,11 @@ import {
   speechVoiceKind,
   type SpeechAvailability,
 } from '@/shared/lib/speech'
+import { PlayIcon, SlowPlayIcon } from '@/shared/ui/icons'
+import { MatchPairsExercise } from './MatchPairsExercise'
+import { primaryButtonStyle } from './lessonStyles'
 
-const primaryButtonStyle: Record<string, string | number> = {
-  width: '100%',
-  border: 'none',
-  borderRadius: 16,
-  padding: '1rem',
-  fontWeight: 800,
-  letterSpacing: '0.06em',
-  background: 'var(--accent)',
-  color: '#07130f',
-}
+export { primaryButtonStyle }
 
 function chipStyle(selected: boolean, isScript: boolean): Record<string, string | number> {
   return {
@@ -59,6 +53,38 @@ export function ExerciseCard({
   onStats: (stats: LearnerStats) => void
   onOutOfEnergy: (message: string) => void
 }) {
+  if (exercise.type === 'MATCH_PAIRS') {
+    return (
+      <MatchPairsExercise
+        exercise={exercise}
+        onContinue={onContinue}
+        onStats={onStats}
+        onOutOfEnergy={onOutOfEnergy}
+      />
+    )
+  }
+
+  return (
+    <ChipExerciseCard
+      exercise={exercise}
+      onContinue={onContinue}
+      onStats={onStats}
+      onOutOfEnergy={onOutOfEnergy}
+    />
+  )
+}
+
+function ChipExerciseCard({
+  exercise,
+  onContinue,
+  onStats,
+  onOutOfEnergy,
+}: {
+  exercise: ExerciseView
+  onContinue: () => void
+  onStats: (stats: LearnerStats) => void
+  onOutOfEnergy: (message: string) => void
+}) {
   const [selected, setSelected] = useState<string[]>([])
   const [remaining, setRemaining] = useState(exercise.wordBank)
   const [busy, setBusy] = useState(false)
@@ -70,7 +96,9 @@ export function ExerciseCard({
   )
 
   const isListening =
-    exercise.type === 'LISTEN_CHOOSE_MEANING' || exercise.type === 'LISTEN_BUILD_ARAMAIC'
+    exercise.type === 'LISTEN_CHOOSE_MEANING' ||
+    exercise.type === 'LISTEN_BUILD_ARAMAIC' ||
+    exercise.type === 'TAP_WHAT_YOU_HEAR'
 
   useEffect(() => {
     if (!isListening) return
@@ -166,14 +194,14 @@ export function ExerciseCard({
                     height: 72,
                     borderRadius: 18,
                     border: 'none',
-                    background: voices === 'ready' ? '#7eb6ff' : '#3a4750',
-                    color: voices === 'ready' ? '#102033' : '#7d8d97',
-                    fontSize: '1.6rem',
-                    fontWeight: 800,
+                    background: voices === 'ready' ? 'var(--brand)' : '#3a4750',
+                    color: voices === 'ready' ? '#1a160c' : '#7d8d97',
+                    display: 'grid',
+                    placeItems: 'center',
                   }}
                   aria-label="Play audio"
                 >
-                  ♪
+                  <PlayIcon size={30} />
                 </button>
                 <button
                   type="button"
@@ -184,13 +212,14 @@ export function ExerciseCard({
                     height: 52,
                     borderRadius: 14,
                     border: 'none',
-                    background: voices === 'ready' ? '#5f91d3' : '#3a4750',
-                    color: voices === 'ready' ? '#102033' : '#7d8d97',
-                    fontWeight: 800,
+                    background: voices === 'ready' ? 'var(--accent)' : '#3a4750',
+                    color: voices === 'ready' ? '#07130f' : '#7d8d97',
+                    display: 'grid',
+                    placeItems: 'center',
                   }}
                   aria-label="Play slowly"
                 >
-                  🐢
+                  <SlowPlayIcon size={22} />
                 </button>
               </div>
 
@@ -348,5 +377,3 @@ export function ExerciseCard({
     </div>
   )
 }
-
-export { primaryButtonStyle }

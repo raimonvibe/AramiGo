@@ -7,6 +7,8 @@ export type ExerciseType =
   | 'TRANSLATE_TO_ARAMAIC'
   | 'LISTEN_CHOOSE_MEANING'
   | 'LISTEN_BUILD_ARAMAIC'
+  | 'MATCH_PAIRS'
+  | 'TAP_WHAT_YOU_HEAR'
 
 export interface LearnerStats {
   energy: number
@@ -76,7 +78,11 @@ export interface CompleteLessonResponse {
 export interface Profile {
   signedIn: boolean
   displayName: string | null
+  email: string | null
+  pictureUrl: string | null
   stats: LearnerStats
+  completedLessons: number
+  totalLessons: number
 }
 
 /** Machine-readable reasons the UI reacts to; anything else is just a message. */

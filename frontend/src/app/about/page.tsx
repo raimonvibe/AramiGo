@@ -1,4 +1,4 @@
-import { BottomNav } from '@/shared/ui'
+import { BottomNav, SiteFooter } from '@/shared/ui'
 
 export const metadata = {
   title: 'About AramiGo',
@@ -29,6 +29,7 @@ export default function AboutPage() {
           </p>
         </section>
       </main>
+      <SiteFooter />
       <BottomNav />
     </div>
   )

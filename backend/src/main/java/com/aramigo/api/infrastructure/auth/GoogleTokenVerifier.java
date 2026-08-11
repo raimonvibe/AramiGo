@@ -53,7 +53,10 @@ public class GoogleTokenVerifier {
       }
       return Optional.of(
           new GoogleAccount(
-              subject, jwt.getClaimAsString("name"), jwt.getClaimAsString("email")));
+              subject,
+              jwt.getClaimAsString("name"),
+              jwt.getClaimAsString("email"),
+              jwt.getClaimAsString("picture")));
     } catch (JwtException e) {
       // Expected whenever a token expires; not worth a stack trace.
       log.debug("Rejected Google ID token: {}", e.getMessage());

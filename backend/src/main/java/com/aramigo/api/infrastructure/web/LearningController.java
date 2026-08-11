@@ -76,7 +76,9 @@ public class LearningController {
       @RequestHeader(value = GUEST_HEADER, required = false) String guestKey) {
     LearnerIdentity identity = identity(authorization, guestKey);
     return LearningApiMapper.toResponse(
-        learning.profile(identity.key(), identity.displayName()));
+        learning.profile(identity.key(), identity.displayName()),
+        identity.email(),
+        identity.pictureUrl());
   }
 
   /**
@@ -90,7 +92,9 @@ public class LearningController {
     LearnerIdentity identity = identity(authorization, guestKey);
     return LearningApiMapper.toResponse(
         learning.linkGuestProgress(
-            identity.key(), identity.displayName(), identities.guestKey(guestKey)));
+            identity.key(), identity.displayName(), identities.guestKey(guestKey)),
+        identity.email(),
+        identity.pictureUrl());
   }
 
   private LearnerIdentity identity(String authorization, String guestKey) {

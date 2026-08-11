@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { StatsBar } from '@/shared/ui'
+import { EnergyIcon } from '@/shared/ui/icons'
 import {
   ApiError,
   completeLesson,
@@ -11,7 +12,8 @@ import {
   type LearnerStats,
   type LessonSession,
 } from '@/shared/lib/api'
-import { ExerciseCard, primaryButtonStyle } from './ExerciseCard'
+import { ExerciseCard } from './ExerciseCard'
+import { primaryButtonStyle } from './lessonStyles'
 import { EnergyEmpty } from './EnergyEmpty'
 
 export function LessonPlayer({ lessonId }: { lessonId: number }) {
@@ -168,12 +170,14 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
               background: 'linear-gradient(160deg, var(--energy), #8f4d66)',
               display: 'grid',
               placeItems: 'center',
-              fontSize: '2rem',
+              color: '#2a121c',
               fontWeight: 800,
               boxShadow: 'var(--shadow)',
+              gap: '0.25rem',
             }}
           >
-            +{reward.energy} ⚡
+            <EnergyIcon size={36} />
+            <span style={{ fontSize: '1.35rem' }}>+{reward.energy}</span>
           </div>
           <div style={{ color: 'var(--muted)' }}>
             {reward.gems > 0

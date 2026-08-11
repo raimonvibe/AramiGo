@@ -3,15 +3,20 @@ package com.aramigo.api.domain.policy;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Default Strategy: space-separated tokens, {@code |} between alternate answers.
  *
  * <p>Examples: {@code hello|peace}, {@code I have bread}.
+ *
+ * <p>Match-pair exercises use {@code script=meaning} pairs in the curriculum and
+ * submit {@code script|meaning} tokens (order of pairs does not matter).
  *
  * <p>Comparison is Unicode-aware so Syriac chips match whether or not the content
  * carries vowel pointing: ܫܠܵܡܵܐ and ܫܠܡܐ are the same answer.
@@ -24,6 +29,9 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
 
   @Override
   public boolean matches(String correctTokensSpec, List<String> submitted) {
+    if (isPairSpec(correctTokensSpec)) {
+      return matchesPairs(correctTokensSpec, submitted);
+    }
     List<String> normalized = normalize(submitted);
     return acceptedAnswers(correctTokensSpec).stream()
         .map(this::normalize)
@@ -32,6 +40,11 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
 
   @Override
   public String friendlyHint(String correctTokensSpec) {
+    if (isPairSpec(correctTokensSpec)) {
+      return parsePairs(correctTokensSpec).stream()
+          .map(pair -> pair.script() + " = " + pair.meaning())
+          .collect(Collectors.joining(", "));
+    }
     List<List<String>> answers = acceptedAnswers(correctTokensSpec);
     List<String> phrases =
         answers.stream().map(answer -> String.join(" ", answer)).toList();
@@ -49,9 +62,20 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
    *
    * <p>A sentence that uses the same word twice needs two chips — deduplicating
    * here would make it unbuildable.
+   *
+   * <p>For pair specs, returns every script and meaning as separate chips.
    */
   @Override
   public List<String> bankTokensFromAnswers(String correctTokensSpec) {
+    if (isPairSpec(correctTokensSpec)) {
+      List<String> bank = new ArrayList<>();
+      for (Pair pair : parsePairs(correctTokensSpec)) {
+        bank.add(pair.script());
+        bank.add(pair.meaning());
+      }
+      return bank;
+    }
+
     Map<String, Integer> mostCopiesNeeded = new LinkedHashMap<>();
     for (List<String> answer : acceptedAnswers(correctTokensSpec)) {
       Map<String, Integer> countsInThisAnswer = new LinkedHashMap<>();
@@ -73,6 +97,9 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
 
   @Override
   public String tipFor(String correctTokensSpec) {
+    if (isPairSpec(correctTokensSpec)) {
+      return "Match each script to its meaning.";
+    }
     List<List<String>> answers = acceptedAnswers(correctTokensSpec);
     if (answers.size() > 1 && answers.stream().allMatch(answer -> answer.size() == 1)) {
       return "Pick one word — more than one meaning can be right.";
@@ -88,8 +115,65 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
 
   @Override
   public boolean isSingleWordPrompt(String correctTokensSpec) {
+    if (isPairSpec(correctTokensSpec)) {
+      return false;
+    }
     List<List<String>> answers = acceptedAnswers(correctTokensSpec);
     return !answers.isEmpty() && answers.stream().allMatch(answer -> answer.size() == 1);
+  }
+
+  private boolean matchesPairs(String correctTokensSpec, List<String> submitted) {
+    List<Pair> expected = parsePairs(correctTokensSpec);
+    if (submitted == null || submitted.size() != expected.size()) {
+      return false;
+    }
+    List<Pair> actual = new ArrayList<>();
+    for (String token : submitted) {
+      int bar = token.indexOf('|');
+      if (bar <= 0 || bar >= token.length() - 1) {
+        return false;
+      }
+      actual.add(new Pair(token.substring(0, bar), token.substring(bar + 1)));
+    }
+    List<Pair> sortedExpected =
+        expected.stream()
+            .map(this::normalizePair)
+            .sorted(Comparator.comparing(Pair::script).thenComparing(Pair::meaning))
+            .toList();
+    List<Pair> sortedActual =
+        actual.stream()
+            .map(this::normalizePair)
+            .sorted(Comparator.comparing(Pair::script).thenComparing(Pair::meaning))
+            .toList();
+    return sortedExpected.equals(sortedActual);
+  }
+
+  private static boolean isPairSpec(String correctTokensSpec) {
+    return correctTokensSpec != null && correctTokensSpec.contains("=");
+  }
+
+  private List<Pair> parsePairs(String correctTokensSpec) {
+    List<Pair> pairs = new ArrayList<>();
+    if (correctTokensSpec == null || correctTokensSpec.isBlank()) {
+      return pairs;
+    }
+    // Prefer ';' between pairs so meanings can contain spaces: ܐܒܝ=my father;ܐܡܝ=my mother
+    String[] chunks =
+        correctTokensSpec.contains(";")
+            ? correctTokensSpec.trim().split("\\s*;\\s*")
+            : correctTokensSpec.trim().split("\\s+");
+    for (String chunk : chunks) {
+      int eq = chunk.indexOf('=');
+      if (eq <= 0 || eq >= chunk.length() - 1) {
+        continue;
+      }
+      pairs.add(new Pair(chunk.substring(0, eq).trim(), chunk.substring(eq + 1).trim()));
+    }
+    return pairs;
+  }
+
+  private Pair normalizePair(Pair pair) {
+    return new Pair(normalizeToken(pair.script()), normalizeToken(pair.meaning()));
   }
 
   private List<List<String>> acceptedAnswers(String correctTokensSpec) {
@@ -128,4 +212,6 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
     }
     return stripped.toString().toLowerCase(Locale.ROOT);
   }
+
+  private record Pair(String script, String meaning) {}
 }

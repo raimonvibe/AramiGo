@@ -63,7 +63,13 @@ public final class LearningApiDtos {
       int energyReward, int gemsReward, LearnerStatsResponse stats) {}
 
   public record ProfileResponse(
-      boolean signedIn, String displayName, LearnerStatsResponse stats) {}
+      boolean signedIn,
+      String displayName,
+      String email,
+      String pictureUrl,
+      LearnerStatsResponse stats,
+      int completedLessons,
+      int totalLessons) {}
 
   public record ErrorResponse(String status, String code, String message) {}
 }

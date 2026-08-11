@@ -80,8 +80,15 @@ public final class LearningApiMapper {
         result.energyReward(), result.gemsReward(), stats(result.stats()));
   }
 
-  public static ProfileResponse toResponse(ProfileResult result) {
-    return new ProfileResponse(result.signedIn(), result.displayName(), stats(result.stats()));
+  public static ProfileResponse toResponse(ProfileResult result, String email, String pictureUrl) {
+    return new ProfileResponse(
+        result.signedIn(),
+        result.displayName(),
+        email,
+        pictureUrl,
+        stats(result.stats()),
+        result.completedLessons(),
+        result.totalLessons());
   }
 
   private static LearnerStatsResponse stats(LearnerStats stats) {

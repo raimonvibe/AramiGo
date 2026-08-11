@@ -109,4 +109,30 @@ class TokenAnswerMatchingPolicyTest {
     assertFalse(policy.isSingleWordPrompt(""));
     assertFalse(policy.isSingleWordPrompt(null));
   }
+
+  @Test
+  void matchPairsIgnoreOrder() {
+    String spec = SHLOMO + "=hello \u0720\u071A\u0721\u0710=bread";
+    assertTrue(
+        policy.matches(
+            spec,
+            List.of(SHLOMO + "|hello", "\u0720\u071A\u0721\u0710|bread")));
+    assertTrue(
+        policy.matches(
+            spec,
+            List.of("\u0720\u071A\u0721\u0710|bread", SHLOMO + "|hello")));
+    assertFalse(policy.matches(spec, List.of(SHLOMO + "|bread")));
+  }
+
+  @Test
+  void matchPairsSupportMultiWordMeanings() {
+    String spec = SHLOMO + "=peace upon you;\u0720\u071A\u0721\u0710=fresh bread";
+    assertTrue(
+        policy.matches(
+            spec,
+            List.of(SHLOMO + "|peace upon you", "\u0720\u071A\u0721\u0710|fresh bread")));
+    assertEquals(
+        List.of(SHLOMO, "peace upon you", "\u0720\u071A\u0721\u0710", "fresh bread"),
+        policy.bankTokensFromAnswers(spec));
+  }
 }

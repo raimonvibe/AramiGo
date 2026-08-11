@@ -11,5 +11,17 @@ public enum ExerciseType {
   LISTEN_CHOOSE_MEANING,
 
   /** Hear Syriac, rebuild it from Syriac chips (dictation). */
-  LISTEN_BUILD_ARAMAIC
+  LISTEN_BUILD_ARAMAIC,
+
+  /**
+   * Match Syriac script chips to English meanings.
+   *
+   * <p>Curriculum format: {@code ܫܠܡܐ=hello ܠܚܡܐ=bread}, or {@code ;}-separated
+   * pairs when a meaning has spaces. Submitted tokens are {@code script|meaning}
+   * pairs; order of pairs does not matter.
+   */
+  MATCH_PAIRS,
+
+  /** Hear Syriac, tap the matching Syriac script among distractors. */
+  TAP_WHAT_YOU_HEAR
 }

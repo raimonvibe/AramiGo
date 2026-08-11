@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { primaryButtonStyle } from './ExerciseCard'
+import { EnergyIcon } from '@/shared/ui/icons'
+import { primaryButtonStyle } from './lessonStyles'
 
 function formatCountdown(totalSeconds: number): string {
   const minutes = Math.floor(totalSeconds / 60)
@@ -48,12 +49,12 @@ export function EnergyEmpty({
           background: 'linear-gradient(160deg, var(--energy), #8f4d66)',
           display: 'grid',
           placeItems: 'center',
-          fontSize: '2.5rem',
+          color: '#2a121c',
           boxShadow: 'var(--shadow)',
         }}
         aria-hidden="true"
       >
-        ⚡
+        <EnergyIcon size={52} />
       </div>
       <h2 className="brand-font" style={{ margin: 0, fontSize: '1.5rem', color: 'var(--brand)' }}>
         Out of energy

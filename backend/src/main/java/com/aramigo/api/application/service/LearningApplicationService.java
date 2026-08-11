@@ -192,7 +192,7 @@ public class LearningApplicationService implements LearningUseCases {
       learner.rename(displayName);
       learners.save(learner);
     }
-    return new ProfileResult(isAccount(identityKey), learner.getDisplayName(), learner.stats(now));
+    return toProfile(identityKey, learner, now);
   }
 
   @Override
@@ -221,7 +221,18 @@ public class LearningApplicationService implements LearningUseCases {
     }
 
     learners.save(account);
-    return new ProfileResult(isAccount(accountKey), account.getDisplayName(), account.stats(now));
+    return toProfile(accountKey, account, now);
+  }
+
+  private ProfileResult toProfile(String identityKey, Learner learner, Instant now) {
+    int totalLessons = curriculum.findAllLessons().size();
+    int completedLessons = Math.min(learner.getHighestCompletedPosition(), totalLessons);
+    return new ProfileResult(
+        isAccount(identityKey),
+        learner.getDisplayName(),
+        learner.stats(now),
+        completedLessons,
+        totalLessons);
   }
 
   private static boolean isAccount(String identityKey) {
