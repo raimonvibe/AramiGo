@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import {
   ApiError,
   checkAnswer,
@@ -285,7 +286,10 @@ function ChipExerciseCard({
               {notice && (
                 <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.85rem', lineHeight: 1.45 }}>
                   {notice}
-                  {voiceKind === 'hebrew' ? ' Voice: Hebrew.' : voiceKind === 'other' ? ' Voice: device default.' : ''}
+                  {voiceKind === 'hebrew' ? ' Voice: Hebrew.' : voiceKind === 'other' ? ' Voice: device default.' : ''}{' '}
+                  <Link href="/support" style={{ color: 'var(--brand)', fontWeight: 700 }}>
+                    Device setup
+                  </Link>
                 </p>
               )}
 
@@ -294,7 +298,10 @@ function ChipExerciseCard({
                   {voices === 'unsupported'
                     ? 'This browser cannot play audio prompts.'
                     : 'No speech voice is installed on this device, so the audio is silent.'}{' '}
-                  The script is shown below instead.
+                  The script is shown below instead.{' '}
+                  <Link href="/support" style={{ color: 'var(--brand)', fontWeight: 700 }}>
+                    Device setup
+                  </Link>
                 </p>
               )}
 

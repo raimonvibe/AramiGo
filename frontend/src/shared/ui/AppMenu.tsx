@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AccountBar } from '@/features/auth'
-import { AboutIcon, AccountIcon, AlphabetIcon, PathIcon } from './icons'
+import { AboutIcon, AccountIcon, AlphabetIcon, PathIcon, SupportIcon } from './icons'
 import { SocialIcon, SOCIAL_LINKS } from './SocialIcon'
 
 /**
@@ -18,6 +18,7 @@ const ITEMS = [
   { href: '/alphabet', label: 'Alphabet', letter: 'ܒ', Icon: AlphabetIcon },
   { href: '/account', label: 'Account', letter: 'ܓ', Icon: AccountIcon },
   { href: '/about', label: 'About', letter: 'ܕ', Icon: AboutIcon },
+  { href: '/support', label: 'Support', letter: 'ܗ', Icon: SupportIcon },
 ]
 
 export function AppMenu() {

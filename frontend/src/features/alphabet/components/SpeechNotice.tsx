@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { onVoicesChanged, speechNotice, type SpeechAvailability } from '@/shared/lib/speech'
 
@@ -35,7 +36,10 @@ export function SpeechNotice() {
         lineHeight: 1.45,
       }}
     >
-      {text}
+      {text}{' '}
+      <Link href="/support" style={{ color: 'var(--brand)', fontWeight: 700 }}>
+        Device setup
+      </Link>
     </p>
   )
 }

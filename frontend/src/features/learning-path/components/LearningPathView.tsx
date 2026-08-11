@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { PageShell, StatsBar, ImagePlate } from '@/shared/ui'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
 import { artForUnit } from '@/shared/lib/gameArt'
@@ -152,7 +153,10 @@ export function LearningPathView() {
               maxWidth: '36rem',
             }}
           >
-            Listen mode uses a Hebrew system voice as a stand-in (not authentic Syriac audio).
+            Listen mode uses a Hebrew system voice as a stand-in (not authentic Syriac audio).{' '}
+            <Link href="/support" style={{ color: 'var(--brand)', fontWeight: 700 }}>
+              Device setup
+            </Link>
           </div>
         </div>
         {path && <StatsBar stats={path.stats} />}

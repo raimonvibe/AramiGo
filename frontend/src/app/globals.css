@@ -391,6 +391,45 @@ body.app-menu-open .bottom-nav {
   }
 }
 
+.support-platforms {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.support-platform-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  color: var(--brand);
+  line-height: 1.2;
+}
+
+.support-platform-summary {
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.support-platform-steps {
+  margin: 0;
+  padding-inline-start: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+@media (min-width: 860px) {
+  .support-platforms {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+  }
+
+  .support-platforms > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 36rem;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Learning path — a ruled manuscript column.
 

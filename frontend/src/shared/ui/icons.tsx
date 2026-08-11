@@ -67,6 +67,19 @@ export function AboutIcon({ size = 22, ...props }: IconProps) {
   )
 }
 
+/** Soft voice waves — listen / support. */
+export function SupportIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <BaseIcon size={size} {...props}>
+      <path d="M5 10.5v3" />
+      <path d="M8.2 8.2v7.6" />
+      <path d="M11.4 6v12" />
+      <path d="M14.8 8.5c1.35 1.1 1.35 5.9 0 7" opacity={0.85} />
+      <path d="M17.6 6.4c2.35 2.1 2.35 9.1 0 11.2" opacity={0.55} />
+    </BaseIcon>
+  )
+}
+
 /** Oil lamp — energy. */
 export function EnergyIcon({ size = 22, ...props }: IconProps) {
   return (

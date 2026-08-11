@@ -123,7 +123,10 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
         >
           Listen prompts are spoken with a <strong style={{ color: 'var(--text)' }}>Hebrew</strong>{' '}
           system voice as a stand-in. Classical Syriac has no built-in speech engine — this is an
-          approximation, not authentic Syriac or the dialect of Jesus.
+          approximation, not authentic Syriac or the dialect of Jesus.{' '}
+          <Link href="/support" style={{ color: 'var(--brand)', fontWeight: 700 }}>
+            Device setup
+          </Link>
         </p>
       )}
 
