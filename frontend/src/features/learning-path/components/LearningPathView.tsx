@@ -109,6 +109,9 @@ export function LearningPathView() {
             <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
               Classical Syriac · beginners
             </div>
+            <div style={{ color: 'var(--muted)', fontSize: '0.78rem', marginTop: '0.35rem', lineHeight: 1.4 }}>
+              Listen mode uses a Hebrew system voice as a stand-in (not authentic Syriac audio).
+            </div>
           </div>
           {path && <StatsBar stats={path.stats} />}
         </header>

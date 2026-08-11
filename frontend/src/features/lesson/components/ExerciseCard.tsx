@@ -13,6 +13,8 @@ import {
   SLOW_RATE,
   onVoicesChanged,
   speak,
+  speechNotice,
+  speechVoiceKind,
   type SpeechAvailability,
 } from '@/shared/lib/speech'
 
@@ -63,16 +65,23 @@ export function ExerciseCard({
   const [feedback, setFeedback] = useState<CheckAnswerResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [voices, setVoices] = useState<SpeechAvailability>('ready')
+  const [voiceKind, setVoiceKind] = useState(() =>
+    typeof window === 'undefined' ? 'none' : speechVoiceKind(),
+  )
 
   const isListening =
     exercise.type === 'LISTEN_CHOOSE_MEANING' || exercise.type === 'LISTEN_BUILD_ARAMAIC'
 
   useEffect(() => {
     if (!isListening) return
-    return onVoicesChanged(setVoices)
+    return onVoicesChanged(availability => {
+      setVoices(availability)
+      setVoiceKind(speechVoiceKind())
+    })
   }, [isListening])
 
   const audioText = exercise.audioText ?? exercise.aramaicScript ?? ''
+  const notice = voices === 'ready' ? speechNotice() : null
 
   // Autoplay the prompt on arrival — a listening exercise should start by listening.
   useEffect(() => {
@@ -184,6 +193,13 @@ export function ExerciseCard({
                   🐢
                 </button>
               </div>
+
+              {notice && (
+                <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.85rem', lineHeight: 1.45 }}>
+                  {notice}
+                  {voiceKind === 'hebrew' ? ' Voice: Hebrew.' : voiceKind === 'other' ? ' Voice: device default.' : ''}
+                </p>
+              )}
 
               {voices !== 'ready' && (
                 <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.9rem' }}>

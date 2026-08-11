@@ -1,29 +1,72 @@
 /**
- * Browser speech synthesis for pronunciation prompts.
+ * Browser speech for listen prompts.
  *
- * Honest caveat: the Web Speech API has no Classical Syriac voice, so this reads
- * the romanization with whatever voice the device has. It is a placeholder for
- * recorded audio, not a substitute for it — and on machines with no speech engine
- * installed (common on Linux) there is no voice at all, which is why callers get
- * told whether playback is actually available.
+ * Classical Syriac has no system TTS voice. We prefer a **Hebrew** voice + `he-IL`
+ * so Semitic consonants come closer than an English default. The engine still
+ * reads our Latin romanization (e.g. "shlomo") — this is an approximation, not
+ * authentic Syriac or Galilean Aramaic. Recorded clips remain the long-term plan.
+ *
+ * On machines with no speech engine (common on Linux) playback is unavailable.
  */
 
 export const NORMAL_RATE = 0.85
 export const SLOW_RATE = 0.45
 
+/** BCP 47 tag we ask the engine to use for Syriac romanization stand-ins. */
+export const SPEECH_LANG = 'he-IL'
+
 export type SpeechAvailability = 'ready' | 'unsupported' | 'no-voice'
+
+/** Which kind of voice we will actually use right now. */
+export type SpeechVoiceKind = 'hebrew' | 'other' | 'none'
+
+export const SPEECH_NOTICE_HEBREW =
+  'Listen mode uses a Hebrew system voice as a stand-in. Classical Syriac has no built-in speech engine — this is an approximation, not authentic Syriac.'
+
+export const SPEECH_NOTICE_FALLBACK =
+  'No Hebrew voice on this device, so another system voice is used. Classical Syriac has no built-in speech engine — pronunciation is only a rough stand-in.'
 
 function synth(): SpeechSynthesis | null {
   if (typeof window === 'undefined') return null
   return window.speechSynthesis ?? null
 }
 
+function isHebrewVoice(voice: SpeechSynthesisVoice): boolean {
+  const lang = voice.lang.toLowerCase()
+  // `iw` is the old ISO code some engines still report for Hebrew.
+  return lang.startsWith('he') || lang.startsWith('iw')
+}
+
+function allVoices(): SpeechSynthesisVoice[] {
+  const speech = synth()
+  if (!speech) return []
+  return speech.getVoices()
+}
+
+/** Prefer Hebrew; otherwise any installed voice. */
+export function preferredVoice(): SpeechSynthesisVoice | null {
+  const voices = allVoices()
+  if (voices.length === 0) return null
+  return voices.find(isHebrewVoice) ?? voices[0] ?? null
+}
+
+export function speechVoiceKind(): SpeechVoiceKind {
+  const voice = preferredVoice()
+  if (!voice) return 'none'
+  return isHebrewVoice(voice) ? 'hebrew' : 'other'
+}
+
 export function speechAvailability(): SpeechAvailability {
   const speech = synth()
   if (!speech) return 'unsupported'
-  // Voices load asynchronously in some browsers; an empty list after load means
-  // the device genuinely has no speech engine.
-  return speech.getVoices().length > 0 ? 'ready' : 'no-voice'
+  return allVoices().length > 0 ? 'ready' : 'no-voice'
+}
+
+export function speechNotice(): string | null {
+  const kind = speechVoiceKind()
+  if (kind === 'hebrew') return SPEECH_NOTICE_HEBREW
+  if (kind === 'other') return SPEECH_NOTICE_FALLBACK
+  return null
 }
 
 /** Runs `onChange` whenever the voice list resolves, so the UI can stop guessing. */
@@ -47,5 +90,16 @@ export function speak(text: string, rate: number = NORMAL_RATE) {
   speech.cancel()
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.rate = rate
+  utterance.lang = SPEECH_LANG
+
+  const voice = preferredVoice()
+  if (voice) {
+    utterance.voice = voice
+    // Keep lang aligned with the chosen voice when we fell back to non-Hebrew.
+    if (!isHebrewVoice(voice)) {
+      utterance.lang = voice.lang || SPEECH_LANG
+    }
+  }
+
   speech.speak(utterance)
 }
