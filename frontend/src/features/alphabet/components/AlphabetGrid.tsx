@@ -6,8 +6,6 @@ import { ReadAllButton } from './ReadAllButton'
 export interface SyriacLetter {
   glyph: string
   name: string
-  /** What the letter is worth when Syriac is written as numerals. */
-  value: number
 }
 
 export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
@@ -69,12 +67,6 @@ export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
                 </span>
                 <span style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 700 }}>
                   {letter.name}
-                </span>
-                <span
-                  style={{ fontSize: '0.72rem', color: 'var(--muted)', opacity: 0.75 }}
-                  title={`${letter.name} stands for ${letter.value} when used as a numeral`}
-                >
-                  = {letter.value}
                 </span>
               </button>
             </li>
