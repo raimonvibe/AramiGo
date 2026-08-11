@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ApiError,
   checkAnswer,
@@ -13,6 +13,8 @@ import {
   SLOW_RATE,
   onVoicesChanged,
   speak,
+  speechNotice,
+  speechVoiceKind,
   type SpeechAvailability,
 } from '@/shared/lib/speech'
 
@@ -63,17 +65,23 @@ export function ExerciseCard({
   const [feedback, setFeedback] = useState<CheckAnswerResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [voices, setVoices] = useState<SpeechAvailability>('ready')
+  const [voiceKind, setVoiceKind] = useState(() =>
+    typeof window === 'undefined' ? 'none' : speechVoiceKind(),
+  )
 
   const isListening =
     exercise.type === 'LISTEN_CHOOSE_MEANING' || exercise.type === 'LISTEN_BUILD_ARAMAIC'
-  const scriptChips = useMemo(() => exercise.wordBank.some(isSyriac), [exercise.wordBank])
 
   useEffect(() => {
     if (!isListening) return
-    return onVoicesChanged(setVoices)
+    return onVoicesChanged(availability => {
+      setVoices(availability)
+      setVoiceKind(speechVoiceKind())
+    })
   }, [isListening])
 
   const audioText = exercise.audioText ?? exercise.aramaicScript ?? ''
+  const notice = voices === 'ready' ? speechNotice() : null
 
   // Autoplay the prompt on arrival — a listening exercise should start by listening.
   useEffect(() => {
@@ -186,6 +194,13 @@ export function ExerciseCard({
                 </button>
               </div>
 
+              {notice && (
+                <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.85rem', lineHeight: 1.45 }}>
+                  {notice}
+                  {voiceKind === 'hebrew' ? ' Voice: Hebrew.' : voiceKind === 'other' ? ' Voice: device default.' : ''}
+                </p>
+              )}
+
               {voices !== 'ready' && (
                 <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.9rem' }}>
                   {voices === 'unsupported'
@@ -214,6 +229,12 @@ export function ExerciseCard({
         </div>
       )}
 
+      {/*
+        Keep chip lanes LTR even for Syriac. CSS direction:rtl reverses visual
+        order without reversing the token array, so rebuilding the hinted answer
+        left-to-right looked right on screen but was submitted backwards.
+        Each chip still uses the Syriac face; only the lane order stays logical.
+      */}
       <div
         style={{
           minHeight: 72,
@@ -223,18 +244,18 @@ export function ExerciseCard({
           gap: '0.55rem',
           alignItems: 'center',
           paddingBottom: '0.75rem',
-          direction: scriptChips ? 'rtl' : 'ltr',
+          direction: 'ltr',
         }}
       >
         {selected.length === 0 && (
-          <span style={{ color: 'var(--muted)', direction: 'ltr' }}>Your answer appears here</span>
+          <span style={{ color: 'var(--muted)' }}>Your answer appears here</span>
         )}
         {selected.map((token, index) => (
           <button
             key={`sel-${token}-${index}`}
             type="button"
             onClick={() => unpick(index)}
-            style={chipStyle(true, isSyriac(token))}
+            style={{ ...chipStyle(true, isSyriac(token)), unicodeBidi: 'isolate' }}
           >
             {token}
           </button>
@@ -246,7 +267,7 @@ export function ExerciseCard({
           display: 'flex',
           flexWrap: 'wrap',
           gap: '0.55rem',
-          direction: scriptChips ? 'rtl' : 'ltr',
+          direction: 'ltr',
         }}
       >
         {remaining.map((token, index) => (
@@ -257,6 +278,7 @@ export function ExerciseCard({
             disabled={feedback?.correct}
             style={{
               ...chipStyle(false, isSyriac(token)),
+              unicodeBidi: 'isolate',
               opacity: feedback?.correct ? 0.45 : 1,
             }}
           >
@@ -292,7 +314,8 @@ export function ExerciseCard({
           <strong>{feedback.message}</strong>
           {!feedback.correct && (
             <div style={{ marginTop: '0.35rem', color: 'var(--muted)' }}>
-              Accepted answer{feedback.correctAnswer.includes(' or ') ? 's' : ''}:{' '}
+              Accepted answer
+              {feedback.correctAnswer.includes(' or ') ? 's' : ''}:{' '}
               <strong
                 style={{ color: 'var(--text)' }}
                 className={isSyriac(feedback.correctAnswer) ? 'syriac-inline' : undefined}

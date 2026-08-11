@@ -104,6 +104,25 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
         </div>
       </header>
 
+      {session && !reward && !outOfEnergy && (
+        <p
+          style={{
+            margin: '0 0 1rem',
+            padding: '0.75rem 1rem',
+            borderRadius: 12,
+            border: '1px solid rgba(196, 163, 90, 0.35)',
+            background: 'rgba(196, 163, 90, 0.08)',
+            color: 'var(--muted)',
+            fontSize: '0.85rem',
+            lineHeight: 1.45,
+          }}
+        >
+          Listen prompts are spoken with a <strong style={{ color: 'var(--text)' }}>Hebrew</strong>{' '}
+          system voice as a stand-in. Classical Syriac has no built-in speech engine — this is an
+          approximation, not authentic Syriac or the dialect of Jesus.
+        </p>
+      )}
+
       {(error || badLink) && (
         <div
           role="alert"

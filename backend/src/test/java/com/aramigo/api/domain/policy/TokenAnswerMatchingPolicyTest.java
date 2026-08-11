@@ -44,7 +44,28 @@ class TokenAnswerMatchingPolicyTest {
 
   @Test
   void friendlyHintListsAlternatives() {
-    assertEquals("hello or peace", policy.friendlyHint("hello|peace"));
+    assertEquals("hello or peace (one word)", policy.friendlyHint("hello|peace"));
+  }
+
+  @Test
+  void syriacSentenceMatchesChipOrderNotVisualRtl() {
+    // Lesson 4 — "I have bread" in Syriac. Tap order must equal token order.
+    String correct = "\u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710";
+    assertTrue(
+        policy.matches(
+            correct,
+            List.of(
+                "\u0710\u071D\u072C",
+                "\u0720\u071D",
+                "\u0720\u071A\u0721\u0710")));
+    assertFalse(
+        policy.matches(
+            correct,
+            List.of(
+                "\u0720\u071A\u0721\u0710",
+                "\u0720\u071D",
+                "\u0710\u071D\u072C")));
+    assertEquals(correct, policy.friendlyHint(correct));
   }
 
   @Test
