@@ -11,7 +11,9 @@ export interface SyriacLetter {
 }
 
 export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
-  const audio = useReadAloud(letters.map(letter => letter.name))
+  const audio = useReadAloud(
+    letters.map(letter => ({ script: letter.glyph, transliteration: letter.name }))
+  )
 
   return (
     <>
@@ -43,7 +45,9 @@ export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
             <li key={letter.name}>
               <button
                 type="button"
-                onClick={() => audio.playOne(letter.name)}
+                onClick={() =>
+                  audio.playOne({ script: letter.glyph, transliteration: letter.name })
+                }
                 disabled={!audio.ready}
                 aria-label={`Hear ${letter.name}`}
                 style={{

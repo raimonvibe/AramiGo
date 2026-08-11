@@ -18,14 +18,15 @@ import {
   nameFromIdToken,
   type GoogleCredentialResponse,
 } from './googleIdentity'
+import { notifyAccountChanged } from '@/shared/lib/accountEvents'
 
 /**
- * Sign-in strip above the path.
+ * Sign-in block, shown inside the app menu so it is reachable from every page.
  *
  * Signing in is optional and additive: guests keep full access, and the progress
  * they already made is merged into the account the first time they sign in.
  */
-export function AccountBar({ onAccountChanged }: { onAccountChanged: () => void }) {
+export function AccountBar({ onAccountChanged }: { onAccountChanged?: () => void } = {}) {
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [signedIn, setSignedIn] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
@@ -56,7 +57,8 @@ export function AccountBar({ onAccountChanged }: { onAccountChanged: () => void 
         setSignedIn(profile.signedIn)
         setDisplayName(profile.displayName ?? nameFromIdToken(response.credential))
         setStatus(null)
-        onAccountChanged()
+        onAccountChanged?.()
+        notifyAccountChanged()
       } catch (err) {
         clearToken()
         setSignedIn(false)
@@ -94,7 +96,8 @@ export function AccountBar({ onAccountChanged }: { onAccountChanged: () => void 
     setSignedIn(false)
     setDisplayName(null)
     setStatus(null)
-    onAccountChanged()
+    onAccountChanged?.()
+    notifyAccountChanged()
   }
 
   if (!GOOGLE_SIGN_IN_ENABLED) {

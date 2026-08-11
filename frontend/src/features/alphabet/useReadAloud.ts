@@ -4,10 +4,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   NORMAL_RATE,
   onVoicesChanged,
+  pronounceable,
   speak,
   speakSequence,
   type SpeechAvailability,
 } from '@/shared/lib/speech'
+
+/** Something the learner can hear, written both ways. */
+export interface ReadAloudItem {
+  /** Syriac script, when we have it — preferred on a Hebrew voice. */
+  script?: string | null
+  /** Latin romanization, used when no Hebrew voice is available. */
+  transliteration: string
+}
 
 export interface ReadAloud {
   /** A voice exists, so the play controls can do something. */
@@ -18,7 +27,7 @@ export interface ReadAloud {
   /** Index currently being spoken during a run, or -1. */
   playingIndex: number
   playAll: () => void
-  playOne: (text: string, rate?: number) => void
+  playOne: (item: ReadAloudItem, rate?: number) => void
   stop: () => void
 }
 
@@ -26,10 +35,11 @@ export interface ReadAloud {
  * Play controls for a list the learner can hear straight through or one entry
  * at a time.
  *
- * Callers may build `texts` inline; a fresh array each render only re-creates
- * `playAll`, which nothing depends on beyond a click handler.
+ * Which spelling actually gets spoken is decided at play time, not render time:
+ * the voice list resolves asynchronously, so anything decided earlier would be
+ * guessing about a voice the browser had not reported yet.
  */
-export function useReadAloud(texts: string[]): ReadAloud {
+export function useReadAloud(items: ReadAloudItem[]): ReadAloud {
   const [availability, setAvailability] = useState<SpeechAvailability>('ready')
   const [playingIndex, setPlayingIndex] = useState(-1)
   const stopRef = useRef<(() => void) | null>(null)
@@ -46,19 +56,22 @@ export function useReadAloud(texts: string[]): ReadAloud {
 
   const playAll = useCallback(() => {
     stop()
-    stopRef.current = speakSequence(texts, {
-      onIndex: setPlayingIndex,
-      onDone: () => {
-        stopRef.current = null
-      },
-    })
-  }, [texts, stop])
+    stopRef.current = speakSequence(
+      items.map(item => pronounceable(item.script, item.transliteration)),
+      {
+        onIndex: setPlayingIndex,
+        onDone: () => {
+          stopRef.current = null
+        },
+      }
+    )
+  }, [items, stop])
 
   const playOne = useCallback(
-    (text: string, rate: number = NORMAL_RATE) => {
+    (item: ReadAloudItem, rate: number = NORMAL_RATE) => {
       stop()
       setPlayingIndex(-1)
-      speak(text, rate)
+      speak(pronounceable(item.script, item.transliteration), rate)
     },
     [stop]
   )

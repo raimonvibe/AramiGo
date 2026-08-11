@@ -253,6 +253,14 @@ button:disabled {
 .bottom-nav-inner {
   width: min(var(--page-max), 100%);
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bottom-nav-links {
+  flex: 1;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.35rem;
@@ -478,4 +486,137 @@ button:disabled {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ---- App menu -------------------------------------------------------------
+   Mobile trades the four-across bar for a single seal that opens a manuscript
+   panel holding destinations, sign-in, and the maker links — one reachable
+   place instead of three. Wider screens keep the bar and use the seal for
+   sign-in, which no longer clutters the top of the path. */
+
+.app-menu {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.app-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.9rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-weight: 800;
+  font-size: var(--nav-label);
+}
+
+.app-menu-trigger[aria-expanded='true'] {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* Wax-seal motif, echoing the lesson nodes on the path */
+.app-menu-trigger-seal,
+.app-menu-seal {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  background: radial-gradient(circle at 30% 25%, rgba(196, 163, 90, 0.35), transparent 65%);
+  color: var(--brand);
+}
+
+.app-menu-seal .syriac,
+.app-menu-trigger-seal .syriac {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.app-menu-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.6rem);
+  z-index: 40;
+  width: min(21rem, calc(100vw - 2 * var(--page-pad-x)));
+  max-height: min(70vh, 34rem);
+  overflow-y: auto;
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(196, 163, 90, 0.45);
+  background: rgba(18, 26, 31, 0.98);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* Ruled line, as on a manuscript leaf */
+.app-menu-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(196, 163, 90, 0.55) 15%,
+    rgba(196, 163, 90, 0.55) 85%,
+    transparent
+  );
+}
+
+.app-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.app-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.app-menu-label {
+  margin-right: auto;
+}
+
+.app-menu-link[aria-current='page'] {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: rgba(196, 163, 90, 0.1);
+}
+
+.app-menu-social {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+
+.app-menu-madeby {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Mobile: the seal stands in for the whole bar and the footer. It spans the
+   bar so the panel, anchored to its right edge, lands inside the viewport. */
+@media (max-width: 719px) {
+  .bottom-nav-links,
+  .site-footer {
+    display: none;
+  }
+
+  .app-menu {
+    flex: 1;
+  }
 }
