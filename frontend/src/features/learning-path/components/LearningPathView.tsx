@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PageShell, StatsBar, ImagePlate } from '@/shared/ui'
-import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
 import { artForUnit } from '@/shared/lib/gameArt'
+import { onAccountChanged } from '@/shared/lib/accountEvents'
 import { LessonNode } from './LessonNode'
 
 /** Index the gold rail should reach (through current, else last completed). */
@@ -108,6 +108,10 @@ export function LearningPathView() {
 
   const reload = useCallback(() => setReloadKey(key => key + 1), [])
 
+  // Signing in or out happens in the app menu now, so the path listens for it
+  // rather than owning the control that causes it.
+  useEffect(() => onAccountChanged(reload), [reload])
+
   const focusId = focusLessonId(path)
   const focusRef = useRef<HTMLLIElement | null>(null)
 
@@ -153,8 +157,6 @@ export function LearningPathView() {
         </div>
         {path && <StatsBar stats={path.stats} />}
       </header>
-
-      <AccountBar onAccountChanged={reload} />
 
       {error && (
         <div

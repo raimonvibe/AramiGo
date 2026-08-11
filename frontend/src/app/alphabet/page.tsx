@@ -14,33 +14,30 @@ import {
  * The names are read aloud as written here. East and West Syriac disagree on
  * several of them, so these follow the West Syriac forms the curriculum already
  * teaches — the page and the lessons must never pronounce a letter differently.
- *
- * `value` is the letter's numeral value: Syriac writes numbers with letters,
- * ones through 9, then tens, then hundreds.
  */
 const LETTERS: SyriacLetter[] = [
-  { glyph: 'ܐ', name: 'Alaph', value: 1 },
-  { glyph: 'ܒ', name: 'Beth', value: 2 },
-  { glyph: 'ܓ', name: 'Gamal', value: 3 },
-  { glyph: 'ܕ', name: 'Dalath', value: 4 },
-  { glyph: 'ܗ', name: 'He', value: 5 },
-  { glyph: 'ܘ', name: 'Waw', value: 6 },
-  { glyph: 'ܙ', name: 'Zayn', value: 7 },
-  { glyph: 'ܚ', name: 'Heth', value: 8 },
-  { glyph: 'ܛ', name: 'Teth', value: 9 },
-  { glyph: 'ܝ', name: 'Yudh', value: 10 },
-  { glyph: 'ܟ', name: 'Kaph', value: 20 },
-  { glyph: 'ܠ', name: 'Lamadh', value: 30 },
-  { glyph: 'ܡ', name: 'Mim', value: 40 },
-  { glyph: 'ܢ', name: 'Nun', value: 50 },
-  { glyph: 'ܣ', name: 'Semkath', value: 60 },
-  { glyph: 'ܥ', name: 'E', value: 70 },
-  { glyph: 'ܦ', name: 'Pe', value: 80 },
-  { glyph: 'ܨ', name: 'Sadhe', value: 90 },
-  { glyph: 'ܩ', name: 'Qaph', value: 100 },
-  { glyph: 'ܪ', name: 'Rish', value: 200 },
-  { glyph: 'ܫ', name: 'Shin', value: 300 },
-  { glyph: 'ܬ', name: 'Taw', value: 400 },
+  { glyph: 'ܐ', name: 'Alaph' },
+  { glyph: 'ܒ', name: 'Beth' },
+  { glyph: 'ܓ', name: 'Gamal' },
+  { glyph: 'ܕ', name: 'Dalath' },
+  { glyph: 'ܗ', name: 'He' },
+  { glyph: 'ܘ', name: 'Waw' },
+  { glyph: 'ܙ', name: 'Zayn' },
+  { glyph: 'ܚ', name: 'Heth' },
+  { glyph: 'ܛ', name: 'Teth' },
+  { glyph: 'ܝ', name: 'Yudh' },
+  { glyph: 'ܟ', name: 'Kaph' },
+  { glyph: 'ܠ', name: 'Lamadh' },
+  { glyph: 'ܡ', name: 'Mim' },
+  { glyph: 'ܢ', name: 'Nun' },
+  { glyph: 'ܣ', name: 'Semkath' },
+  { glyph: 'ܥ', name: 'E' },
+  { glyph: 'ܦ', name: 'Pe' },
+  { glyph: 'ܨ', name: 'Sadhe' },
+  { glyph: 'ܩ', name: 'Qaph' },
+  { glyph: 'ܪ', name: 'Rish' },
+  { glyph: 'ܫ', name: 'Shin' },
+  { glyph: 'ܬ', name: 'Taw' },
 ]
 
 /**

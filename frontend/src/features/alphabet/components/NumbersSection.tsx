@@ -15,7 +15,9 @@ export interface SyriacNumber {
 }
 
 export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
-  const audio = useReadAloud(numbers.map(number => number.transliteration))
+  const audio = useReadAloud(
+    numbers.map(number => ({ script: number.word, transliteration: number.transliteration }))
+  )
 
   return (
     <section style={{ marginTop: '2.5rem' }}>
@@ -107,7 +109,12 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
               <span style={{ display: 'flex', gap: '0.5rem', marginLeft: 'auto' }}>
                 <button
                   type="button"
-                  onClick={() => audio.playOne(number.transliteration, NORMAL_RATE)}
+                  onClick={() =>
+                    audio.playOne(
+                      { script: number.word, transliteration: number.transliteration },
+                      NORMAL_RATE
+                    )
+                  }
                   disabled={!audio.ready}
                   aria-label={`Play ${number.value}`}
                   style={{
@@ -125,7 +132,12 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => audio.playOne(number.transliteration, SLOW_RATE)}
+                  onClick={() =>
+                    audio.playOne(
+                      { script: number.word, transliteration: number.transliteration },
+                      SLOW_RATE
+                    )
+                  }
                   disabled={!audio.ready}
                   aria-label={`Play ${number.value} slowly`}
                   style={{

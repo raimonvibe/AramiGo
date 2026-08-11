@@ -26,6 +26,95 @@ export const SPEECH_NOTICE_HEBREW =
 export const SPEECH_NOTICE_FALLBACK =
   'No Hebrew voice on this device, so another system voice is used. Classical Syriac has no built-in speech engine — pronunciation is only a rough stand-in.'
 
+/**
+ * Syriac letter -> Hebrew letter.
+ *
+ * Both scripts are the same 22-letter Aramaic abjad in the same order, so this
+ * is a one-to-one map rather than a transliteration scheme. Handed ܚܕ as חד, a
+ * Hebrew voice pronounces a Semitic word; handed the Latin "had", it reads
+ * English.
+ */
+const SYRIAC_TO_HEBREW: Record<string, string> = {
+  'ܐ': 'א', // alaph -> alef
+  'ܒ': 'ב', // beth -> bet
+  'ܓ': 'ג', // gamal -> gimel
+  'ܕ': 'ד', // dalath -> dalet
+  'ܖ': 'ד', // dotless dalath -> dalet
+  'ܗ': 'ה', // he -> he
+  'ܘ': 'ו', // waw -> vav
+  'ܙ': 'ז', // zayn -> zayin
+  'ܚ': 'ח', // heth -> het
+  'ܛ': 'ט', // teth -> tet
+  'ܝ': 'י', // yudh -> yod
+  'ܟ': 'כ', // kaph -> kaf
+  'ܠ': 'ל', // lamadh -> lamed
+  'ܡ': 'מ', // mim -> mem
+  'ܢ': 'נ', // nun -> nun
+  'ܣ': 'ס', // semkath -> samekh
+  'ܤ': 'ס', // final semkath -> samekh
+  'ܥ': 'ע', // e -> ayin
+  'ܦ': 'פ', // pe -> pe
+  'ܨ': 'צ', // sadhe -> tsadi
+  'ܩ': 'ק', // qaph -> qof
+  'ܪ': 'ר', // rish -> resh
+  'ܫ': 'ש', // shin -> shin
+  'ܬ': 'ת', // taw -> tav
+}
+
+/** Hebrew letters that take a different shape at the end of a word. */
+const HEBREW_FINALS: Record<string, string> = {
+  'כ': 'ך', // kaf
+  'מ': 'ם', // mem
+  'נ': 'ן', // nun
+  'פ': 'ף', // pe
+  'צ': 'ץ', // tsadi
+}
+
+/** True when the text contains any Syriac character. */
+export function isSyriacScript(text: string): boolean {
+  return /[܀-ݏ]/.test(text)
+}
+
+/**
+ * Rewrites Syriac script into Hebrew script for the speech engine.
+ *
+ * Syriac vowel points are dropped rather than converted to niqqud: the content
+ * here is mostly unpointed, and a half-pointed word reads worse than a bare
+ * consonantal one.
+ */
+export function toHebrewScript(syriac: string): string {
+  const mapped = [...syriac]
+    .map(char => SYRIAC_TO_HEBREW[char] ?? (isSyriacScript(char) ? '' : char))
+    .join('')
+
+  // Final forms can only be decided once the whole word is known.
+  return mapped
+    .split(/(\s+)/)
+    .map(part => {
+      // A lone letter is being named, not ending a word — the alphabet page
+      // taps single glyphs, and "kaf sofit" is the wrong name for kaf.
+      if (!part.trim() || part.length < 2) return part
+      const last = part[part.length - 1]
+      const final = HEBREW_FINALS[last]
+      return final ? part.slice(0, -1) + final : part
+    })
+    .join('')
+}
+
+/**
+ * What to actually hand the engine for a word we can write both ways.
+ *
+ * A Hebrew voice does far better with Hebrew letters than with our Latin
+ * romanization, but on a device that fell back to an English voice the
+ * romanization is the only thing it can make sense of at all.
+ */
+export function pronounceable(script: string | null | undefined, transliteration: string): string {
+  if (script && isSyriacScript(script) && speechVoiceKind() === 'hebrew') {
+    return toHebrewScript(script)
+  }
+  return transliteration
+}
+
 function synth(): SpeechSynthesis | null {
   if (typeof window === 'undefined') return null
   return window.speechSynthesis ?? null

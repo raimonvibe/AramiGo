@@ -6,12 +6,12 @@ import { ReadAllButton } from './ReadAllButton'
 export interface SyriacLetter {
   glyph: string
   name: string
-  /** What the letter is worth when Syriac is written as numerals. */
-  value: number
 }
 
 export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
-  const audio = useReadAloud(letters.map(letter => letter.name))
+  const audio = useReadAloud(
+    letters.map(letter => ({ script: letter.glyph, transliteration: letter.name }))
+  )
 
   return (
     <>
@@ -43,7 +43,9 @@ export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
             <li key={letter.name}>
               <button
                 type="button"
-                onClick={() => audio.playOne(letter.name)}
+                onClick={() =>
+                  audio.playOne({ script: letter.glyph, transliteration: letter.name })
+                }
                 disabled={!audio.ready}
                 aria-label={`Hear ${letter.name}`}
                 style={{
@@ -65,12 +67,6 @@ export function AlphabetGrid({ letters }: { letters: SyriacLetter[] }) {
                 </span>
                 <span style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 700 }}>
                   {letter.name}
-                </span>
-                <span
-                  style={{ fontSize: '0.72rem', color: 'var(--muted)', opacity: 0.75 }}
-                  title={`${letter.name} stands for ${letter.value} when used as a numeral`}
-                >
-                  = {letter.value}
                 </span>
               </button>
             </li>

@@ -12,6 +12,7 @@ import {
   NORMAL_RATE,
   SLOW_RATE,
   onVoicesChanged,
+  pronounceable,
   speak,
   speechNotice,
   speechVoiceKind,
@@ -164,12 +165,15 @@ function ChipExerciseCard({
   }, [isListening])
 
   const audioText = exercise.audioText ?? exercise.aramaicScript ?? ''
+  // Resolved per play, not per render: a Hebrew voice gets Hebrew letters, and
+  // the voice list only resolves after mount.
+  const spoken = () => pronounceable(exercise.aramaicScript, audioText)
   const notice = voices === 'ready' ? speechNotice() : null
 
   // Autoplay the prompt on arrival — a listening exercise should start by listening.
   useEffect(() => {
     if (isListening && audioText && voices === 'ready') {
-      speak(audioText, NORMAL_RATE)
+      speak(spoken(), NORMAL_RATE)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exercise.id, voices])
@@ -242,7 +246,7 @@ function ChipExerciseCard({
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <button
                   type="button"
-                  onClick={() => speak(audioText, NORMAL_RATE)}
+                  onClick={() => speak(spoken(), NORMAL_RATE)}
                   disabled={voices !== 'ready'}
                   style={{
                     width: 72,
@@ -260,7 +264,7 @@ function ChipExerciseCard({
                 </button>
                 <button
                   type="button"
-                  onClick={() => speak(audioText, SLOW_RATE)}
+                  onClick={() => speak(spoken(), SLOW_RATE)}
                   disabled={voices !== 'ready'}
                   style={{
                     width: 52,
