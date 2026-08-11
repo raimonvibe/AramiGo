@@ -75,6 +75,95 @@ button:disabled {
   font-family: var(--font-brand), Georgia, serif;
 }
 
+/* ---------------------------------------------------------------------------
+   Learning path — a ruled manuscript column.
+
+   Deliberately NOT a winding game map: lessons sit on one straight ruled line
+   down the margin, the way chapter roundels run down an illuminated page. See
+   docs/COLOR.md "Layout rules".
+   --------------------------------------------------------------------------- */
+
+.path-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.path-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+}
+
+/* The ruled line, drawn behind the seals and running between them. */
+.path-item::before {
+  content: '';
+  position: absolute;
+  left: calc(1.75rem - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.path-item:first-child::before {
+  top: 50%;
+}
+
+.path-item:last-child::before {
+  bottom: 50%;
+}
+
+/* Gold above the learner's position, plain rule below it. */
+.path-item[data-reached='true']::before {
+  background: var(--brand-deep);
+}
+
+.path-seal {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Double ring reads as a wax seal rather than a game button. */
+.path-seal[data-status='COMPLETED'] {
+  background: radial-gradient(circle at 35% 30%, var(--brand), var(--brand-deep));
+  color: #1b1406;
+  box-shadow: 0 0 0 1px var(--brand-deep), 0 0 0 4px rgba(196, 163, 90, 0.18);
+}
+
+.path-seal[data-status='CURRENT'] {
+  background: radial-gradient(circle at 35% 30%, var(--accent), var(--accent-deep));
+  color: #05130f;
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 5px rgba(63, 159, 132, 0.2);
+}
+
+.path-seal[data-status='LOCKED'] {
+  background: var(--bg-elevated);
+  color: var(--muted);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.path-link {
+  display: contents;
+  color: inherit;
+}
+
+.path-link:hover .path-seal[data-status='CURRENT'],
+.path-link:hover .path-seal[data-status='COMPLETED'] {
+  filter: brightness(1.08);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;

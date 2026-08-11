@@ -40,6 +40,49 @@ Current tokens in `frontend/src/app/globals.css`:
 
 **Verdict:** stay on Manuscript. One global brand; unit themes rotate muted gradients later.
 
+## Layout rules (not just colour)
+
+Colour alone is not enough distance. This document originally covered only hues,
+and a Duolingo-shaped **layout** was built in Manuscript colours without breaking
+a single rule above — so the rules now cover silhouette too.
+
+`docs/references/` is a folder of **competitor screenshots kept for UX study**:
+what information a learner needs at each step, how progress is signalled, how a
+lesson is paced. They are **not** visual targets. Copy the questions they answer,
+not the shapes they answer them with.
+
+### Hard avoid
+
+| Pattern | Why |
+|---------|-----|
+| Serpentine / winding node trail | The single most recognisable thing about their path screen |
+| Pictogram buttons as the primary node (star, chest, character face) | Their node taxonomy, rendered as their iconography |
+| Circular buttons with a thick solid bottom lip | Their button signature, in any hue |
+| A mascot character anywhere in the chrome | Duo is their trade dress, and the closest thing to an actual legal risk |
+| Full-bleed celebratory confetti / streak-flame theatrics | Reads as the same product with a repaint |
+
+### Chosen direction: the ruled column
+
+The path is a **manuscript column**, not a game map:
+
+- One straight ruled line down the margin; lessons hang off it in order
+- Nodes are **numbered seals** — a roundel with the chapter number in the brand
+  serif, not a pictogram
+- The rule is gold above the learner's position and plain below it, so progress
+  is legible without a progress bar
+- The node's kind (Treasure, Practice) is stated **in words**, not as an icon
+- No horizontal offsets — a page has margins, not switchbacks
+
+Implemented as `.path-list` / `.path-item` / `.path-seal` in `globals.css`.
+
+### The test to apply
+
+Screenshot the page, replace every colour with greyscale, and ask whether it is
+still recognisable as Duolingo. If yes, the silhouette is doing the copying and
+the palette is not going to save it.
+
+---
+
 ## Future-proof token model
 
 Keep **one global brand**, add **unit themes** so new lessons don’t invent one-off hexes:
