@@ -6,9 +6,6 @@ import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath } from '@/shared/lib/api'
 import { LessonNode } from './LessonNode'
 
-/** Serpentine offsets, repeating every six nodes. */
-const OFFSETS = [0, 48, 72, 48, 0, -48, -72, -48]
-
 export function LearningPathView() {
   const [path, setPath] = useState<LearningPath | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -122,21 +119,9 @@ export function LearningPathView() {
               <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
             </div>
 
-            <ol
-              aria-label={`Lessons in unit ${unit.unitNumber}`}
-              style={{
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-                display: 'grid',
-                gap: '1.5rem',
-                justifyItems: 'center',
-              }}
-            >
-              {unit.nodes.map((node, index) => (
-                <li key={node.lessonId}>
-                  <LessonNode node={node} offset={OFFSETS[index % OFFSETS.length]} />
-                </li>
+            <ol className="path-list" aria-label={`Lessons in unit ${unit.unitNumber}`}>
+              {unit.nodes.map(node => (
+                <LessonNode key={node.lessonId} node={node} />
               ))}
             </ol>
           </section>
