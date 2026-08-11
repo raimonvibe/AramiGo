@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AccountBar } from '@/features/auth'
 import { AboutIcon, AccountIcon, AlphabetIcon, PathIcon } from './icons'
 import { SocialIcon, SOCIAL_LINKS } from './SocialIcon'
@@ -26,10 +27,14 @@ export function AppMenu() {
   // learner asked for, and this closes it on back/forward too.
   const [openedAt, setOpenedAt] = useState<string | null>(null)
   const open = openedAt !== null && openedAt === pathname
-  const panelRef = useRef<HTMLDivElement | null>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   const close = useCallback(() => setOpenedAt(null), [])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -40,24 +45,31 @@ export function AppMenu() {
         triggerRef.current?.focus()
       }
     }
-    const onPointer = (event: PointerEvent) => {
-      const target = event.target as Node
-      if (panelRef.current?.contains(target) || triggerRef.current?.contains(target)) return
-      close()
-    }
 
     document.addEventListener('keydown', onKey)
-    document.addEventListener('pointerdown', onPointer)
+    document.body.classList.add('app-menu-open')
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.removeEventListener('pointerdown', onPointer)
+      document.body.classList.remove('app-menu-open')
     }
   }, [open, close])
 
   return (
     <div className="app-menu">
+      {open &&
+        mounted &&
+        createPortal(
+          <button
+            type="button"
+            className="app-menu-backdrop"
+            aria-label="Close menu"
+            onClick={close}
+          />,
+          document.body,
+        )}
+
       {open && (
-        <div className="app-menu-panel" ref={panelRef} role="dialog" aria-label="Menu">
+        <div className="app-menu-panel" role="dialog" aria-label="Menu">
           <div className="app-menu-rule" aria-hidden="true" />
 
           <nav aria-label="All pages">
