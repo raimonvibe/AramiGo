@@ -78,7 +78,8 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
 
   return (
     <div
-      style={{ minHeight: '100vh', width: 'min(520px, 100%)', margin: '0 auto', padding: '1rem' }}
+      className="page-main"
+      style={{ minHeight: '100vh', paddingBottom: '2rem' }}
     >
       <header style={{ display: 'grid', gap: '0.75rem', marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

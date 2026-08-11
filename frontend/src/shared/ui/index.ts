@@ -1,4 +1,5 @@
 export { BottomNav } from './BottomNav'
 export { StatsBar } from './StatsBar'
 export { SiteFooter } from './SiteFooter'
+export { PageShell } from './PageShell'
 export { SocialIcon, SOCIAL_LINKS } from './SocialIcon'

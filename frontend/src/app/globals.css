@@ -19,6 +19,47 @@
   /* Per-unit gradient (see docs/COLOR.md). Intro unit by default. */
   --unit-from: #3f9f84;
   --unit-to: #8f7435;
+
+  /* Page measure: phone column → tablet sheet → desktop spread */
+  --page-max: 34rem;
+  --page-pad-x: 1rem;
+  --page-pad-y: 1.25rem;
+  --nav-icon: 20px;
+  --nav-label: 0.72rem;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --page-max: 46rem;
+    --page-pad-x: 1.75rem;
+    --page-pad-y: 1.75rem;
+    --nav-icon: 22px;
+    --nav-label: 0.8rem;
+  }
+
+  html {
+    font-size: 106%;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-max: 58rem;
+    --page-pad-x: 2rem;
+    --page-pad-y: 2rem;
+    --nav-icon: 24px;
+    --nav-label: 0.85rem;
+  }
+
+  html {
+    font-size: 110%;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-max: 64rem;
+  }
 }
 
 * {
@@ -73,6 +114,191 @@ button:disabled {
 
 .brand-font {
   font-family: var(--font-brand), Georgia, serif;
+}
+
+/* ---------------------------------------------------------------------------
+   Shared page chrome — one composition that grows with the viewport.
+   --------------------------------------------------------------------------- */
+
+.page-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+}
+
+.page-main {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  padding: var(--page-pad-y) var(--page-pad-x) 2rem;
+}
+
+.page-title {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.4vw + 1rem, 2.15rem);
+  color: var(--brand);
+}
+
+.page-lede {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+/* Account: profile full-width; progress + rewards sit side-by-side on wide sheets */
+.account-body {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.account-span {
+  grid-column: 1 / -1;
+}
+
+.account-panel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.15rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+  min-width: 0;
+}
+
+@media (min-width: 860px) {
+  .account-body {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1.5rem 1.75rem;
+    align-items: start;
+  }
+
+  .account-panel {
+    padding: 1.35rem 1.25rem;
+    min-height: 100%;
+  }
+}
+
+/* Alphabet grid opens up with the wider page measure */
+.alphabet-grid {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 720px) {
+  .alphabet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 0.9rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .alphabet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* About: readable columns once the sheet is wide enough */
+.about-copy {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 860px) {
+  .about-copy {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 2rem;
+  }
+
+  .about-copy > :first-child {
+    grid-column: 1 / -1;
+    font-size: 1.08rem;
+    max-width: 40rem;
+  }
+}
+
+/* Path header can sit as brand + stats on one row without crushing */
+.path-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.15rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 720px) {
+  .path-header {
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Bottom nav hugs the page measure so icons stay grouped on ultrawide */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid var(--line);
+  background: rgba(18, 26, 31, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 0.65rem var(--page-pad-x) calc(0.65rem + env(safe-area-inset-bottom));
+}
+
+.bottom-nav-inner {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.bottom-nav-link {
+  display: grid;
+  place-items: center;
+  gap: 0.2rem;
+  padding: 0.55rem 0.25rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  color: var(--muted);
+  font-size: var(--nav-label);
+  font-weight: 700;
+  text-align: center;
+  min-width: 0;
+}
+
+.bottom-nav-link[aria-current='page'] {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.site-footer {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  padding: 1.35rem var(--page-pad-x) 0.95rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.85rem;
+  justify-items: center;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.35rem;
+  max-width: 100%;
+}
+
+@media (min-width: 720px) {
+  .site-footer-links {
+    gap: 0.35rem 0.5rem;
+  }
 }
 
 /* ---------------------------------------------------------------------------

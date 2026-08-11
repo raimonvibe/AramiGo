@@ -1,4 +1,4 @@
-import { BottomNav, SiteFooter } from '@/shared/ui'
+import { PageShell } from '@/shared/ui'
 
 /**
  * The 22 letters of the Syriac abjad in traditional order.
@@ -38,51 +38,36 @@ export const metadata = {
 
 export default function AlphabetPage() {
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', gridTemplateRows: '1fr auto' }}>
-      <main style={{ width: 'min(480px, 100%)', margin: '0 auto', padding: '1.25rem 1rem 2rem' }}>
-        <h1 className="brand-font" style={{ fontSize: '1.7rem', color: 'var(--brand)', margin: 0 }}>
-          The Syriac alphabet
-        </h1>
-        <p style={{ color: 'var(--muted)', marginTop: '0.35rem' }}>
-          22 letters, written right to left. Vowels are marks added above and below —
-          the lessons introduce them gradually.
-        </p>
+    <PageShell>
+      <h1 className="brand-font page-title">The Syriac alphabet</h1>
+      <p className="page-lede">
+        22 letters, written right to left. Vowels are marks added above and below — the lessons
+        introduce them gradually.
+      </p>
 
-        <ul
-          style={{
-            listStyle: 'none',
-            padding: 0,
-            margin: '1.5rem 0 0',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))',
-            gap: '0.75rem',
-          }}
-        >
-          {LETTERS.map(letter => (
-            <li
-              key={letter.name}
-              style={{
-                display: 'grid',
-                gap: '0.25rem',
-                justifyItems: 'center',
-                padding: '0.85rem 0.5rem',
-                borderRadius: 14,
-                border: '1px solid var(--line)',
-                background: 'var(--bg-elevated)',
-              }}
-            >
-              <span className="syriac" style={{ fontSize: '2.1rem' }}>
-                {letter.glyph}
-              </span>
-              <span style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 700 }}>
-                {letter.name}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </main>
-      <SiteFooter />
-      <BottomNav />
-    </div>
+      <ul className="alphabet-grid">
+        {LETTERS.map(letter => (
+          <li
+            key={letter.name}
+            style={{
+              display: 'grid',
+              gap: '0.25rem',
+              justifyItems: 'center',
+              padding: '0.85rem 0.5rem',
+              borderRadius: 14,
+              border: '1px solid var(--line)',
+              background: 'var(--bg-elevated)',
+            }}
+          >
+            <span className="syriac" style={{ fontSize: '2.1rem' }}>
+              {letter.glyph}
+            </span>
+            <span style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 700 }}>
+              {letter.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </PageShell>
   )
 }

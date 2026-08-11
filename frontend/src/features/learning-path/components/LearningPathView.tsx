@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { BottomNav, StatsBar, SiteFooter } from '@/shared/ui'
+import { PageShell, StatsBar } from '@/shared/ui'
 import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
 import { LessonNode } from './LessonNode'
@@ -91,135 +91,126 @@ export function LearningPathView() {
   const reload = useCallback(() => setReloadKey(key => key + 1), [])
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', gridTemplateRows: '1fr auto' }}>
-      <main style={{ width: 'min(480px, 100%)', margin: '0 auto', padding: '1.25rem 1rem 2rem' }}>
-        <header
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '1rem',
-            marginBottom: '1rem',
-          }}
-        >
-          <div>
-            <div className="brand-font" style={{ fontSize: '1.7rem', color: 'var(--brand)' }}>
-              AramiGo
-            </div>
-            <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-              Classical Syriac · beginners
-            </div>
-            <div style={{ color: 'var(--muted)', fontSize: '0.78rem', marginTop: '0.35rem', lineHeight: 1.4 }}>
-              Listen mode uses a Hebrew system voice as a stand-in (not authentic Syriac audio).
-            </div>
+    <PageShell>
+      <header className="path-header">
+        <div>
+          <div className="brand-font page-title">AramiGo</div>
+          <div style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>
+            Classical Syriac · beginners
           </div>
-          {path && <StatsBar stats={path.stats} />}
-        </header>
-
-        <AccountBar onAccountChanged={reload} />
-
-        {error && (
           <div
-            role="alert"
             style={{
-              background: 'rgba(224, 122, 95, 0.12)',
-              border: '1px solid var(--danger)',
-              color: 'var(--danger)',
-              padding: '1rem',
-              borderRadius: 'var(--radius)',
-              marginBottom: '1rem',
-              display: 'grid',
-              gap: '0.75rem',
-              justifyItems: 'start',
+              color: 'var(--muted)',
+              fontSize: '0.8rem',
+              marginTop: '0.35rem',
+              lineHeight: 1.45,
+              maxWidth: '36rem',
             }}
           >
-            <span>{error}</span>
-            <button
-              type="button"
-              onClick={reload}
-              style={{
-                border: '1px solid var(--danger)',
-                background: 'transparent',
-                color: 'var(--danger)',
-                borderRadius: 12,
-                padding: '0.4rem 0.9rem',
-                fontWeight: 700,
-              }}
-            >
-              Try again
-            </button>
+            Listen mode uses a Hebrew system voice as a stand-in (not authentic Syriac audio).
           </div>
-        )}
+        </div>
+        {path && <StatsBar stats={path.stats} />}
+      </header>
 
-        {path?.units.map(unit => {
-          const progressIndex = progressThroughIndex(unit.nodes)
+      <AccountBar onAccountChanged={reload} />
 
-          return (
-            <section
-              key={`${unit.sectionNumber}-${unit.unitNumber}`}
-              style={{ marginBottom: '2rem' }}
+      {error && (
+        <div
+          role="alert"
+          style={{
+            background: 'rgba(224, 122, 95, 0.12)',
+            border: '1px solid var(--danger)',
+            color: 'var(--danger)',
+            padding: '1rem',
+            borderRadius: 'var(--radius)',
+            marginBottom: '1rem',
+            display: 'grid',
+            gap: '0.75rem',
+            justifyItems: 'start',
+          }}
+        >
+          <span>{error}</span>
+          <button
+            type="button"
+            onClick={reload}
+            style={{
+              border: '1px solid var(--danger)',
+              background: 'transparent',
+              color: 'var(--danger)',
+              borderRadius: 12,
+              padding: '0.4rem 0.9rem',
+              fontWeight: 700,
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {path?.units.map(unit => {
+        const progressIndex = progressThroughIndex(unit.nodes)
+
+        return (
+          <section
+            key={`${unit.sectionNumber}-${unit.unitNumber}`}
+            style={{ marginBottom: '2rem' }}
+          >
+            <div
+              style={{
+                background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
+                borderRadius: '22px',
+                padding: '1.15rem 1.25rem',
+                boxShadow: 'var(--shadow)',
+                marginBottom: '1.75rem',
+              }}
             >
               <div
                 style={{
-                  background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
-                  borderRadius: '22px',
-                  padding: '1.15rem 1.25rem',
-                  boxShadow: 'var(--shadow)',
-                  marginBottom: '1.75rem',
+                  opacity: 0.9,
+                  fontWeight: 800,
+                  letterSpacing: '0.06em',
+                  fontSize: '0.8rem',
                 }}
               >
-                <div
-                  style={{
-                    opacity: 0.9,
-                    fontWeight: 800,
-                    letterSpacing: '0.06em',
-                    fontSize: '0.8rem',
-                  }}
-                >
-                  SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
-                </div>
-                <h1
-                  className="brand-font"
-                  style={{ margin: '0.35rem 0 0.25rem', fontSize: '1.65rem' }}
-                >
-                  {unit.title}
-                </h1>
-                <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
+                SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
               </div>
-
-              <ol
-                aria-label={`Lessons in unit ${unit.unitNumber}`}
-                style={{
-                  listStyle: 'none',
-                  margin: 0,
-                  padding: 0,
-                  display: 'grid',
-                  gap: '1.35rem',
-                  position: 'relative',
-                }}
+              <h1
+                className="brand-font"
+                style={{ margin: '0.35rem 0 0.25rem', fontSize: 'clamp(1.45rem, 2vw + 1rem, 1.85rem)' }}
               >
-                <ManuscriptRail
-                  nodeCount={unit.nodes.length}
-                  progressIndex={progressIndex}
-                />
-                {unit.nodes.map(node => (
-                  <li key={node.lessonId} style={{ position: 'relative' }}>
-                    <LessonNode node={node} />
-                  </li>
-                ))}
-              </ol>
-            </section>
-          )
-        })}
+                {unit.title}
+              </h1>
+              <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
+            </div>
 
-        {!path && !error && (
-          <p style={{ color: 'var(--muted)', textAlign: 'center', marginTop: '3rem' }}>
-            Loading your path…
-          </p>
-        )}
-      </main>
-      <SiteFooter />
-      <BottomNav />
-    </div>
+            <ol
+              aria-label={`Lessons in unit ${unit.unitNumber}`}
+              style={{
+                listStyle: 'none',
+                margin: 0,
+                padding: 0,
+                display: 'grid',
+                gap: '1.35rem',
+                position: 'relative',
+              }}
+            >
+              <ManuscriptRail nodeCount={unit.nodes.length} progressIndex={progressIndex} />
+              {unit.nodes.map(node => (
+                <li key={node.lessonId} style={{ position: 'relative' }}>
+                  <LessonNode node={node} />
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      })}
+
+      {!path && !error && (
+        <p style={{ color: 'var(--muted)', textAlign: 'center', marginTop: '3rem' }}>
+          Loading your path…
+        </p>
+      )}
+    </PageShell>
   )
 }

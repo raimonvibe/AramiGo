@@ -11,6 +11,13 @@
     background 200ms ease;
 }
 
+@media (min-width: 720px) {
+  .link {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
 .icon {
   display: block;
   opacity: 0.88;
