@@ -1,18 +1,24 @@
 import { PageShell, ImagePlate } from '@/shared/ui'
 import { GAME_ART } from '@/shared/lib/gameArt'
-import { NumbersSection, type SyriacNumber } from '@/features/alphabet'
+import {
+  AlphabetGrid,
+  NumbersSection,
+  SpeechNotice,
+  type SyriacLetter,
+  type SyriacNumber,
+} from '@/features/alphabet'
 
 /**
  * The 22 letters of the Syriac abjad in traditional order.
  *
- * Names only — pronunciation is deliberately left to the lessons, because East
- * and West Syriac differ on several letters and picking one here would quietly
- * teach a dialect the curriculum hasn't chosen yet.
+ * The names are read aloud as written here. East and West Syriac disagree on
+ * several of them, so these follow the West Syriac forms the curriculum already
+ * teaches — the page and the lessons must never pronounce a letter differently.
  *
  * `value` is the letter's numeral value: Syriac writes numbers with letters,
  * ones through 9, then tens, then hundreds.
  */
-const LETTERS: { glyph: string; name: string; value: number }[] = [
+const LETTERS: SyriacLetter[] = [
   { glyph: 'ܐ', name: 'Alaph', value: 1 },
   { glyph: 'ܒ', name: 'Beth', value: 2 },
   { glyph: 'ܓ', name: 'Gamal', value: 3 },
@@ -75,37 +81,11 @@ export default function AlphabetPage() {
         </p>
       </div>
 
-      <ul className="alphabet-grid">
-        {LETTERS.map(letter => (
-          <li
-            key={letter.name}
-            style={{
-              display: 'grid',
-              gap: '0.25rem',
-              justifyItems: 'center',
-              padding: '0.85rem 0.5rem',
-              borderRadius: 14,
-              border: '1px solid var(--line)',
-              background: 'var(--bg-elevated)',
-            }}
-          >
-            <span className="syriac" style={{ fontSize: '2.1rem' }}>
-              {letter.glyph}
-            </span>
-            <span style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 700 }}>
-              {letter.name}
-            </span>
-            <span
-              style={{ fontSize: '0.72rem', color: 'var(--muted)', opacity: 0.75 }}
-              title={`${letter.name} stands for ${letter.value} when used as a numeral`}
-            >
-              = {letter.value}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <AlphabetGrid letters={LETTERS} />
 
       <NumbersSection numbers={NUMBERS} />
+
+      <SpeechNotice />
     </PageShell>
   )
 }

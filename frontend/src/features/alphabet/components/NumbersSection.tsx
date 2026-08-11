@@ -1,16 +1,9 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  NORMAL_RATE,
-  SLOW_RATE,
-  onVoicesChanged,
-  speak,
-  speakSequence,
-  speechNotice,
-  type SpeechAvailability,
-} from '@/shared/lib/speech'
+import { NORMAL_RATE, SLOW_RATE } from '@/shared/lib/speech'
 import { PlayIcon, SlowPlayIcon } from '@/shared/ui/icons'
+import { useReadAloud } from '../useReadAloud'
+import { ReadAllButton } from './ReadAllButton'
 
 export interface SyriacNumber {
   value: number
@@ -22,45 +15,7 @@ export interface SyriacNumber {
 }
 
 export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
-  const [voices, setVoices] = useState<SpeechAvailability>('ready')
-  const [playingIndex, setPlayingIndex] = useState(-1)
-  const stopRef = useRef<(() => void) | null>(null)
-
-  useEffect(() => onVoicesChanged(setVoices), [])
-
-  const stop = useCallback(() => {
-    stopRef.current?.()
-    stopRef.current = null
-  }, [])
-
-  // Never leave a voice talking to a page the learner has navigated away from.
-  useEffect(() => stop, [stop])
-
-  const playAll = useCallback(() => {
-    stop()
-    stopRef.current = speakSequence(
-      numbers.map(number => number.transliteration),
-      {
-        onIndex: setPlayingIndex,
-        onDone: () => {
-          stopRef.current = null
-        },
-      }
-    )
-  }, [numbers, stop])
-
-  const playOne = useCallback(
-    (transliteration: string, rate: number) => {
-      stop()
-      setPlayingIndex(-1)
-      speak(transliteration, rate)
-    },
-    [stop]
-  )
-
-  const ready = voices === 'ready'
-  const running = playingIndex >= 0
-  const notice = ready ? speechNotice() : null
+  const audio = useReadAloud(numbers.map(number => number.transliteration))
 
   return (
     <section style={{ marginTop: '2.5rem' }}>
@@ -79,22 +34,26 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
         is also 10. Each row below shows the numeral, the word you say, and how it sounds.
       </p>
 
-      <button
-        type="button"
-        onClick={running ? stop : playAll}
-        disabled={!ready}
+      <div
         style={{
-          border: 'none',
-          borderRadius: 14,
-          padding: '0.6rem 1.1rem',
-          fontWeight: 800,
-          background: ready ? 'var(--brand)' : '#3a4750',
-          color: ready ? '#1a160c' : '#7d8d97',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.9rem',
+          flexWrap: 'wrap',
           marginBottom: '1rem',
         }}
       >
-        {running ? 'Stop' : 'Read all one by one'}
-      </button>
+        <ReadAllButton
+          ready={audio.ready}
+          running={audio.running}
+          label="Read all one by one"
+          onPlayAll={audio.playAll}
+          onStop={audio.stop}
+        />
+        <p style={{ color: 'var(--muted)', margin: 0, fontSize: '0.9rem' }}>
+          Tap a number to hear it, or the green button to hear it slowly.
+        </p>
+      </div>
 
       <ol
         style={{
@@ -106,7 +65,7 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
         }}
       >
         {numbers.map((number, index) => {
-          const active = index === playingIndex
+          const active = index === audio.playingIndex
           return (
             <li
               key={number.value}
@@ -148,8 +107,8 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
               <span style={{ display: 'flex', gap: '0.5rem', marginLeft: 'auto' }}>
                 <button
                   type="button"
-                  onClick={() => playOne(number.transliteration, NORMAL_RATE)}
-                  disabled={!ready}
+                  onClick={() => audio.playOne(number.transliteration, NORMAL_RATE)}
+                  disabled={!audio.ready}
                   aria-label={`Play ${number.value}`}
                   style={{
                     width: 42,
@@ -158,16 +117,16 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
                     border: 'none',
                     display: 'grid',
                     placeItems: 'center',
-                    background: ready ? 'var(--brand)' : '#3a4750',
-                    color: ready ? '#1a160c' : '#7d8d97',
+                    background: audio.ready ? 'var(--brand)' : '#3a4750',
+                    color: audio.ready ? '#1a160c' : '#7d8d97',
                   }}
                 >
                   <PlayIcon size={20} />
                 </button>
                 <button
                   type="button"
-                  onClick={() => playOne(number.transliteration, SLOW_RATE)}
-                  disabled={!ready}
+                  onClick={() => audio.playOne(number.transliteration, SLOW_RATE)}
+                  disabled={!audio.ready}
                   aria-label={`Play ${number.value} slowly`}
                   style={{
                     width: 42,
@@ -176,8 +135,8 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
                     border: 'none',
                     display: 'grid',
                     placeItems: 'center',
-                    background: ready ? 'var(--accent)' : '#3a4750',
-                    color: ready ? '#07130f' : '#7d8d97',
+                    background: audio.ready ? 'var(--accent)' : '#3a4750',
+                    color: audio.ready ? '#07130f' : '#7d8d97',
                   }}
                 >
                   <SlowPlayIcon size={18} />
@@ -187,19 +146,6 @@ export function NumbersSection({ numbers }: { numbers: SyriacNumber[] }) {
           )
         })}
       </ol>
-
-      {notice && (
-        <p style={{ color: 'var(--muted)', fontSize: '0.8rem', marginTop: '0.9rem', lineHeight: 1.45 }}>
-          {notice}
-        </p>
-      )}
-      {!ready && (
-        <p style={{ color: 'var(--muted)', fontSize: '0.8rem', marginTop: '0.9rem', lineHeight: 1.45 }}>
-          {voices === 'unsupported'
-            ? 'This browser has no speech engine, so the numbers cannot be read aloud here.'
-            : 'No system voice is installed yet, so the numbers cannot be read aloud here.'}
-        </p>
-      )}
     </section>
   )
 }
