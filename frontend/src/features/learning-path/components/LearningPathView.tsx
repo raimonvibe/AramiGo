@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { PageShell, StatsBar, ImagePlate } from '@/shared/ui'
 import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
@@ -15,6 +15,23 @@ function progressThroughIndex(nodes: PathNode[]): number {
   nodes.forEach((node, index) => {
     if (node.status === 'COMPLETED') lastCompleted = index
   })
+  return lastCompleted
+}
+
+/**
+ * Lesson the page should open at: the one in progress, else the last one
+ * finished. Null when nothing has been started — a fresh learner belongs at
+ * the top of the path, not scrolled into it.
+ */
+function focusLessonId(path: LearningPath | null): number | null {
+  if (!path) return null
+  let lastCompleted: number | null = null
+  for (const unit of path.units) {
+    for (const node of unit.nodes) {
+      if (node.status === 'CURRENT') return node.lessonId
+      if (node.status === 'COMPLETED') lastCompleted = node.lessonId
+    }
+  }
   return lastCompleted
 }
 
@@ -90,6 +107,29 @@ export function LearningPathView() {
   }, [reloadKey])
 
   const reload = useCallback(() => setReloadKey(key => key + 1), [])
+
+  const focusId = focusLessonId(path)
+  const focusRef = useRef<HTMLLIElement | null>(null)
+
+  // Drop the learner at their place in the path instead of the very top.
+  // Waits a frame so the unit art has claimed its space before we measure.
+  useEffect(() => {
+    const target = focusRef.current
+    if (!target) return
+
+    const frame = requestAnimationFrame(() => {
+      const box = target.getBoundingClientRect()
+      const alreadyVisible = box.top >= 0 && box.bottom <= window.innerHeight
+      if (alreadyVisible) return
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      target.scrollIntoView({
+        block: 'center',
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [focusId, reloadKey])
 
   return (
     <PageShell>
@@ -199,7 +239,11 @@ export function LearningPathView() {
             >
               <ManuscriptRail nodeCount={unit.nodes.length} progressIndex={progressIndex} />
               {unit.nodes.map(node => (
-                <li key={node.lessonId} style={{ position: 'relative' }}>
+                <li
+                  key={node.lessonId}
+                  ref={node.lessonId === focusId ? focusRef : undefined}
+                  style={{ position: 'relative' }}
+                >
                   <LessonNode node={node} />
                 </li>
               ))}
