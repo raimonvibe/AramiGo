@@ -40,7 +40,8 @@ function sealColors(status: PathNode['status']) {
 export function LessonNode({ node }: { node: PathNode }) {
   const seal = sealColors(node.status)
   const playable = node.status !== 'LOCKED'
-  const kind = KIND_LABEL[node.nodeKind]
+  const kindLabel = KIND_LABEL[node.nodeKind]
+  const partly = node.solvedCount > 0 && node.solvedCount < node.exerciseCount
 
   const body = (
     <div
@@ -125,19 +126,7 @@ export function LessonNode({ node }: { node: PathNode }) {
       }`}
       style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
-      {playable ? (
-        <Link
-          className="path-link"
-          href={`/lesson/${node.lessonId}`}
-          aria-label={`Lesson ${node.position}: ${node.title} — ${
-            node.status === 'CURRENT' ? 'begin' : 'practise again'
-          }`}
-        >
-          {body}
-        </Link>
-      ) : (
-        body
-      )}
-    </li>
+      {body}
+    </Link>
   )
 }
