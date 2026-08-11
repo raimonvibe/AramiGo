@@ -29,3 +29,7 @@ frontend/next-env.d.ts
 # Misc
 *.log
 npm-debug.log*
+
+# Claude Code local state (machine-specific paths, personal permissions)
+.claude/settings.local.json*
+.claude/launch.json

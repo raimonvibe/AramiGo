@@ -1,5 +1,8 @@
 package com.aramigo.api.infrastructure.persistence.jpa.entity;
 
+import java.time.Instant;
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,11 +18,16 @@ public class LearnerJpaEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  /** {@code guest:<uuid>} or {@code google:<sub>}. */
   @Column(nullable = false, unique = true)
-  private String guestKey;
+  private String identityKey;
+
+  private String displayName;
 
   @Column(nullable = false)
   private int energy = 25;
+
+  private Instant energyUpdatedAt;
 
   @Column(nullable = false)
   private int gems = 0;
@@ -27,25 +35,35 @@ public class LearnerJpaEntity {
   @Column(nullable = false)
   private int streak = 0;
 
+  private LocalDate lastLessonDate;
+
   @Column(nullable = false)
   private int highestCompletedPosition = 0;
 
   protected LearnerJpaEntity() {}
 
-  public LearnerJpaEntity(String guestKey) {
-    this.guestKey = guestKey;
+  public LearnerJpaEntity(String identityKey) {
+    this.identityKey = identityKey;
   }
 
   public Long getId() {
     return id;
   }
 
-  public String getGuestKey() {
-    return guestKey;
+  public String getIdentityKey() {
+    return identityKey;
   }
 
-  public void setGuestKey(String guestKey) {
-    this.guestKey = guestKey;
+  public void setIdentityKey(String identityKey) {
+    this.identityKey = identityKey;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
   }
 
   public int getEnergy() {
@@ -54,6 +72,14 @@ public class LearnerJpaEntity {
 
   public void setEnergy(int energy) {
     this.energy = energy;
+  }
+
+  public Instant getEnergyUpdatedAt() {
+    return energyUpdatedAt;
+  }
+
+  public void setEnergyUpdatedAt(Instant energyUpdatedAt) {
+    this.energyUpdatedAt = energyUpdatedAt;
   }
 
   public int getGems() {
@@ -70,6 +96,14 @@ public class LearnerJpaEntity {
 
   public void setStreak(int streak) {
     this.streak = streak;
+  }
+
+  public LocalDate getLastLessonDate() {
+    return lastLessonDate;
+  }
+
+  public void setLastLessonDate(LocalDate lastLessonDate) {
+    this.lastLessonDate = lastLessonDate;
   }
 
   public int getHighestCompletedPosition() {

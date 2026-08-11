@@ -1,5 +1,6 @@
 package com.aramigo.api.infrastructure.persistence.jpa.adapter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,10 +39,20 @@ public class CurriculumRepositoryAdapter implements CurriculumRepositoryPort {
   }
 
   @Override
+  public List<LessonUnit> findAllUnits() {
+    return units.findAll().stream().map(DomainMapper::toDomain).toList();
+  }
+
+  @Override
   public List<Lesson> findLessonsByUnitId(long unitId) {
     return lessons.findByUnitIdOrderByPositionAsc(unitId).stream()
         .map(DomainMapper::toDomain)
         .toList();
+  }
+
+  @Override
+  public List<Lesson> findAllLessons() {
+    return lessons.findAllByOrderByPositionAsc().stream().map(DomainMapper::toDomain).toList();
   }
 
   @Override
@@ -57,59 +68,70 @@ public class CurriculumRepositoryAdapter implements CurriculumRepositoryPort {
   }
 
   @Override
+  public List<Exercise> findExercisesByLessonIds(Collection<Long> lessonIds) {
+    if (lessonIds.isEmpty()) {
+      return List.of();
+    }
+    return exercises.findByLessonIdInOrderByLessonIdAscPositionAsc(lessonIds).stream()
+        .map(DomainMapper::toDomain)
+        .toList();
+  }
+
+  @Override
   public Optional<Exercise> findExerciseById(long exerciseId) {
     return exercises.findById(exerciseId).map(DomainMapper::toDomain);
   }
 
   @Override
-  public long countUnits() {
-    return units.count();
+  public LessonUnit upsertUnit(LessonUnit unit) {
+    LessonUnitJpaEntity entity =
+        units.findBySlug(unit.slug()).orElseGet(() -> new LessonUnitJpaEntity(unit.slug()));
+    DomainMapper.copyToEntity(unit, entity);
+    return DomainMapper.toDomain(units.save(entity));
   }
 
   @Override
-  public LessonUnit saveUnit(LessonUnit unit) {
-    LessonUnitJpaEntity saved =
-        units.save(
-            new LessonUnitJpaEntity(
-                unit.getSectionNumber(),
-                unit.getUnitNumber(),
-                unit.getTitle(),
-                unit.getDescription()));
-    return DomainMapper.toDomain(saved);
+  public Lesson upsertLesson(Lesson lesson) {
+    LessonJpaEntity entity =
+        lessons.findBySlug(lesson.slug()).orElseGet(() -> new LessonJpaEntity(lesson.slug()));
+    DomainMapper.copyToEntity(lesson, entity);
+    return DomainMapper.toDomain(lessons.save(entity));
   }
 
   @Override
-  public Lesson saveLesson(Lesson lesson) {
-    LessonJpaEntity saved =
-        lessons.save(
-            new LessonJpaEntity(
-                lesson.getUnitId(),
-                lesson.getPosition(),
-                lesson.getTitle(),
-                lesson.getNodeKind().name()));
-    return DomainMapper.toDomain(saved);
+  public Exercise upsertExercise(Exercise exercise) {
+    ExerciseJpaEntity entity =
+        exercises
+            .findBySlug(exercise.slug())
+            .orElseGet(() -> new ExerciseJpaEntity(exercise.slug()));
+    DomainMapper.copyToEntity(exercise, entity);
+    return DomainMapper.toDomain(exercises.save(entity));
   }
 
   @Override
-  public Exercise saveExercise(Exercise exercise) {
-    ExerciseJpaEntity saved =
-        exercises.save(
-            new ExerciseJpaEntity(
-                exercise.getLessonId(),
-                exercise.getPosition(),
-                exercise.getType().name(),
-                exercise.getPrompt(),
-                exercise.getAramaicScript(),
-                exercise.getTransliteration(),
-                exercise.getCorrectTokens(),
-                exercise.getDistractorTokens()));
-    return DomainMapper.toDomain(saved);
+  public void deleteUnitsNotIn(Collection<String> keptSlugs) {
+    if (keptSlugs.isEmpty()) {
+      units.deleteAll();
+      return;
+    }
+    units.deleteBySlugNotIn(keptSlugs);
   }
 
   @Override
-  public void deleteAllCurriculum() {
-    exercises.deleteAll();
-    lessons.deleteAll();
-    units.deleteAll();
+  public void deleteLessonsNotIn(Collection<String> keptSlugs) {
+    if (keptSlugs.isEmpty()) {
+      lessons.deleteAll();
+      return;
+    }
+    lessons.deleteBySlugNotIn(keptSlugs);
+  }
+
+  @Override
+  public void deleteExercisesNotIn(Collection<String> keptSlugs) {
+    if (keptSlugs.isEmpty()) {
+      exercises.deleteAll();
+      return;
+    }
+    exercises.deleteBySlugNotIn(keptSlugs);
   }
 }

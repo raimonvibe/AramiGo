@@ -24,7 +24,7 @@ infrastructure  →  application  →  domain
 - **Ports & Adapters** — controllers and JPA never reach into each other; both talk through application ports.
 - **Strategy** — `AnswerMatchingPolicy` (token/`|` alternatives) is swappable without touching use cases.
 - **Repository** — outbound ports hide persistence; Spring Data lives only in adapters.
-- **Factory** — `BeginnerSyriacCurriculumFactory` builds Unit 1 content in one place.
+- **Data-driven curriculum** — content is JSON under `resources/curriculum/`, upserted by `slug` so ids (and learner progress) survive content edits.
 - **DTO at the edge** — HTTP records stay in `infrastructure/web`; domain models never leak JSON annotations.
 
 Domain code must not import Spring, JPA, or servlet types.
@@ -33,8 +33,20 @@ Domain code must not import Spring, JPA, or servlet types.
 
 ```
 app/          thin routes only
-features/     learning-path, lesson (UI + hooks)
+features/     learning-path, lesson, auth (UI + hooks)
 shared/       api client, ui primitives, styles
 ```
+
+### Identity
+
+`X-Guest-Key` (a `localStorage` uuid) or a Google ID token in `Authorization`.
+`LearnerIdentityResolver` turns headers into an opaque identity key — `guest:…` or
+`google:…` — before the application service sees them, so the learning module never
+knows what authentication is. Signing in merges the guest learner into the account.
+
+### Anti-cheat
+
+`completeLesson` checks recorded correct answers (`exercise_progress`) rather than
+trusting the client, and only pays out the first time a lesson is finished.
 
 Pages orchestrate; interactive lesson/path UI lives under `features/`.

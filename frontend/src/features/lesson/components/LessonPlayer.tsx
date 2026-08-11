@@ -2,15 +2,17 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { StatsBar } from '@/shared/ui'
 import {
+  ApiError,
   completeLesson,
   getLesson,
   type LearnerStats,
   type LessonSession,
 } from '@/shared/lib/api'
 import { ExerciseCard, primaryButtonStyle } from './ExerciseCard'
+import { EnergyEmpty } from './EnergyEmpty'
 
 export function LessonPlayer({ lessonId }: { lessonId: number }) {
   const router = useRouter()
@@ -18,28 +20,49 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
   const [stats, setStats] = useState<LearnerStats | null>(null)
   const [index, setIndex] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const [outOfEnergy, setOutOfEnergy] = useState<{ message: string; seconds: number } | null>(null)
   const [reward, setReward] = useState<{ energy: number; gems: number } | null>(null)
 
+  // A malformed URL is knowable during render — no effect needed.
+  const badLink = !Number.isFinite(lessonId)
+
   useEffect(() => {
-    if (!Number.isFinite(lessonId)) return
+    if (badLink) return
     getLesson(lessonId)
       .then(data => {
         setSession(data)
         setStats(data.stats)
       })
-      .catch(err => setError(err instanceof Error ? err.message : 'Could not load lesson'))
-  }, [lessonId])
+      .catch(err => {
+        if (err instanceof ApiError && err.code === 'out_of_energy') {
+          setOutOfEnergy({ message: err.message, seconds: err.retryAfterSeconds ?? 0 })
+          return
+        }
+        setError(err instanceof ApiError ? err.message : 'Could not load this lesson.')
+      })
+  }, [lessonId, badLink])
 
   const exercise = session?.exercises[index]
-  const progress =
-    session && session.exercises.length > 0
-      ? (index + (reward ? 1 : 0)) / session.exercises.length
-      : 0
+  const total = session?.exercises.length ?? 0
+  // Fills as exercises are cleared, and reads 100% on the reward screen.
+  const progress = total > 0 ? (reward ? 1 : index / total) : 0
+
+  const handleOutOfEnergy = useCallback((message: string) => {
+    setOutOfEnergy({ message, seconds: 0 })
+  }, [])
 
   async function finish() {
-    const result = await completeLesson(lessonId)
-    setStats(result.stats)
-    setReward({ energy: result.energyReward, gems: result.gemsReward })
+    try {
+      const result = await completeLesson(lessonId)
+      setStats(result.stats)
+      setReward({ energy: result.energyReward, gems: result.gemsReward })
+    } catch (err) {
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : 'Could not save this lesson. Your answers are still recorded — try again.',
+      )
+    }
   }
 
   function goNext() {
@@ -52,7 +75,9 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', width: 'min(520px, 100%)', margin: '0 auto', padding: '1rem' }}>
+    <div
+      style={{ minHeight: '100vh', width: 'min(520px, 100%)', margin: '0 auto', padding: '1rem' }}
+    >
       <header style={{ display: 'grid', gap: '0.75rem', marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" style={{ fontSize: '1.4rem', color: 'var(--muted)' }} aria-label="Close">
@@ -60,7 +85,14 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
           </Link>
           {stats && <StatsBar stats={stats} />}
         </div>
-        <div style={{ height: 14, borderRadius: 999, background: '#2a343c', overflow: 'hidden' }}>
+        <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-valuenow={reward ? total : index}
+          aria-label="Lesson progress"
+          style={{ height: 14, borderRadius: 999, background: '#2a343c', overflow: 'hidden' }}
+        >
           <div
             style={{
               width: `${Math.min(100, progress * 100)}%`,
@@ -72,7 +104,29 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
         </div>
       </header>
 
-      {error && <div style={{ color: 'var(--danger)', whiteSpace: 'pre-wrap' }}>{error}</div>}
+      {(error || badLink) && (
+        <div
+          role="alert"
+          style={{
+            background: 'rgba(224, 122, 95, 0.12)',
+            border: '1px solid var(--danger)',
+            color: 'var(--danger)',
+            padding: '1rem',
+            borderRadius: 'var(--radius)',
+            marginBottom: '1rem',
+          }}
+        >
+          {error ?? 'That lesson link looks wrong.'}
+        </div>
+      )}
+
+      {outOfEnergy && (
+        <EnergyEmpty
+          key={outOfEnergy.seconds}
+          message={outOfEnergy.message}
+          secondsUntilNextEnergy={outOfEnergy.seconds || (stats?.secondsUntilNextEnergy ?? 0)}
+        />
+      )}
 
       {reward && (
         <section
@@ -102,19 +156,24 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
           >
             +{reward.energy} ⚡
           </div>
-          <div style={{ color: 'var(--muted)' }}>+{reward.gems} gems earned</div>
+          <div style={{ color: 'var(--muted)' }}>
+            {reward.gems > 0
+              ? `+${reward.gems} gems earned`
+              : 'Practice run — you already earned the gems for this one'}
+          </div>
           <button type="button" onClick={() => router.push('/')} style={primaryButtonStyle}>
             CONTINUE
           </button>
         </section>
       )}
 
-      {!reward && exercise && (
+      {!reward && !outOfEnergy && exercise && (
         <ExerciseCard
           key={exercise.id}
           exercise={exercise}
           onStats={setStats}
           onContinue={goNext}
+          onOutOfEnergy={handleOutOfEnergy}
         />
       )}
     </div>

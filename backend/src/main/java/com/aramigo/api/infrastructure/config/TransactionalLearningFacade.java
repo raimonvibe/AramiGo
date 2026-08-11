@@ -6,12 +6,16 @@ import com.aramigo.api.application.dto.CheckAnswerResult;
 import com.aramigo.api.application.dto.CompleteLessonResult;
 import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
+import com.aramigo.api.application.dto.ProfileResult;
 import com.aramigo.api.application.port.in.LearningUseCases;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Decorator Adapter: applies Spring transactions around pure use cases
  * without putting {@code @Transactional} on the application service itself.
+ *
+ * <p>Nothing here is read-only: every entry point may create a learner or credit
+ * regenerated energy.
  */
 public class TransactionalLearningFacade implements LearningUseCases {
 
@@ -22,26 +26,39 @@ public class TransactionalLearningFacade implements LearningUseCases {
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public LearningPathResult getPath(String guestKey) {
-    return delegate.getPath(guestKey);
+  @Transactional
+  public LearningPathResult getPath(String identityKey) {
+    return delegate.getPath(identityKey);
   }
 
   @Override
   @Transactional
-  public LessonSessionResult startLesson(String guestKey, long lessonId) {
-    return delegate.startLesson(guestKey, lessonId);
+  public LessonSessionResult startLesson(String identityKey, long lessonId) {
+    return delegate.startLesson(identityKey, lessonId);
   }
 
   @Override
   @Transactional
-  public CheckAnswerResult checkAnswer(String guestKey, long exerciseId, List<String> tokens) {
-    return delegate.checkAnswer(guestKey, exerciseId, tokens);
+  public CheckAnswerResult checkAnswer(String identityKey, long exerciseId, List<String> tokens) {
+    return delegate.checkAnswer(identityKey, exerciseId, tokens);
   }
 
   @Override
   @Transactional
-  public CompleteLessonResult completeLesson(String guestKey, long lessonId) {
-    return delegate.completeLesson(guestKey, lessonId);
+  public CompleteLessonResult completeLesson(String identityKey, long lessonId) {
+    return delegate.completeLesson(identityKey, lessonId);
+  }
+
+  @Override
+  @Transactional
+  public ProfileResult profile(String identityKey, String displayName) {
+    return delegate.profile(identityKey, displayName);
+  }
+
+  @Override
+  @Transactional
+  public ProfileResult linkGuestProgress(
+      String accountKey, String displayName, String guestKey) {
+    return delegate.linkGuestProgress(accountKey, displayName, guestKey);
   }
 }

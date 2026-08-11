@@ -4,6 +4,7 @@ import com.aramigo.api.application.dto.CheckAnswerResult;
 import com.aramigo.api.application.dto.CompleteLessonResult;
 import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
+import com.aramigo.api.application.dto.ProfileResult;
 import com.aramigo.api.domain.model.LearnerStats;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CheckAnswerResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CompleteLessonResponse;
@@ -12,6 +13,8 @@ import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LearnerStatsRespon
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LearningPathResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LessonSessionResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathNodeResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathUnitResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ProfileResponse;
 
 public final class LearningApiMapper {
 
@@ -19,20 +22,27 @@ public final class LearningApiMapper {
 
   public static LearningPathResponse toResponse(LearningPathResult result) {
     return new LearningPathResponse(
-        result.sectionNumber(),
-        result.unitNumber(),
-        result.title(),
-        result.description(),
         stats(result.stats()),
-        result.nodes().stream()
+        result.units().stream()
             .map(
-                node ->
-                    new PathNodeResponse(
-                        node.lessonId(),
-                        node.position(),
-                        node.title(),
-                        node.nodeKind(),
-                        node.status()))
+                unit ->
+                    new PathUnitResponse(
+                        unit.sectionNumber(),
+                        unit.unitNumber(),
+                        unit.title(),
+                        unit.description(),
+                        unit.nodes().stream()
+                            .map(
+                                node ->
+                                    new PathNodeResponse(
+                                        node.lessonId(),
+                                        node.position(),
+                                        node.title(),
+                                        node.nodeKind(),
+                                        node.status(),
+                                        node.exerciseCount(),
+                                        node.solvedCount()))
+                            .toList()))
             .toList());
   }
 
@@ -51,6 +61,7 @@ public final class LearningApiMapper {
                         exercise.tip(),
                         exercise.aramaicScript(),
                         exercise.transliteration(),
+                        exercise.audioText(),
                         exercise.wordBank()))
             .toList());
   }
@@ -69,7 +80,16 @@ public final class LearningApiMapper {
         result.energyReward(), result.gemsReward(), stats(result.stats()));
   }
 
+  public static ProfileResponse toResponse(ProfileResult result) {
+    return new ProfileResponse(result.signedIn(), result.displayName(), stats(result.stats()));
+  }
+
   private static LearnerStatsResponse stats(LearnerStats stats) {
-    return new LearnerStatsResponse(stats.energy(), stats.gems(), stats.streak());
+    return new LearnerStatsResponse(
+        stats.energy(),
+        stats.maxEnergy(),
+        stats.gems(),
+        stats.streak(),
+        stats.secondsUntilNextEnergy());
   }
 }

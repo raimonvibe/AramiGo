@@ -15,6 +15,10 @@ public class LessonJpaEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  /** Stable key from the curriculum data files. */
+  @Column(nullable = false, unique = true)
+  private String slug;
+
   @Column(nullable = false)
   private Long unitId;
 
@@ -29,30 +33,47 @@ public class LessonJpaEntity {
 
   protected LessonJpaEntity() {}
 
-  public LessonJpaEntity(Long unitId, int position, String title, String nodeKind) {
-    this.unitId = unitId;
-    this.position = position;
-    this.title = title;
-    this.nodeKind = nodeKind;
+  public LessonJpaEntity(String slug) {
+    this.slug = slug;
   }
 
   public Long getId() {
     return id;
   }
 
+  public String getSlug() {
+    return slug;
+  }
+
   public Long getUnitId() {
     return unitId;
+  }
+
+  public void setUnitId(Long unitId) {
+    this.unitId = unitId;
   }
 
   public int getPosition() {
     return position;
   }
 
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
   public String getTitle() {
     return title;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public String getNodeKind() {
     return nodeKind;
+  }
+
+  public void setNodeKind(String nodeKind) {
+    this.nodeKind = nodeKind;
   }
 }
