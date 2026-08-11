@@ -100,6 +100,27 @@ class TokenAnswerMatchingPolicyTest {
     assertTrue(policy.matches(answer, List.of("li", "lahma", "li")));
   }
 
+  @Test
+  void distractorsThatRepeatAnswerChipsAreDropped() {
+    // Lesson 4 bank: answer needs one ܠܝ — a distractor copy must not appear twice.
+    String correct = "\u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710";
+    String distractors = "\u0720\u071D \u0720 \u0721\u0722\u0710";
+
+    List<String> bank = policy.wordBank(correct, distractors);
+
+    assertEquals(1, bank.stream().filter("\u0720\u071D"::equals).count());
+    assertTrue(bank.contains("\u0720"));
+    assertTrue(bank.contains("\u0721\u0722\u0710"));
+    assertEquals(5, bank.size());
+  }
+
+  @Test
+  void tipForSentenceSaysLeftToRight() {
+    assertEquals(
+        "Tap words left to right in order to build the sentence.",
+        policy.tipFor("\u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710"));
+  }
+
   private static List<String> sorted(List<String> tokens) {
     return tokens.stream().sorted().toList();
   }

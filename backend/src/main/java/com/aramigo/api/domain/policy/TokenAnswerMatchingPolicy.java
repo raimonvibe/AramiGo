@@ -4,10 +4,12 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -96,6 +98,21 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
   }
 
   @Override
+  public List<String> wordBank(String correctTokensSpec, String distractorTokens) {
+    List<String> bank = new ArrayList<>(bankTokensFromAnswers(correctTokensSpec));
+    Set<String> present = new HashSet<>();
+    for (String token : bank) {
+      present.add(normalizeToken(token));
+    }
+    for (String distractor : tokens(distractorTokens)) {
+      if (present.add(normalizeToken(distractor))) {
+        bank.add(distractor);
+      }
+    }
+    return bank;
+  }
+
+  @Override
   public String tipFor(String correctTokensSpec) {
     if (isPairSpec(correctTokensSpec)) {
       return "Match each script to its meaning.";
@@ -108,7 +125,8 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
       return "Pick one word.";
     }
     if (answers.stream().anyMatch(answer -> answer.size() > 1)) {
-      return "Tap words in order to build the sentence.";
+      // Chip lanes stay LTR; say so explicitly so RTL readers don't reverse tap order.
+      return "Tap words left to right in order to build the sentence.";
     }
     return null;
   }

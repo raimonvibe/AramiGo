@@ -42,6 +42,61 @@ function isSyriac(token: string): boolean {
   return /[\u0700-\u074F]/.test(token)
 }
 
+/**
+ * Show the accepted answer in the same LTR chip order the learner must tap.
+ * A single RTL string reverses word order on screen and makes a correct rebuild look wrong.
+ */
+function AcceptedAnswerHint({ answer }: { answer: string }) {
+  const alternatives = answer.split(' or ').map(part => part.replace(/\s*\(one word\)\s*$/, '').trim())
+  const hasSyriac = alternatives.some(part => isSyriac(part))
+
+  return (
+    <div style={{ marginTop: '0.35rem', color: 'var(--muted)' }}>
+      Accepted answer{alternatives.length > 1 ? 's' : ''}:{' '}
+      {alternatives.map((phrase, altIndex) => {
+        const tokens = phrase.split(/\s+/).filter(Boolean)
+        return (
+          <span key={`alt-${altIndex}`}>
+            {altIndex > 0 && <span style={{ margin: '0 0.35rem' }}>or</span>}
+            {hasSyriac && tokens.length > 1 ? (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  flexWrap: 'wrap',
+                  gap: '0.35rem',
+                  direction: 'ltr',
+                  verticalAlign: 'middle',
+                }}
+              >
+                {tokens.map((token, tokenIndex) => (
+                  <span
+                    key={`tok-${altIndex}-${tokenIndex}`}
+                    style={{
+                      ...chipStyle(true, isSyriac(token)),
+                      padding: isSyriac(token) ? '0.15rem 0.55rem' : '0.2rem 0.5rem',
+                      fontSize: isSyriac(token) ? '1.15rem' : '0.95rem',
+                      unicodeBidi: 'isolate',
+                    }}
+                  >
+                    {token}
+                  </span>
+                ))}
+              </span>
+            ) : (
+              <strong
+                style={{ color: 'var(--text)' }}
+                className={isSyriac(phrase) ? 'syriac-inline' : undefined}
+              >
+                {phrase}
+              </strong>
+            )}
+          </span>
+        )
+      })}
+    </div>
+  )
+}
+
 export function ExerciseCard({
   exercise,
   onContinue,
@@ -341,18 +396,7 @@ function ChipExerciseCard({
           }}
         >
           <strong>{feedback.message}</strong>
-          {!feedback.correct && (
-            <div style={{ marginTop: '0.35rem', color: 'var(--muted)' }}>
-              Accepted answer
-              {feedback.correctAnswer.includes(' or ') ? 's' : ''}:{' '}
-              <strong
-                style={{ color: 'var(--text)' }}
-                className={isSyriac(feedback.correctAnswer) ? 'syriac-inline' : undefined}
-              >
-                {feedback.correctAnswer}
-              </strong>
-            </div>
-          )}
+          {!feedback.correct && <AcceptedAnswerHint answer={feedback.correctAnswer} />}
         </div>
       )}
 

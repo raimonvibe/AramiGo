@@ -14,6 +14,12 @@ public interface AnswerMatchingPolicy {
 
   List<String> bankTokensFromAnswers(String correctTokensSpec);
 
+  /**
+   * Answer chips plus distractors, without re-adding a distractor that already
+   * appears in the answer (duplicate chips look identical and confuse learners).
+   */
+  List<String> wordBank(String correctTokensSpec, String distractorTokens);
+
   String tipFor(String correctTokensSpec);
 
   boolean isSingleWordPrompt(String correctTokensSpec);

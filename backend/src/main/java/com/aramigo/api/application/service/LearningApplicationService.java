@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -286,9 +285,8 @@ public class LearningApplicationService implements LearningUseCases {
   }
 
   private ExerciseView toView(Exercise exercise) {
-    List<String> bank = new ArrayList<>();
-    bank.addAll(answers.bankTokensFromAnswers(exercise.correctTokens()));
-    bank.addAll(tokens(exercise.distractorTokens()));
+    List<String> bank =
+        new ArrayList<>(answers.wordBank(exercise.correctTokens(), exercise.distractorTokens()));
     Collections.shuffle(bank);
 
     // Never ship the romanization for prompts where reading it is the answer.
@@ -307,12 +305,5 @@ public class LearningApplicationService implements LearningUseCases {
         transliteration,
         audioText,
         bank);
-  }
-
-  private static List<String> tokens(String spaceSeparated) {
-    if (spaceSeparated == null || spaceSeparated.isBlank()) {
-      return List.of();
-    }
-    return Arrays.stream(spaceSeparated.trim().split("\\s+")).toList();
   }
 }
