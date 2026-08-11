@@ -1,4 +1,5 @@
-import { PageShell } from '@/shared/ui'
+import { PageShell, ImagePlate } from '@/shared/ui'
+import { GAME_ART } from '@/shared/lib/gameArt'
 
 export const metadata = {
   title: 'About AramiGo',
@@ -8,6 +9,18 @@ export default function AboutPage() {
   return (
     <PageShell>
       <h1 className="brand-font page-title">About AramiGo</h1>
+
+      <div className="about-hero">
+        <ImagePlate
+          src={GAME_ART.script}
+          alt="A figure holding a palm and a scroll — learning through writing"
+          size="md"
+        />
+        <p style={{ margin: 0, color: 'var(--muted)', lineHeight: 1.55, maxWidth: '36rem' }}>
+          Classical Syriac is the literary language of the Syriac churches. AramiGo keeps the path
+          short and readable — script first, then meaning.
+        </p>
+      </div>
 
       <section className="about-copy">
         <p style={{ margin: 0 }}>

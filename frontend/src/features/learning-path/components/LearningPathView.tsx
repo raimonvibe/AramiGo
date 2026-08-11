@@ -1,9 +1,10 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { PageShell, StatsBar } from '@/shared/ui'
+import { PageShell, StatsBar, ImagePlate } from '@/shared/ui'
 import { AccountBar } from '@/features/auth'
 import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
+import { artForUnit } from '@/shared/lib/gameArt'
 import { LessonNode } from './LessonNode'
 
 /** Index the gold rail should reach (through current, else last completed). */
@@ -150,38 +151,39 @@ export function LearningPathView() {
 
       {path?.units.map(unit => {
         const progressIndex = progressThroughIndex(unit.nodes)
+        const art = artForUnit(unit.sectionNumber, unit.unitNumber)
 
         return (
           <section
             key={`${unit.sectionNumber}-${unit.unitNumber}`}
             style={{ marginBottom: '2rem' }}
           >
-            <div
-              style={{
-                background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
-                borderRadius: '22px',
-                padding: '1.15rem 1.25rem',
-                boxShadow: 'var(--shadow)',
-                marginBottom: '1.75rem',
-              }}
-            >
-              <div
-                style={{
-                  opacity: 0.9,
-                  fontWeight: 800,
-                  letterSpacing: '0.06em',
-                  fontSize: '0.8rem',
-                }}
-              >
-                SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
+            <div className="unit-banner">
+              <div className="unit-banner-copy">
+                <div
+                  style={{
+                    opacity: 0.9,
+                    fontWeight: 800,
+                    letterSpacing: '0.06em',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
+                </div>
+                <h1
+                  className="brand-font"
+                  style={{
+                    margin: '0.35rem 0 0.25rem',
+                    fontSize: 'clamp(1.45rem, 2vw + 1rem, 1.85rem)',
+                  }}
+                >
+                  {unit.title}
+                </h1>
+                <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
               </div>
-              <h1
-                className="brand-font"
-                style={{ margin: '0.35rem 0 0.25rem', fontSize: 'clamp(1.45rem, 2vw + 1rem, 1.85rem)' }}
-              >
-                {unit.title}
-              </h1>
-              <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
+              <div className="unit-banner-art">
+                <ImagePlate src={art.src} alt={art.alt} size="md" />
+              </div>
             </div>
 
             <ol

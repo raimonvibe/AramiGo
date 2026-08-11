@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { EnergyIcon } from '@/shared/ui/icons'
+import { ImagePlate } from '@/shared/ui'
+import { GAME_ART } from '@/shared/lib/gameArt'
 import { primaryButtonStyle } from './lessonStyles'
 
 function formatCountdown(totalSeconds: number): string {
@@ -41,20 +42,12 @@ export function EnergyEmpty({
         justifyItems: 'center',
       }}
     >
-      <div
-        style={{
-          width: 120,
-          height: 120,
-          borderRadius: 28,
-          background: 'linear-gradient(160deg, var(--energy), #8f4d66)',
-          display: 'grid',
-          placeItems: 'center',
-          color: '#2a121c',
-          boxShadow: 'var(--shadow)',
-        }}
-        aria-hidden="true"
-      >
-        <EnergyIcon size={52} />
+      <div className="stage-art">
+        <ImagePlate
+          src={GAME_ART.pause}
+          alt="A quiet pause — energy returns on its own"
+          size="lg"
+        />
       </div>
       <h2 className="brand-font" style={{ margin: 0, fontSize: '1.5rem', color: 'var(--brand)' }}>
         Out of energy

@@ -25,9 +25,41 @@ const syriac = Noto_Sans_Syriac({
   display: 'swap',
 })
 
+const siteDescription =
+  'A beginner-friendly path into Classical Syriac Aramaic.'
+
+/** Absolute base for Open Graph / Twitter image URLs when sharing the site. */
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
+  'https://arami-go-gv7b.vercel.app'
+
 export const metadata: Metadata = {
-  title: 'AramiGo — Learn Aramaic',
-  description: 'A beginner-friendly path into Classical Syriac Aramaic.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'AramiGo — Learn Aramaic',
+    template: '%s',
+  },
+  description: siteDescription,
+  applicationName: 'AramiGo',
+  // Icons + share images come from app/ file conventions:
+  // favicon.ico, apple-icon.png, opengraph-image.png, twitter-image.png
+  appleWebApp: {
+    capable: true,
+    title: 'AramiGo',
+    statusBarStyle: 'black-translucent',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'AramiGo',
+    title: 'AramiGo — Learn Aramaic',
+    description: siteDescription,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AramiGo — Learn Aramaic',
+    description: siteDescription,
+  },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

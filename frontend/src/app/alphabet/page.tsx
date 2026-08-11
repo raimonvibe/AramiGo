@@ -1,4 +1,5 @@
-import { PageShell } from '@/shared/ui'
+import { PageShell, ImagePlate } from '@/shared/ui'
+import { GAME_ART } from '@/shared/lib/gameArt'
 
 /**
  * The 22 letters of the Syriac abjad in traditional order.
@@ -40,10 +41,17 @@ export default function AlphabetPage() {
   return (
     <PageShell>
       <h1 className="brand-font page-title">The Syriac alphabet</h1>
-      <p className="page-lede">
-        22 letters, written right to left. Vowels are marks added above and below — the lessons
-        introduce them gradually.
-      </p>
+      <div className="alphabet-hero">
+        <ImagePlate
+          src={GAME_ART.script}
+          alt="A guide with a scroll — the script comes first"
+          size="sm"
+        />
+        <p className="page-lede" style={{ margin: 0 }}>
+          22 letters, written right to left. Vowels are marks added above and below — the lessons
+          introduce them gradually.
+        </p>
+      </div>
 
       <ul className="alphabet-grid">
         {LETTERS.map(letter => (

@@ -301,6 +301,77 @@ button:disabled {
   }
 }
 
+/* Square game portraits — destination art only, never path seals */
+.image-plate {
+  display: block;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 22%;
+  border: 1px solid rgba(196, 163, 90, 0.35);
+  box-shadow: var(--shadow);
+  background: var(--bg-elevated);
+}
+
+.unit-banner {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  background: linear-gradient(135deg, var(--unit-from), var(--unit-to));
+  border-radius: 22px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.75rem;
+}
+
+.unit-banner-copy {
+  min-width: 0;
+}
+
+.unit-banner-art {
+  justify-self: center;
+}
+
+@media (min-width: 720px) {
+  .unit-banner {
+    grid-template-columns: 1fr auto;
+    gap: 1.25rem 1.5rem;
+    padding: 1.35rem 1.5rem;
+  }
+
+  .unit-banner-art {
+    justify-self: end;
+  }
+}
+
+.stage-art {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+}
+
+.about-hero {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.alphabet-hero {
+  display: grid;
+  gap: 1rem;
+  margin: 1.15rem 0 0.25rem;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .about-hero,
+  .alphabet-hero {
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem 1.75rem;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Learning path — a ruled manuscript column.
 

@@ -3,8 +3,9 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { StatsBar } from '@/shared/ui'
+import { StatsBar, ImagePlate } from '@/shared/ui'
 import { EnergyIcon } from '@/shared/ui/icons'
+import { GAME_ART } from '@/shared/lib/gameArt'
 import {
   ApiError,
   completeLesson,
@@ -154,7 +155,7 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
         <section
           style={{
             textAlign: 'center',
-            marginTop: '3rem',
+            marginTop: '2.5rem',
             display: 'grid',
             gap: '1.25rem',
             justifyItems: 'center',
@@ -163,22 +164,28 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
           <div className="brand-font" style={{ fontSize: '2rem', color: 'var(--brand)' }}>
             Lesson complete
           </div>
-          <div
-            style={{
-              width: 140,
-              height: 140,
-              borderRadius: 28,
-              background: 'linear-gradient(160deg, var(--energy), #8f4d66)',
-              display: 'grid',
-              placeItems: 'center',
-              color: '#2a121c',
-              fontWeight: 800,
-              boxShadow: 'var(--shadow)',
-              gap: '0.25rem',
-            }}
-          >
-            <EnergyIcon size={36} />
-            <span style={{ fontSize: '1.35rem' }}>+{reward.energy}</span>
+          <div className="stage-art">
+            <ImagePlate
+              src={GAME_ART.treasure}
+              alt="A messenger with a sealed scroll — lesson finished"
+              size="lg"
+            />
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.45rem 0.9rem',
+                borderRadius: 999,
+                border: '1px solid var(--line)',
+                background: 'var(--bg-elevated)',
+                color: 'var(--energy)',
+                fontWeight: 800,
+              }}
+            >
+              <EnergyIcon size={22} />
+              <span>+{reward.energy}</span>
+            </div>
           </div>
           <div style={{ color: 'var(--muted)' }}>
             {reward.gems > 0
