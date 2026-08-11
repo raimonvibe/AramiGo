@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isSyriacScript, toHebrewScript } from './speech'
+import { hebrewLetterSpokenName, isSyriacScript, toHebrewScript } from './speech'
 
 /**
  * Syriac and Hebrew are the same Aramaic abjad in two hands, so a Hebrew voice
@@ -54,5 +54,26 @@ describe('isSyriacScript', () => {
     expect(isSyriacScript('shlomo')).toBe(false)
     expect(isSyriacScript('שלמא')).toBe(false)
     expect(isSyriacScript('')).toBe(false)
+  })
+})
+
+describe('hebrewLetterSpokenName', () => {
+  it('returns a full Hebrew name for each alphabet letter', () => {
+    expect(hebrewLetterSpokenName('ܐ')).toBe('אלף')
+    expect(hebrewLetterSpokenName('ܒ')).toBe('בית')
+    expect(hebrewLetterSpokenName('ܥ')).toBe('עין')
+    expect(hebrewLetterSpokenName('ܬ')).toBe('תו')
+  })
+
+  it('covers all 22 letters', () => {
+    const letters = 'ܐܒܓܕܗܘܙܚܛܝܟܠܡܢܣܥܦܨܩܪܫܬ'
+    for (const glyph of letters) {
+      expect(hebrewLetterSpokenName(glyph)).toMatch(/^[\u0590-\u05FF]+$/)
+    }
+  })
+
+  it('leaves words alone so lesson prompts still map to script', () => {
+    expect(hebrewLetterSpokenName('ܫܠܡܐ')).toBeNull()
+    expect(hebrewLetterSpokenName('shlomo')).toBeNull()
   })
 })

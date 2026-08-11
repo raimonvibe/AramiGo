@@ -29,7 +29,7 @@ const PLATFORMS = [
     steps: [
       'Open Settings → Time & language → Language & region → Add a language → Hebrew.',
       'During install, enable Text-to-speech (Speech).',
-      'Then open Settings → Time & language → Speech → Manage voices / Add voices and install a Hebrew voice (for example Hila or Avri).',
+      'Then open Settings → Time & language → Speech → Manage voices / Add voices and confirm a Hebrew voice is installed (Windows ships Microsoft Asaf for Hebrew).',
       'Fully quit the browser, reopen it, and reload AramiGo. Microsoft Edge usually picks up new Windows voices most reliably.',
     ],
   },

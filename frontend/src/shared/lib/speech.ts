@@ -70,6 +70,39 @@ const HEBREW_FINALS: Record<string, string> = {
   'צ': 'ץ', // tsadi
 }
 
+/**
+ * Full Hebrew letter *names* for lone glyphs.
+ *
+ * Engines (especially Windows' legacy Microsoft Asaf) choke on a bare letter —
+ * alef/ayin go silent, others come out as a clipped phoneme. A full name is a
+ * real word the voice can say. iOS often names letters anyway; this keeps both
+ * platforms consistent for the alphabet page.
+ */
+const HEBREW_LETTER_NAMES: Record<string, string> = {
+  'א': 'אלף',
+  'ב': 'בית',
+  'ג': 'גימל',
+  'ד': 'דלת',
+  'ה': 'הי',
+  'ו': 'ויו',
+  'ז': 'זין',
+  'ח': 'חית',
+  'ט': 'טית',
+  'י': 'יוד',
+  'כ': 'כף',
+  'ל': 'למד',
+  'מ': 'מם',
+  'נ': 'נון',
+  'ס': 'סמך',
+  'ע': 'עין',
+  'פ': 'פא',
+  'צ': 'צדי',
+  'ק': 'קוף',
+  'ר': 'ריש',
+  'ש': 'שין',
+  'ת': 'תו',
+}
+
 /** True when the text contains any Syriac character. */
 export function isSyriacScript(text: string): boolean {
   return /[܀-ݏ]/.test(text)
@@ -102,15 +135,29 @@ export function toHebrewScript(syriac: string): string {
 }
 
 /**
+ * If `script` is a single Syriac letter, the Hebrew letter name to speak.
+ * Returns null for words/phrases — those stay as mapped script.
+ */
+export function hebrewLetterSpokenName(script: string): string | null {
+  if (!isSyriacScript(script)) return null
+  const hebrew = toHebrewScript(script)
+  if ([...hebrew].length !== 1) return null
+  return HEBREW_LETTER_NAMES[hebrew] ?? null
+}
+
+/**
  * What to actually hand the engine for a word we can write both ways.
  *
  * A Hebrew voice does far better with Hebrew letters than with our Latin
  * romanization, but on a device that fell back to an English voice the
  * romanization is the only thing it can make sense of at all.
+ *
+ * Lone alphabet glyphs are special: speak the letter *name* (אלף, בית, …),
+ * not the bare character, so Windows Asaf and similar engines have a real word.
  */
 export function pronounceable(script: string | null | undefined, transliteration: string): string {
   if (script && isSyriacScript(script) && speechVoiceKind() === 'hebrew') {
-    return toHebrewScript(script)
+    return hebrewLetterSpokenName(script) ?? toHebrewScript(script)
   }
   return transliteration
 }
