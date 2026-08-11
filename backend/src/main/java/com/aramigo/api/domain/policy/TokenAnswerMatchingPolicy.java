@@ -32,11 +32,16 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
 
   @Override
   public String friendlyHint(String correctTokensSpec) {
-    return String.join(
-        " or ",
-        acceptedAnswers(correctTokensSpec).stream()
-            .map(answer -> String.join(" ", answer))
-            .toList());
+    List<List<String>> answers = acceptedAnswers(correctTokensSpec);
+    List<String> phrases =
+        answers.stream().map(answer -> String.join(" ", answer)).toList();
+
+    // One-word synonyms must not look like a phrase to build ("hello or peace"
+    // invites tapping both chips). Spell out that only one is needed.
+    if (answers.size() > 1 && answers.stream().allMatch(answer -> answer.size() == 1)) {
+      return String.join(" or ", phrases) + " (one word)";
+    }
+    return String.join(" or ", phrases);
   }
 
   /**

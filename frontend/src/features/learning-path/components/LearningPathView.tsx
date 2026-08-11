@@ -3,16 +3,72 @@
 import { useCallback, useEffect, useState } from 'react'
 import { BottomNav, StatsBar } from '@/shared/ui'
 import { AccountBar } from '@/features/auth'
-import { ApiError, getPath, type LearningPath } from '@/shared/lib/api'
+import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
 import { LessonNode } from './LessonNode'
 
-/** Serpentine offsets, repeating every six nodes. */
-const OFFSETS = [0, 48, 72, 48, 0, -48, -72, -48]
+/** Index the gold rail should reach (through current, else last completed). */
+function progressThroughIndex(nodes: PathNode[]): number {
+  const current = nodes.findIndex(node => node.status === 'CURRENT')
+  if (current >= 0) return current
+  let lastCompleted = -1
+  nodes.forEach((node, index) => {
+    if (node.status === 'COMPLETED') lastCompleted = index
+  })
+  return lastCompleted
+}
+
+function ManuscriptRail({
+  nodeCount,
+  progressIndex,
+}: {
+  nodeCount: number
+  progressIndex: number
+}) {
+  if (nodeCount === 0) return null
+
+  // Gold fills through the seal center of the progress node; plain continues below.
+  const goldPercent =
+    progressIndex < 0 ? 0 : ((progressIndex + 0.5) / nodeCount) * 100
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        left: 27, // center of 56px seal
+        top: 0,
+        bottom: 0,
+        width: 2,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'var(--line)',
+          borderRadius: 1,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: `${Math.min(100, Math.max(0, goldPercent))}%`,
+          background: 'linear-gradient(180deg, var(--brand), var(--brand-deep))',
+          borderRadius: 1,
+          boxShadow: '0 0 10px rgba(196, 163, 90, 0.25)',
+        }}
+      />
+    </div>
+  )
+}
 
 export function LearningPathView() {
   const [path, setPath] = useState<LearningPath | null>(null)
   const [error, setError] = useState<string | null>(null)
-
   const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
@@ -92,55 +148,66 @@ export function LearningPathView() {
           </div>
         )}
 
-        {path?.units.map(unit => (
-          <section key={`${unit.sectionNumber}-${unit.unitNumber}`} style={{ marginBottom: '2rem' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
-                borderRadius: '22px',
-                padding: '1.15rem 1.25rem',
-                boxShadow: 'var(--shadow)',
-                marginBottom: '1.75rem',
-              }}
+        {path?.units.map(unit => {
+          const progressIndex = progressThroughIndex(unit.nodes)
+
+          return (
+            <section
+              key={`${unit.sectionNumber}-${unit.unitNumber}`}
+              style={{ marginBottom: '2rem' }}
             >
               <div
                 style={{
-                  opacity: 0.9,
-                  fontWeight: 800,
-                  letterSpacing: '0.06em',
-                  fontSize: '0.8rem',
+                  background: 'linear-gradient(135deg, var(--unit-from), var(--unit-to))',
+                  borderRadius: '22px',
+                  padding: '1.15rem 1.25rem',
+                  boxShadow: 'var(--shadow)',
+                  marginBottom: '1.75rem',
                 }}
               >
-                SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
+                <div
+                  style={{
+                    opacity: 0.9,
+                    fontWeight: 800,
+                    letterSpacing: '0.06em',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
+                </div>
+                <h1
+                  className="brand-font"
+                  style={{ margin: '0.35rem 0 0.25rem', fontSize: '1.65rem' }}
+                >
+                  {unit.title}
+                </h1>
+                <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
               </div>
-              <h1
-                className="brand-font"
-                style={{ margin: '0.35rem 0 0.25rem', fontSize: '1.65rem' }}
-              >
-                {unit.title}
-              </h1>
-              <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
-            </div>
 
-            <ol
-              aria-label={`Lessons in unit ${unit.unitNumber}`}
-              style={{
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-                display: 'grid',
-                gap: '1.5rem',
-                justifyItems: 'center',
-              }}
-            >
-              {unit.nodes.map((node, index) => (
-                <li key={node.lessonId}>
-                  <LessonNode node={node} offset={OFFSETS[index % OFFSETS.length]} />
-                </li>
-              ))}
-            </ol>
-          </section>
-        ))}
+              <ol
+                aria-label={`Lessons in unit ${unit.unitNumber}`}
+                style={{
+                  listStyle: 'none',
+                  margin: 0,
+                  padding: 0,
+                  display: 'grid',
+                  gap: '1.35rem',
+                  position: 'relative',
+                }}
+              >
+                <ManuscriptRail
+                  nodeCount={unit.nodes.length}
+                  progressIndex={progressIndex}
+                />
+                {unit.nodes.map(node => (
+                  <li key={node.lessonId} style={{ position: 'relative' }}>
+                    <LessonNode node={node} />
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )
+        })}
 
         {!path && !error && (
           <p style={{ color: 'var(--muted)', textAlign: 'center', marginTop: '3rem' }}>

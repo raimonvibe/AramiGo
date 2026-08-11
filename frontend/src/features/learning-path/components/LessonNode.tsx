@@ -1,126 +1,118 @@
 import Link from 'next/link'
 import type { NodeKind, PathNode } from '@/shared/lib/api'
 
-const KIND_ICON: Record<NodeKind, string> = {
-  STAR: '✦',
-  CHEST: '❖',
-  CHARACTER: '☙',
-}
-
 const KIND_LABEL: Record<NodeKind, string> = {
   STAR: 'Lesson',
   CHEST: 'Treasure',
   CHARACTER: 'Practice',
 }
 
-const NODE_SIZE = 84
-
-function nodeSurface(status: PathNode['status']) {
+function sealColors(status: PathNode['status']) {
   switch (status) {
     case 'CURRENT':
       return {
-        background: 'linear-gradient(160deg, var(--accent), var(--accent-deep))',
-        border: '3px solid var(--brand)',
+        bg: 'linear-gradient(160deg, var(--accent), var(--accent-deep))',
+        border: '2px solid var(--brand)',
         color: '#07130f',
-        shadow: '0 0 0 6px rgba(63, 159, 132, 0.16), var(--shadow)',
+        ring: '0 0 0 4px rgba(63, 159, 132, 0.18)',
       }
     case 'COMPLETED':
       return {
-        background: 'linear-gradient(160deg, var(--brand), var(--brand-deep))',
-        border: '3px solid rgba(196, 163, 90, 0.55)',
+        bg: 'linear-gradient(160deg, var(--brand), var(--brand-deep))',
+        border: '2px solid rgba(196, 163, 90, 0.5)',
         color: '#1b1406',
-        shadow: 'var(--shadow)',
+        ring: 'none',
       }
     case 'LOCKED':
       return {
-        background: 'var(--bg-elevated)',
-        border: '3px solid var(--line)',
+        bg: 'var(--bg-elevated)',
+        border: '2px solid var(--line)',
         color: 'var(--muted)',
-        shadow: 'none',
+        ring: 'none',
       }
   }
 }
 
 /**
- * A single stop on the path. The serpentine offset comes from the index so the
- * column reads as a route through the manuscript rather than a list of rows.
+ * Manuscript chapter row: numbered Literata seal + title + kind in words.
+ * No pictograms, no serpentine offset — the unit rail carries progress.
  */
-export function LessonNode({ node, offset }: { node: PathNode; offset: number }) {
-  const surface = nodeSurface(node.status)
+export function LessonNode({ node }: { node: PathNode }) {
+  const seal = sealColors(node.status)
   const playable = node.status !== 'LOCKED'
   const kindLabel = KIND_LABEL[node.nodeKind]
   const partly = node.solvedCount > 0 && node.solvedCount < node.exerciseCount
-
-  const circle = (
-    <div
-      style={{
-        width: NODE_SIZE,
-        height: NODE_SIZE,
-        borderRadius: '50%',
-        display: 'grid',
-        placeItems: 'center',
-        background: surface.background,
-        border: surface.border,
-        color: surface.color,
-        boxShadow: surface.shadow,
-        fontSize: '2rem',
-        transition: 'transform 160ms ease',
-      }}
-      aria-hidden="true"
-    >
-      {node.status === 'LOCKED' ? '⌧' : KIND_ICON[node.nodeKind]}
-    </div>
-  )
-
-  const caption = (
-    <div style={{ display: 'grid', gap: '0.15rem', justifyItems: 'center', maxWidth: 150 }}>
-      <span
-        className="brand-font"
-        style={{
-          fontSize: '0.98rem',
-          fontWeight: 700,
-          color: node.status === 'LOCKED' ? 'var(--muted)' : 'var(--text)',
-          textAlign: 'center',
-        }}
-      >
-        {node.title}
-      </span>
-      <span
-        style={{
-          fontSize: '0.7rem',
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--muted)',
-        }}
-      >
-        {node.status === 'CURRENT' ? 'Start' : kindLabel}
-        {partly && ` · ${node.solvedCount}/${node.exerciseCount}`}
-      </span>
-    </div>
-  )
 
   const body = (
     <div
       style={{
         display: 'grid',
-        gap: '0.5rem',
-        justifyItems: 'center',
-        transform: `translateX(${offset}px)`,
+        gridTemplateColumns: '56px 1fr',
+        gap: '1rem',
+        alignItems: 'center',
+        opacity: node.status === 'LOCKED' ? 0.58 : 1,
       }}
     >
-      {circle}
-      {caption}
+      <div
+        className="brand-font"
+        aria-hidden="true"
+        style={{
+          width: 56,
+          height: 56,
+          borderRadius: '50%',
+          display: 'grid',
+          placeItems: 'center',
+          background: seal.bg,
+          border: seal.border,
+          boxShadow: seal.ring,
+          color: seal.color,
+          fontSize: '1.45rem',
+          fontWeight: 700,
+          lineHeight: 1,
+          zIndex: 1,
+        }}
+      >
+        {node.position}
+      </div>
+
+      <div style={{ display: 'grid', gap: '0.2rem', minWidth: 0 }}>
+        <span
+          className="brand-font"
+          style={{
+            fontSize: '1.2rem',
+            color: node.status === 'LOCKED' ? 'var(--muted)' : 'var(--text)',
+            lineHeight: 1.25,
+          }}
+        >
+          {node.title}
+        </span>
+        <span
+          style={{
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color:
+              node.status === 'CURRENT'
+                ? 'var(--accent)'
+                : node.status === 'COMPLETED'
+                  ? 'var(--brand)'
+                  : 'var(--muted)',
+          }}
+        >
+          {node.status === 'CURRENT' ? 'Current · ' : ''}
+          {kindLabel}
+          {partly ? ` · ${node.solvedCount}/${node.exerciseCount}` : ''}
+          {node.status === 'COMPLETED' && !partly ? ' · Done' : ''}
+          {node.status === 'LOCKED' ? ' · Locked' : ''}
+        </span>
+      </div>
     </div>
   )
 
   if (!playable) {
     return (
-      <div
-        aria-label={`Lesson ${node.position}: ${node.title} — locked`}
-        aria-disabled="true"
-        style={{ opacity: 0.55 }}
-      >
+      <div aria-label={`Lesson ${node.position}: ${node.title} — locked`} aria-disabled="true">
         {body}
       </div>
     )
@@ -132,7 +124,7 @@ export function LessonNode({ node, offset }: { node: PathNode; offset: number })
       aria-label={`Lesson ${node.position}: ${node.title} — ${
         node.status === 'CURRENT' ? 'start' : 'practice again'
       }`}
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
       {body}
     </Link>
