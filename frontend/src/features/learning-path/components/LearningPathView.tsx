@@ -1,94 +1,27 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { PageShell, StatsBar, ImagePlate } from '@/shared/ui'
-import { ApiError, getPath, type LearningPath, type PathNode } from '@/shared/lib/api'
-import { artForUnit } from '@/shared/lib/gameArt'
+import { PageShell, StatsBar } from '@/shared/ui'
+import { ApiError, getPath, type LearningPath } from '@/shared/lib/api'
 import { onAccountChanged } from '@/shared/lib/accountEvents'
-import { LessonNode } from './LessonNode'
+import { bookmarkFor, summariseUnits } from '../pathModel'
+import { Bookmark } from './Bookmark'
+import { UnitRow } from './UnitRow'
 
-/** Index the gold rail should reach (through current, else last completed). */
-function progressThroughIndex(nodes: PathNode[]): number {
-  const current = nodes.findIndex(node => node.status === 'CURRENT')
-  if (current >= 0) return current
-  let lastCompleted = -1
-  nodes.forEach((node, index) => {
-    if (node.status === 'COMPLETED') lastCompleted = index
-  })
-  return lastCompleted
-}
-
-/**
- * Lesson the page should open at: the one in progress, else the last one
- * finished. Null when nothing has been started — a fresh learner belongs at
- * the top of the path, not scrolled into it.
- */
-function focusLessonId(path: LearningPath | null): number | null {
-  if (!path) return null
-  let lastCompleted: number | null = null
-  for (const unit of path.units) {
-    for (const node of unit.nodes) {
-      if (node.status === 'CURRENT') return node.lessonId
-      if (node.status === 'COMPLETED') lastCompleted = node.lessonId
-    }
-  }
-  return lastCompleted
-}
-
-function ManuscriptRail({
-  nodeCount,
-  progressIndex,
-}: {
-  nodeCount: number
-  progressIndex: number
-}) {
-  if (nodeCount === 0) return null
-
-  // Gold fills through the seal center of the progress node; plain continues below.
-  const goldPercent =
-    progressIndex < 0 ? 0 : ((progressIndex + 0.5) / nodeCount) * 100
-
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        position: 'absolute',
-        left: 27, // center of 56px seal
-        top: 0,
-        bottom: 0,
-        width: 2,
-        pointerEvents: 'none',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'var(--line)',
-          borderRadius: 1,
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: `${Math.min(100, Math.max(0, goldPercent))}%`,
-          background: 'linear-gradient(180deg, var(--brand), var(--brand-deep))',
-          borderRadius: 1,
-          boxShadow: '0 0 10px rgba(196, 163, 90, 0.25)',
-        }}
-      />
-    </div>
-  )
+/** Stable key for a unit's open/closed state, independent of list order. */
+function unitKey(sectionNumber: number, unitNumber: number): string {
+  return `${sectionNumber}-${unitNumber}`
 }
 
 export function LearningPathView() {
   const [path, setPath] = useState<LearningPath | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
+  // Only chapters the learner has opened or closed by hand. Everything else
+  // follows the path itself, so their own chapter is open the moment it loads
+  // and stays open as progress moves — no effect, and no flash of all-closed.
+  const [toggled, setToggled] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     let cancelled = false
@@ -113,28 +46,12 @@ export function LearningPathView() {
   // rather than owning the control that causes it.
   useEffect(() => onAccountChanged(reload), [reload])
 
-  const focusId = focusLessonId(path)
-  const focusRef = useRef<HTMLLIElement | null>(null)
+  const summaries = useMemo(() => summariseUnits(path), [path])
+  const bookmark = useMemo(() => bookmarkFor(path), [path])
 
-  // Drop the learner at their place in the path instead of the very top.
-  // Waits a frame so the unit art has claimed its space before we measure.
-  useEffect(() => {
-    const target = focusRef.current
-    if (!target) return
-
-    const frame = requestAnimationFrame(() => {
-      const box = target.getBoundingClientRect()
-      const alreadyVisible = box.top >= 0 && box.bottom <= window.innerHeight
-      if (alreadyVisible) return
-
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      target.scrollIntoView({
-        block: 'center',
-        behavior: reduceMotion ? 'auto' : 'smooth',
-      })
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [focusId, reloadKey])
+  const toggleUnit = useCallback((key: string, open: boolean) => {
+    setToggled(previous => ({ ...previous, [key]: !open }))
+  }, [])
 
   return (
     <PageShell>
@@ -195,68 +112,24 @@ export function LearningPathView() {
         </div>
       )}
 
-      {path?.units.map(unit => {
-        const progressIndex = progressThroughIndex(unit.nodes)
-        const art = artForUnit(unit.sectionNumber, unit.unitNumber)
+      {bookmark && <Bookmark bookmark={bookmark} />}
 
-        return (
-          <section
-            key={`${unit.sectionNumber}-${unit.unitNumber}`}
-            style={{ marginBottom: '2rem' }}
-          >
-            <div className="unit-banner">
-              <div className="unit-banner-copy">
-                <div
-                  style={{
-                    opacity: 0.9,
-                    fontWeight: 800,
-                    letterSpacing: '0.06em',
-                    fontSize: '0.8rem',
-                  }}
-                >
-                  SECTION {unit.sectionNumber}, UNIT {unit.unitNumber}
-                </div>
-                <h1
-                  className="brand-font"
-                  style={{
-                    margin: '0.35rem 0 0.25rem',
-                    fontSize: 'clamp(1.45rem, 2vw + 1rem, 1.85rem)',
-                  }}
-                >
-                  {unit.title}
-                </h1>
-                <p style={{ margin: 0, opacity: 0.92 }}>{unit.description}</p>
-              </div>
-              <div className="unit-banner-art">
-                <ImagePlate src={art.src} alt={art.alt} size="md" />
-              </div>
-            </div>
-
-            <ol
-              aria-label={`Lessons in unit ${unit.unitNumber}`}
-              style={{
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-                display: 'grid',
-                gap: '1.35rem',
-                position: 'relative',
-              }}
-            >
-              <ManuscriptRail nodeCount={unit.nodes.length} progressIndex={progressIndex} />
-              {unit.nodes.map(node => (
-                <li
-                  key={node.lessonId}
-                  ref={node.lessonId === focusId ? focusRef : undefined}
-                  style={{ position: 'relative' }}
-                >
-                  <LessonNode node={node} />
-                </li>
-              ))}
-            </ol>
-          </section>
-        )
-      })}
+      {summaries.length > 0 && (
+        <ol className="contents-list" aria-label="Course contents">
+          {summaries.map(summary => {
+            const key = unitKey(summary.unit.sectionNumber, summary.unit.unitNumber)
+            const open = toggled[key] ?? summary.active
+            return (
+              <UnitRow
+                key={key}
+                summary={summary}
+                open={open}
+                onToggle={() => toggleUnit(key, open)}
+              />
+            )
+          })}
+        </ol>
+      )}
 
       {!path && !error && (
         <p style={{ color: 'var(--muted)', textAlign: 'center', marginTop: '3rem' }}>
