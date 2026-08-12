@@ -32,6 +32,12 @@ export function artForUnit(
       alt: 'A craftsman figure — numbers and family words',
     }
   }
+  if (sectionNumber === 1 && unitNumber === 3) {
+    return {
+      src: GAME_ART.unlock,
+      alt: 'A figure holding two keys — arriving at a house',
+    }
+  }
   return {
     src: GAME_ART.banner,
     alt: 'A guide with an open scroll',

@@ -77,6 +77,52 @@ Content lives in `backend/src/main/resources/curriculum/*.json` — not in Java.
 Add or edit a file and restart; the seeder upserts by `slug`, so existing ids and
 learner progress survive content edits, and anything removed from the files is pruned.
 
+### How a unit is built
+
+`section-1-unit-3.json` ("At the door") is the pattern to copy. A unit is **one
+scene**, not a word list — an arrival at a house, learned line by line — because
+a scene forces the recycling that actually makes vocabulary stick:
+
+- **Seven new words per unit, no more.** Unit 3 adds only ܒܝܬܐ, ܥܘܠ, ܗܪܟܐ, ܗܘ,
+  ܐܝܟܘ, ܬܪܥܐ, ܛܒܐ. Everything else in it is revision.
+- **Every lesson reuses the last.** Lesson 2 needs lesson 1's words to make its
+  sentences; the final `CHARACTER` lesson reassembles the whole scene.
+- **Recognition before production.** A word is met in `TRANSLATE_TO_ENGLISH` or
+  `LISTEN_CHOOSE_MEANING` before it is ever asked for in `TRANSLATE_TO_ARAMAIC`.
+- **Distractors are words the learner already knows**, so a wrong tap is still
+  revision rather than noise. Never introduce a word as a distractor.
+- **Sentences stay at two or three words.**
+
+### Grammar traps
+
+The easy mistake is to build a Syriac sentence on an English sentence shape.
+Two that bit unit 3 before it shipped:
+
+- **"X is here" and "where is X?" need the copula.** Syriac supplies the enclitic
+  pronoun where English uses "is": ܗܪܟܐ ܗܘ "he is here", ܐܒܝ ܗܪܟܐ ܗܘ "my father is
+  here". For questions the pronoun contracts onto the interrogative — ܐܝܟܘ ܐܒܝ
+  "where is my father?", the same form the Peshitta uses at Genesis 4:9
+  (ܐܝܟܘ ܗܒܝܠ ܐܚܘܟ). Bare ܐܝܟܐ + a noun is not the attested pattern.
+- **The present tense puts the pronoun after the participle**, not before:
+  ܫܬܐ ܐܢܬ "you drink", the way the Peshitta writes ܡܨܠܐ ܐܢܬ "you pray" at
+  Matthew 6:6. Fronting ܐܢܬ is grammatical but reads as emphatic.
+
+Adjectives are fine the intuitive way round: noun first, adjective after, both in
+the emphatic state — ܒܝܬܐ ܛܒܐ "a good house".
+
+Format notes that bite:
+
+- `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
+  Don't mix a one-word and a multi-word alternative — the word bank then offers
+  chips for both and the tip tells the learner to build a sentence.
+- `MATCH_PAIRS` uses `script=meaning` pairs separated by `;`. The `;` is required
+  once any meaning contains a space.
+- Listening prompts are spoken by mapping the Syriac to Hebrew letters
+  (`docs/SPEECH.md`), so every glyph used must exist in that map.
+
+Lesson `position` is a single linear counter across the whole curriculum, so a
+new unit's lessons continue the numbering rather than restarting at 1.
+
 ## Configuration
 
 Copy `backend/.env.example` and `frontend/.env.example`. The two that matter:

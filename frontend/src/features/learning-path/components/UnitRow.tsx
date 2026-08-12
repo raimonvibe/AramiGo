@@ -3,6 +3,7 @@
 import { CaretIcon, LockIcon } from '@/shared/ui/icons'
 import { reachedLessonIndex } from '../pathModel'
 import type { UnitSummary } from '../pathModel'
+import { unitThemeVars } from '../unitTheme'
 import { LessonNode } from './LessonNode'
 
 const ROMAN = [
@@ -52,7 +53,7 @@ export function UnitRow({
   const reachedThrough = reachedLessonIndex(unit.nodes)
 
   return (
-    <li className="contents-unit">
+    <li className="contents-unit" style={unitThemeVars(unit.unitNumber)}>
       {/* Named explicitly: the seal is decorative, so the name computed from
           content would run the chapter numeral into the title. */}
       <button
