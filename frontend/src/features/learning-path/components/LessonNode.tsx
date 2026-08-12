@@ -45,7 +45,12 @@ export function LessonNode({ node, reached }: { node: PathNode; reached: boolean
     // "Locked" meta says so. The seal is decorative, so the number is spoken
     // here instead.
     return (
-      <li className="path-item" data-reached={reached} style={{ opacity: 0.58 }}>
+      <li
+        className="path-item"
+        data-reached={reached}
+        data-lesson-id={node.lessonId}
+        style={{ opacity: 0.58 }}
+      >
         <span className="visually-hidden">Lesson {node.position}:</span>
         {body}
       </li>
@@ -53,7 +58,7 @@ export function LessonNode({ node, reached }: { node: PathNode; reached: boolean
   }
 
   return (
-    <li className="path-item" data-reached={reached}>
+    <li className="path-item" data-reached={reached} data-lesson-id={node.lessonId}>
       <Link
         href={`/lesson/${node.lessonId}`}
         className="path-link"

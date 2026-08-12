@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { PageShell, StatsBar } from '@/shared/ui'
 import { ApiError, getPath, type LearningPath } from '@/shared/lib/api'
@@ -52,6 +52,36 @@ export function LearningPathView() {
   const toggleUnit = useCallback((key: string, open: boolean) => {
     setToggled(previous => ({ ...previous, [key]: !open }))
   }, [])
+
+  const contentsRef = useRef<HTMLOListElement | null>(null)
+  const focusLessonId = bookmark?.lessonId ?? null
+
+  /*
+   * Bring the learner's own row into view when the contents page has grown past
+   * a screen. Deliberately conditional: with a short curriculum their chapter is
+   * already visible and nothing moves, which keeps the bookmark — the primary
+   * way back in — on screen. It only scrolls once their place is genuinely below
+   * the fold, and only on load, so opening a chapter by hand never yanks the page.
+   *
+   * Measured synchronously rather than inside requestAnimationFrame: rAF does not
+   * fire in a tab that is not compositing (backgrounded, or restored in the
+   * background), which would silently skip the scroll. Nothing here needs a frame
+   * — the rows hold no images, and the bookmark's art carries explicit dimensions,
+   * so layout is already settled by the time effects run.
+   */
+  useEffect(() => {
+    const contents = contentsRef.current
+    if (!contents || focusLessonId === null) return
+
+    const target = contents.querySelector(`[data-lesson-id="${focusLessonId}"]`)
+    if (!target) return // their chapter is collapsed — nothing to scroll to
+
+    const box = target.getBoundingClientRect()
+    if (box.top >= 0 && box.bottom <= window.innerHeight) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    target.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' })
+  }, [focusLessonId, reloadKey])
 
   return (
     <PageShell>
@@ -115,7 +145,7 @@ export function LearningPathView() {
       {bookmark && <Bookmark bookmark={bookmark} />}
 
       {summaries.length > 0 && (
-        <ol className="contents-list" aria-label="Course contents">
+        <ol className="contents-list" aria-label="Course contents" ref={contentsRef}>
           {summaries.map(summary => {
             const key = unitKey(summary.unit.sectionNumber, summary.unit.unitNumber)
             const open = toggled[key] ?? summary.active
