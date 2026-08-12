@@ -61,7 +61,7 @@ not the shapes they answer them with.
 | A mascot character anywhere in the chrome | Duo is their trade dress, and the closest thing to an actual legal risk |
 | Full-bleed celebratory confetti / streak-flame theatrics | Reads as the same product with a repaint |
 
-### Chosen direction: the ruled column
+### Chosen direction: the ruled column, as a codex
 
 The path is a **manuscript column**, not a game map:
 
@@ -74,6 +74,31 @@ The path is a **manuscript column**, not a game map:
 - No horizontal offsets — a page has margins, not switchbacks
 
 Implemented as `.path-list` / `.path-item` / `.path-seal` in `globals.css`.
+
+#### It has to survive a hundred lessons
+
+The column alone does not scale: enumerating every lesson of every unit made the
+page grow ~647px per unit forever, and left the learner's own lesson buried in a
+wall of locked grey rows. A manuscript already answers this — it has a **contents
+page**. So the path is a codex:
+
+- A **bookmark** at the top, showing the lesson the learner is on. Fixed height,
+  so the one thing a returning learner needs never moves down the page.
+- Units are **one line each** in a contents list; only the unit the learner is in
+  is expanded. A collapsed unit costs ~69px instead of ~647px, so page height
+  stays roughly flat as the curriculum grows. Any unit can be opened by hand.
+- Chapters are numbered in **Roman** on the seal and lessons in **Arabic**, so a
+  glance tells you which of the two a row is.
+- The unit gradient (`--unit-from` / `--unit-to`) lives on the **chapter seal**.
+- The rule runs unbroken through *everything* — chapter lines, descriptions, and
+  lesson rows alike. It is drawn as one `::before` segment per row rather than a
+  single full-height element, so the gold/plain break lands exactly at the
+  learner's row whichever chapters happen to be open. **Nothing between the first
+  and last row may use `margin` or grid `gap`**: every pixel has to belong to a
+  row that carries a segment, or the rule breaks. Use padding instead.
+
+Implemented as `.contents-list` / `.unit-row` / `.unit-open` / `.bookmark`, with
+the position logic in `features/learning-path/pathModel.ts` (covered by tests).
 
 ### The test to apply
 

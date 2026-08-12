@@ -7,126 +7,62 @@ const KIND_LABEL: Record<NodeKind, string> = {
   CHARACTER: 'Practice',
 }
 
-function sealColors(status: PathNode['status']) {
-  switch (status) {
-    case 'CURRENT':
-      return {
-        bg: 'linear-gradient(160deg, var(--accent), var(--accent-deep))',
-        border: '2px solid var(--brand)',
-        color: '#07130f',
-        ring: '0 0 0 4px rgba(63, 159, 132, 0.18)',
-      }
-    case 'COMPLETED':
-      return {
-        bg: 'linear-gradient(160deg, var(--brand), var(--brand-deep))',
-        border: '2px solid rgba(196, 163, 90, 0.5)',
-        color: '#1b1406',
-        ring: 'none',
-      }
-    case 'LOCKED':
-      return {
-        bg: 'var(--bg-elevated)',
-        border: '2px solid var(--line)',
-        color: 'var(--muted)',
-        ring: 'none',
-      }
-  }
+function statusLabel(node: PathNode): string {
+  const kind = KIND_LABEL[node.nodeKind]
+  const partly = node.solvedCount > 0 && node.solvedCount < node.exerciseCount
+
+  if (node.status === 'LOCKED') return `${kind} · Locked`
+  if (partly) return `${kind} · ${node.solvedCount}/${node.exerciseCount}`
+  if (node.status === 'CURRENT') return `Current · ${kind}`
+  if (node.status === 'COMPLETED') return `${kind} · Done`
+  return kind
 }
 
 /**
- * Manuscript chapter row: numbered Literata seal + title + kind in words.
- * No pictograms, no serpentine offset — the unit rail carries progress.
+ * One chapter row: a numbered Literata seal on the rule, the title, and the
+ * node's kind in words. No pictograms and no serpentine offset — the rule
+ * carries progress. See docs/COLOR.md.
  */
-export function LessonNode({ node }: { node: PathNode }) {
-  const seal = sealColors(node.status)
+export function LessonNode({ node, reached }: { node: PathNode; reached: boolean }) {
   const playable = node.status !== 'LOCKED'
-  const kindLabel = KIND_LABEL[node.nodeKind]
-  const partly = node.solvedCount > 0 && node.solvedCount < node.exerciseCount
 
   const body = (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '56px 1fr',
-        gap: '1rem',
-        alignItems: 'center',
-        opacity: node.status === 'LOCKED' ? 0.58 : 1,
-      }}
-    >
-      <div
-        className="brand-font"
-        aria-hidden="true"
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          display: 'grid',
-          placeItems: 'center',
-          background: seal.bg,
-          border: seal.border,
-          boxShadow: seal.ring,
-          color: seal.color,
-          fontSize: '1.45rem',
-          fontWeight: 700,
-          lineHeight: 1,
-          zIndex: 1,
-        }}
-      >
+    <>
+      <span className="path-seal brand-font" data-status={node.status} aria-hidden="true">
         {node.position}
-      </div>
-
-      <div style={{ display: 'grid', gap: '0.2rem', minWidth: 0 }}>
-        <span
-          className="brand-font"
-          style={{
-            fontSize: '1.2rem',
-            color: node.status === 'LOCKED' ? 'var(--muted)' : 'var(--text)',
-            lineHeight: 1.25,
-          }}
-        >
-          {node.title}
-        </span>
-        <span
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color:
-              node.status === 'CURRENT'
-                ? 'var(--accent)'
-                : node.status === 'COMPLETED'
-                  ? 'var(--brand)'
-                  : 'var(--muted)',
-          }}
-        >
-          {node.status === 'CURRENT' ? 'Current · ' : ''}
-          {kindLabel}
-          {partly ? ` · ${node.solvedCount}/${node.exerciseCount}` : ''}
-          {node.status === 'COMPLETED' && !partly ? ' · Done' : ''}
-          {node.status === 'LOCKED' ? ' · Locked' : ''}
-        </span>
-      </div>
-    </div>
+      </span>
+      <span className="path-title" style={{ color: playable ? 'var(--text)' : 'var(--muted)' }}>
+        {node.title}
+      </span>
+      <span className="path-meta" data-status={node.status}>
+        {statusLabel(node)}
+      </span>
+    </>
   )
 
   if (!playable) {
+    // No link and no aria-disabled: a locked row is plain text, and its own
+    // "Locked" meta says so. The seal is decorative, so the number is spoken
+    // here instead.
     return (
-      <div aria-label={`Lesson ${node.position}: ${node.title} — locked`} aria-disabled="true">
+      <li className="path-item" data-reached={reached} style={{ opacity: 0.58 }}>
+        <span className="visually-hidden">Lesson {node.position}:</span>
         {body}
-      </div>
+      </li>
     )
   }
 
   return (
-    <Link
-      href={`/lesson/${node.lessonId}`}
-      aria-label={`Lesson ${node.position}: ${node.title} — ${
-        node.status === 'CURRENT' ? 'start' : 'practice again'
-      }`}
-      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-    >
-      {body}
-    </Link>
+    <li className="path-item" data-reached={reached}>
+      <Link
+        href={`/lesson/${node.lessonId}`}
+        className="path-link"
+        aria-label={`Lesson ${node.position}: ${node.title} — ${
+          node.status === 'CURRENT' ? 'start' : 'practice again'
+        }`}
+      >
+        {body}
+      </Link>
+    </li>
   )
 }

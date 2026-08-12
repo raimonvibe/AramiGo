@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react'
 
-type PlateSize = 'sm' | 'md' | 'lg'
+type PlateSize = 'xs' | 'sm' | 'md' | 'lg'
 
 const SIZE: Record<PlateSize, CSSProperties> = {
+  /* Illumination beside a line of text — the bookmark, contents rows. */
+  xs: { width: 'clamp(3.25rem, 12vw, 4.5rem)' },
   sm: { width: 'clamp(5.5rem, 22vw, 7.5rem)' },
   md: { width: 'clamp(7.5rem, 28vw, 11rem)' },
   lg: { width: 'clamp(9rem, 32vw, 14rem)' },

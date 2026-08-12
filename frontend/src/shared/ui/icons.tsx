@@ -135,6 +135,25 @@ export function SlowPlayIcon({ size = 22, ...props }: IconProps) {
   )
 }
 
+/** Downward chevron — a chapter that opens. */
+export function CaretIcon({ size = 18, ...props }: IconProps) {
+  return (
+    <BaseIcon size={size} {...props}>
+      <path d="m7 10 5 5 5-5" />
+    </BaseIcon>
+  )
+}
+
+/** Closed clasp — a chapter the learner has not reached yet. */
+export function LockIcon({ size = 16, ...props }: IconProps) {
+  return (
+    <BaseIcon size={size} {...props}>
+      <rect x="5" y="10.5" width="14" height="9.5" rx="2" />
+      <path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" />
+    </BaseIcon>
+  )
+}
+
 export function IconLabel({
   icon,
   children,
