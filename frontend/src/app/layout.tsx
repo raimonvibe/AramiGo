@@ -28,15 +28,23 @@ const syriac = Noto_Sans_Syriac({
 const siteDescription =
   'A beginner-friendly path into Classical Syriac Aramaic.'
 
-/** Absolute base for Open Graph / Twitter image URLs when sharing the site. */
+/**
+ * Absolute base for Open Graph / Twitter image URLs when sharing the site.
+ * The app is served from troubigue.com; override per-environment if that moves.
+ */
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-  'https://arami-go-gv7b.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://troubigue.com'
+
+/**
+ * The learning app is still called AramiGo everywhere a learner sees it — nav,
+ * headings, install name, error copy. Only the page title names its home.
+ */
+const siteTitle = 'AramiGo at Troubigue'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'AramiGo — Learn Aramaic',
+    default: siteTitle,
     template: '%s',
   },
   description: siteDescription,
@@ -52,12 +60,13 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'AramiGo',
-    title: 'AramiGo — Learn Aramaic',
+    title: siteTitle,
     description: siteDescription,
+    url: siteUrl,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AramiGo — Learn Aramaic',
+    title: siteTitle,
     description: siteDescription,
   },
 }

@@ -1,6 +1,11 @@
-# AramiGo
+# AramiGo at Troubigue
 
-Beginner-friendly **Classical Syriac Aramaic** learning web app.
+Beginner-friendly **Classical Syriac Aramaic** learning web app, served from
+**[troubigue.com](https://troubigue.com)**.
+
+The app is called **AramiGo** everywhere a learner sees it — nav, headings, install
+name, share cards. Troubigue is where it lives, not what it is called; only the page
+title and the deployment settings name the domain.
 
 - **Frontend:** Next.js (App Router) + TypeScript — feature modules under `src/features/`
 - **Backend:** Java Spring Boot 4 — hexagonal layout (`domain` / `application` / `infrastructure`)
