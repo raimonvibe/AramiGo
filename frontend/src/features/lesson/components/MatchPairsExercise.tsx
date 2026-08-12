@@ -129,25 +129,12 @@ export function MatchPairsExercise({
           gap: '1rem',
         }}
       >
-        <div style={{ display: 'grid', gap: '0.55rem', alignContent: 'start' }}>
-          <span style={{ color: 'var(--muted)', fontSize: '0.82rem', fontWeight: 700 }}>Script</span>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.55rem', direction: 'ltr' }}>
-            {remainingScripts.map((token, index) => (
-              <button
-                key={`script-${token}-${index}`}
-                type="button"
-                onClick={() => pickScript(token)}
-                disabled={feedback?.correct}
-                style={{
-                  ...chipStyle(selectedScript === token, true),
-                  opacity: feedback?.correct ? 0.45 : 1,
-                }}
-              >
-                {token}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/*
+          Meaning on the left, Script on the right: the Syriac column belongs on
+          the side the script is read from, and its chips flow from that edge.
+          The tap order is still script then meaning — which now reads outward
+          from the Aramaic rather than across it.
+        */}
         <div style={{ display: 'grid', gap: '0.55rem', alignContent: 'start' }}>
           <span style={{ color: 'var(--muted)', fontSize: '0.82rem', fontWeight: 700 }}>
             Meaning
@@ -162,6 +149,34 @@ export function MatchPairsExercise({
                 style={{
                   ...chipStyle(false, false),
                   opacity: feedback?.correct || !selectedScript ? 0.45 : 1,
+                }}
+              >
+                {token}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: 'grid', gap: '0.55rem', alignContent: 'start' }}>
+          <span
+            style={{
+              color: 'var(--muted)',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              textAlign: 'right',
+            }}
+          >
+            Script
+          </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.55rem', direction: 'rtl' }}>
+            {remainingScripts.map((token, index) => (
+              <button
+                key={`script-${token}-${index}`}
+                type="button"
+                onClick={() => pickScript(token)}
+                disabled={feedback?.correct}
+                style={{
+                  ...chipStyle(selectedScript === token, true),
+                  opacity: feedback?.correct ? 0.45 : 1,
                 }}
               >
                 {token}
@@ -199,11 +214,11 @@ export function MatchPairsExercise({
               gap: '0.45rem',
             }}
           >
+            <span>{pair.meaning}</span>
+            <span style={{ color: 'var(--muted)' }}>=</span>
             <span className="syriac-inline" style={{ fontSize: '1.2rem' }}>
               {pair.script}
             </span>
-            <span style={{ color: 'var(--muted)' }}>=</span>
-            <span>{pair.meaning}</span>
           </button>
         ))}
       </div>
