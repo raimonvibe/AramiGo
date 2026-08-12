@@ -29,6 +29,18 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
   private static final char SYRIAC_MARKS_START = '\u0730';
   private static final char SYRIAC_MARKS_END = '\u074A';
 
+  /** Syriac block (U+0700-U+074F) \u2014 an answer written in it reads right to left. */
+  private static final char SYRIAC_BLOCK_START = '\u0700';
+  private static final char SYRIAC_BLOCK_END = '\u074F';
+
+  /** True when the answer is written in Syriac, and so is read right to left. */
+  private static boolean isScriptAnswer(String spec) {
+    if (spec == null) {
+      return false;
+    }
+    return spec.chars().anyMatch(c -> c >= SYRIAC_BLOCK_START && c <= SYRIAC_BLOCK_END);
+  }
+
   @Override
   public boolean matches(String correctTokensSpec, List<String> submitted) {
     if (isPairSpec(correctTokensSpec)) {
@@ -125,8 +137,11 @@ public final class TokenAnswerMatchingPolicy implements AnswerMatchingPolicy {
       return "Pick one word.";
     }
     if (answers.stream().anyMatch(answer -> answer.size() > 1)) {
-      // Chip lanes stay LTR; say so explicitly so RTL readers don't reverse tap order.
-      return "Tap words left to right in order to build the sentence.";
+      // The chip lane runs in the answer's own direction, so the tap order the
+      // learner is told to use has to follow the script, not the interface.
+      return isScriptAnswer(correctTokensSpec)
+          ? "Tap words right to left in order to build the sentence."
+          : "Tap words left to right in order to build the sentence.";
     }
     return null;
   }
