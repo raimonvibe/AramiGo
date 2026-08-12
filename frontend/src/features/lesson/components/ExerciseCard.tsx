@@ -45,8 +45,8 @@ function isSyriac(token: string): boolean {
 }
 
 /**
- * Show the accepted answer in the same LTR chip order the learner must tap.
- * A single RTL string reverses word order on screen and makes a correct rebuild look wrong.
+ * Show the accepted answer as chips in the same order and direction as the lane
+ * the learner builds in, so a correct rebuild looks identical to the hint.
  */
 function AcceptedAnswerHint({ answer }: { answer: string }) {
   const alternatives = answer.split(' or ').map(part => part.replace(/\s*\(one word\)\s*$/, '').trim())
@@ -66,7 +66,7 @@ function AcceptedAnswerHint({ answer }: { answer: string }) {
                   display: 'inline-flex',
                   flexWrap: 'wrap',
                   gap: '0.35rem',
-                  direction: 'ltr',
+                  direction: 'rtl',
                   verticalAlign: 'middle',
                 }}
               >
@@ -144,6 +144,9 @@ function ChipExerciseCard({
 }) {
   const [selected, setSelected] = useState<string[]>([])
   const [remaining, setRemaining] = useState(exercise.wordBank)
+  // Decided from the bank, not the exercise type, so a Syriac answer reads the
+  // right way round whatever kind of prompt asked for it.
+  const answerDirection: 'rtl' | 'ltr' = exercise.wordBank.some(isSyriac) ? 'rtl' : 'ltr'
   const [busy, setBusy] = useState(false)
   const [feedback, setFeedback] = useState<CheckAnswerResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -325,10 +328,14 @@ function ChipExerciseCard({
       )}
 
       {/*
-        Keep chip lanes LTR even for Syriac. CSS direction:rtl reverses visual
-        order without reversing the token array, so rebuilding the hinted answer
-        left-to-right looked right on screen but was submitted backwards.
-        Each chip still uses the Syriac face; only the lane order stays logical.
+        The lane runs in the answer's own direction: Syriac builds right to left,
+        English left to right.
+
+        `direction: rtl` reverses only the visual order of the flex items — the
+        `selected` array is React state and is submitted unchanged, so the first
+        word tapped is still the first word sent. That is exactly what an RTL
+        script needs: tap the first word of the sentence and it lands rightmost,
+        matching the prompt above and the way the language is actually read.
       */}
       <div
         style={{
@@ -339,11 +346,11 @@ function ChipExerciseCard({
           gap: '0.55rem',
           alignItems: 'center',
           paddingBottom: '0.75rem',
-          direction: 'ltr',
+          direction: answerDirection,
         }}
       >
         {selected.length === 0 && (
-          <span style={{ color: 'var(--muted)' }}>Your answer appears here</span>
+          <span style={{ color: 'var(--muted)', direction: 'ltr' }}>Your answer appears here</span>
         )}
         {selected.map((token, index) => (
           <button
@@ -362,7 +369,7 @@ function ChipExerciseCard({
           display: 'flex',
           flexWrap: 'wrap',
           gap: '0.55rem',
-          direction: 'ltr',
+          direction: answerDirection,
         }}
       >
         {remaining.map((token, index) => (

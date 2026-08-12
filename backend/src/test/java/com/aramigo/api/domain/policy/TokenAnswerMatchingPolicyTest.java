@@ -115,10 +115,18 @@ class TokenAnswerMatchingPolicyTest {
   }
 
   @Test
-  void tipForSentenceSaysLeftToRight() {
+  void tipForSyriacSentenceSaysRightToLeft() {
+    // \u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710 \u2014 the lane runs in the script's own direction, so must the tip.
+    assertEquals(
+        "Tap words right to left in order to build the sentence.",
+        policy.tipFor("\u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710"));
+  }
+
+  @Test
+  void tipForEnglishSentenceStillSaysLeftToRight() {
     assertEquals(
         "Tap words left to right in order to build the sentence.",
-        policy.tipFor("\u0710\u071D\u072C \u0720\u071D \u0720\u071A\u0721\u0710"));
+        policy.tipFor("my father is here"));
   }
 
   private static List<String> sorted(List<String> tokens) {
