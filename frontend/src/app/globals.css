@@ -332,37 +332,6 @@ body.app-menu-open .bottom-nav {
   background: var(--bg-elevated);
 }
 
-.unit-banner {
-  display: grid;
-  gap: 1rem;
-  align-items: center;
-  background: linear-gradient(135deg, var(--unit-from), var(--unit-to));
-  border-radius: 22px;
-  padding: 1.15rem 1.25rem;
-  box-shadow: var(--shadow);
-  margin-bottom: 1.75rem;
-}
-
-.unit-banner-copy {
-  min-width: 0;
-}
-
-.unit-banner-art {
-  justify-self: center;
-}
-
-@media (min-width: 720px) {
-  .unit-banner {
-    grid-template-columns: 1fr auto;
-    gap: 1.25rem 1.5rem;
-    padding: 1.35rem 1.5rem;
-  }
-
-  .unit-banner-art {
-    justify-self: end;
-  }
-}
-
 .stage-art {
   display: grid;
   justify-items: center;

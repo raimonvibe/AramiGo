@@ -124,16 +124,49 @@ Keep **one global brand**, add **unit themes** so new lessons don’t invent one
 
 Use `linear-gradient(135deg, var(--unit-from), var(--unit-to))` on path headers / chapter seals—not on every chip.
 
-### Example unit gradients (Manuscript family)
+### Unit gradients (Manuscript family)
 
-| Unit feel | Gradient |
-|-----------|----------|
-| Intro | `#c4a35a → #3f9f84` (current) |
-| Script | `#b8956a → #5a7d8c` (dusty ink-blue, not Macaw) |
-| Liturgy | `#a67c52 → #6b5b8c` (muted plum, not Beetle neon) |
-| Story | `#c4a35a → #8b5e4b` (clay/umber) |
+Every family starts at brand gold `#c4a35a`; only the second stop changes. Lives
+in `features/learning-path/unitTheme.ts`, applied to the chapter seal.
 
-Same gold brand forever; only `--unit-*` changes.
+| Unit feel | Second stop | Numeral | vs page | Note |
+|-----------|-------------|---------|---------|------|
+| Intro | `#3f9f84` | 6.56 | 6.10 | teal |
+| Story | `#8b5e4b` | 5.35 | 4.97 | clay / umber |
+| Script | `#5a7d8c` | 5.77 | 5.37 | dusty ink-blue, not Macaw |
+| Vine | `#546331` | 4.91 | 4.57 | olive, well clear of Duo's lime |
+| Dusk | `#545d96` | 4.94 | 4.59 | indigo |
+| Pomegranate | `#914b54` | 4.97 | 4.62 | muted garnet, not Cardinal |
+| Liturgy | `#6b5b8c` | 5.07 | 4.70 | muted plum, not Beetle neon |
+
+Same gold brand forever; only `--unit-*` changes — and that single gold anchor is
+load-bearing, not just branding. `Liturgy` used to start from a dimmer gold
+(`#a67c52`) and put the numeral at **4.00:1**; the plum was never the problem,
+and against `#c4a35a` the same plum reaches 5.07. A dim first stop drags the
+midpoint down whatever the second stop is.
+
+**Before adding a family, measure it.** The seal draws the chapter numeral in
+near black (`#07130f`), so a gradient is only usable if the numeral clears
+**4.5:1 against the gradient's midpoint** — where the glyph actually sits.
+Measuring a single stop proves nothing. Check the seal against the page
+background too (**≥3:1**) or it stops reading as an object.
+`unitTheme.test.ts` enforces both for every family.
+
+Two rejected for being too close to what is already there, not for contrast:
+`cedar #376c5f` (2° from Intro's teal) and `lapis #3b6597` (13° from Script).
+On a contents page where chapters sit rows apart, near-duplicates read as a
+repeat. Keep new families **≥25°** from every existing one.
+
+The rotation alternates warm and cool — Intro, Story, Script, Vine, Dusk,
+Pomegranate, Liturgy — so neighbouring chapters never look alike. Seven families
+is 35 lessons before a colour repeats.
+
+#### Judging "is this too Duolingo?"
+
+Compare **hue, saturation and lightness together**, never hue alone. By hue
+alone our dusty blue sits 1° from Macaw and the golds ~6° from Bee yellow, which
+looks alarming and is meaningless: the blue is 22% saturated where Macaw is 92%.
+Scored across all three, every family above is at zero risk.
 
 ## Alternate options (if we ever pivot)
 
