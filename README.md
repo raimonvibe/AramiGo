@@ -115,6 +115,15 @@ Two that bit unit 3 before it shipped:
 Adjectives are fine the intuitive way round: noun first, adjective after, both in
 the emphatic state — ܒܝܬܐ ܛܒܐ "a good house".
 
+One more, from unit 4:
+
+- **An imperative is its own form, not the verb you looked up.** Unit 4 is built
+  on ܬܒ "sit", ܣܒ "take" and ܐܟܘܠ "eat" — the imperatives of ܝܬܒ, ܢܣܒ and ܐܟܠ,
+  none of which look like their root. So a verb the learner already knows cannot
+  simply be reused as a command: ܫܬܐ is "drinks", and "drink!" is ܐܫܬܝ. That is
+  why unit 4 pours wine with ܣܒ ܚܡܪܐ "take wine" rather than asking anyone to
+  drink it — the imperative would have been an eighth new word.
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
