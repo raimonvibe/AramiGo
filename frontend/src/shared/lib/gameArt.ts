@@ -10,6 +10,7 @@ export const GAME_ART = {
   pause: '/images/game-image5.png',
   family: '/images/game-image7.png',
   script: '/images/game-image8.png',
+  welcome: '/images/game-image1.png',
   harvest: '/images/game-image9.png',
   banner: '/images/game-image10.png',
 } as const
@@ -36,6 +37,12 @@ export function artForUnit(
     return {
       src: GAME_ART.unlock,
       alt: 'A figure holding two keys — arriving at a house',
+    }
+  }
+  if (sectionNumber === 1 && unitNumber === 4) {
+    return {
+      src: GAME_ART.welcome,
+      alt: 'A welcoming figure in a white veil — a meal set at the table',
     }
   }
   return {
