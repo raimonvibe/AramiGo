@@ -13,6 +13,7 @@ export const GAME_ART = {
   welcome: '/images/game-image1.png',
   harvest: '/images/game-image9.png',
   banner: '/images/game-image10.png',
+  vigil: '/images/game-image6.png',
 } as const
 
 export type GameArtKey = keyof typeof GAME_ART
@@ -43,6 +44,12 @@ export function artForUnit(
     return {
       src: GAME_ART.welcome,
       alt: 'A welcoming figure in a white veil — a meal set at the table',
+    }
+  }
+  if (sectionNumber === 1 && unitNumber === 5) {
+    return {
+      src: GAME_ART.vigil,
+      alt: 'A figure at prayer against a burst of light — evening, and a lamp lit',
     }
   }
   return {

@@ -124,6 +124,16 @@ One more, from unit 4:
   why unit 4 pours wine with ܣܒ ܚܡܪܐ "take wine" rather than asking anyone to
   drink it — the imperative would have been an eighth new word.
 
+And one from unit 5:
+
+- **ܒ "in" is a proclitic, not a word.** It is written onto the front of what it
+  governs, so "in the house" is the single form ܒܒܝܬܐ — one chip, not two, and
+  `correctTokens` must say so. Unit 5 teaches it that way on purpose and puts
+  bare ܒܝܬܐ in the same word bank as a distractor, since the pair is the whole
+  point. Contrast ܥܠ "on" from unit 4, which stands alone: ܥܠ ܦܬܘܪܐ is two words.
+  Unit 5's "it is evening" is ܪܡܫܐ ܗܘ, the same copula the Peshitta uses at
+  Luke 24:29.
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
