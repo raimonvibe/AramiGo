@@ -7,6 +7,7 @@ import com.aramigo.api.application.dto.CompleteLessonResult;
 import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.ReviewSessionResult;
 import com.aramigo.api.application.port.in.LearningUseCases;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,12 @@ public class TransactionalLearningFacade implements LearningUseCases {
   @Transactional
   public LessonSessionResult startLesson(String identityKey, long lessonId) {
     return delegate.startLesson(identityKey, lessonId);
+  }
+
+  @Override
+  @Transactional
+  public ReviewSessionResult reviewSession(String identityKey) {
+    return delegate.reviewSession(identityKey);
   }
 
   @Override

@@ -7,6 +7,7 @@ import com.aramigo.api.application.dto.CompleteLessonResult;
 import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.ReviewSessionResult;
 
 /**
  * Inbound ports — what the outside world can ask the learning module to do.
@@ -19,6 +20,9 @@ public interface LearningUseCases {
   LearningPathResult getPath(String identityKey);
 
   LessonSessionResult startLesson(String identityKey, long lessonId);
+
+  /** Solved exercises that have come due again, drawn from the whole curriculum. */
+  ReviewSessionResult reviewSession(String identityKey);
 
   CheckAnswerResult checkAnswer(String identityKey, long exerciseId, List<String> tokens);
 

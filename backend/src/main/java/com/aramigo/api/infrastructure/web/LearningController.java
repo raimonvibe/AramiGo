@@ -10,6 +10,7 @@ import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CompleteLessonResp
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LearningPathResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LessonSessionResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ProfileResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ReviewSessionResponse;
 import com.aramigo.api.infrastructure.web.mapper.LearningApiMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +41,14 @@ public class LearningController {
       @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
       @RequestHeader(value = GUEST_HEADER, required = false) String guestKey) {
     return LearningApiMapper.toResponse(learning.getPath(identity(authorization, guestKey).key()));
+  }
+
+  @GetMapping("/review")
+  public ReviewSessionResponse review(
+      @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
+      @RequestHeader(value = GUEST_HEADER, required = false) String guestKey) {
+    return LearningApiMapper.toResponse(
+        learning.reviewSession(identity(authorization, guestKey).key()));
   }
 
   @GetMapping("/lessons/{lessonId}")

@@ -20,6 +20,7 @@ import com.aramigo.api.application.dto.LearningPathResult.UnitResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
 import com.aramigo.api.application.dto.LessonSessionResult.ExerciseView;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.ReviewSessionResult;
 import com.aramigo.api.application.port.in.LearningUseCases;
 import com.aramigo.api.application.port.out.CurriculumRepositoryPort;
 import com.aramigo.api.application.port.out.ExerciseProgressPort;
@@ -41,6 +42,16 @@ import com.aramigo.api.domain.policy.AnswerMatchingPolicy;
 public class LearningApplicationService implements LearningUseCases {
 
   private static final int ENERGY_COST_WRONG = 1;
+
+  /**
+   * How many due exercises one review sitting hands out.
+   *
+   * <p>Capped because the queue is unbounded after a long absence, and a learner
+   * returning to two hundred waiting cards closes the tab. The count of
+   * everything due still goes back, so the UI can say there is more.
+   */
+  private static final int REVIEW_SESSION_SIZE = 12;
+
   private static final int ENERGY_REWARD_LESSON = 3;
   private static final int GEMS_REWARD_LESSON = 10;
 
@@ -124,6 +135,24 @@ public class LearningApplicationService implements LearningUseCases {
   }
 
   @Override
+  public ReviewSessionResult reviewSession(String identityKey) {
+    Instant now = clock.instant();
+    Learner learner = activeLearner(identityKey, now);
+
+    int dueCount = progress.countDueForReview(learner.getId(), now);
+    List<Long> dueIds = progress.findDueForReview(learner.getId(), now, REVIEW_SESSION_SIZE);
+
+    // Exercises pruned from the curriculum can still have progress rows pointing
+    // at them until the next seed, so a missing one is skipped rather than fatal.
+    List<ExerciseView> views =
+        dueIds.stream().flatMap(id -> curriculum.findExerciseById(id).stream())
+            .map(this::toView)
+            .toList();
+
+    return new ReviewSessionResult(dueCount, learner.stats(now), views);
+  }
+
+  @Override
   public CheckAnswerResult checkAnswer(String identityKey, long exerciseId, List<String> tokens) {
     Instant now = clock.instant();
     Learner learner = activeLearner(identityKey, now);
@@ -135,7 +164,7 @@ public class LearningApplicationService implements LearningUseCases {
     String hint = answers.friendlyHint(exercise.correctTokens());
 
     if (answers.matches(exercise.correctTokens(), tokens)) {
-      progress.recordSolved(learner.getId(), exerciseId);
+      progress.recordCorrect(learner.getId(), exerciseId, now);
       return new CheckAnswerResult(true, "Great job!", hint, 0, learner.stats(now));
     }
 
@@ -145,6 +174,9 @@ public class LearningApplicationService implements LearningUseCases {
           false, "Almost — pick just one word", hint, 0, learner.stats(now));
     }
 
+    // Knocks the review schedule back if this was already known. The row itself
+    // survives, so a slip here can never un-complete a finished lesson.
+    progress.recordLapse(learner.getId(), exerciseId, now);
     learner.spendEnergy(ENERGY_COST_WRONG);
     learners.save(learner);
     return new CheckAnswerResult(

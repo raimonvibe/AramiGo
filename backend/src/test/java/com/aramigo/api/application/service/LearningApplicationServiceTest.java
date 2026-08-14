@@ -183,32 +183,4 @@ class LearningApplicationServiceTest {
     service.checkAnswer(GUEST, secondExercise.id(), List.of("peace"));
   }
 
-  /** Lets a test skip forward without sleeping. */
-  private static final class MutableClock extends Clock {
-
-    private Instant now;
-
-    private MutableClock(Instant now) {
-      this.now = now;
-    }
-
-    void advance(Duration amount) {
-      now = now.plus(amount);
-    }
-
-    @Override
-    public java.time.ZoneId getZone() {
-      return ZoneOffset.UTC;
-    }
-
-    @Override
-    public Clock withZone(java.time.ZoneId zone) {
-      return this;
-    }
-
-    @Override
-    public Instant instant() {
-      return now;
-    }
-  }
 }
