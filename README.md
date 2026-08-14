@@ -186,6 +186,27 @@ Two from unit 7:
   ܛܒܐ would need ܛܒܬܐ on a feminine noun — that is an eighth new word, and it is
   why nothing in unit 7 is described as good.
 
+Two from unit 8:
+
+- **There is no single word for "not" — the negation follows the sentence.** A verb
+  takes ܠܐ in front and nothing else moves: ܠܐ ܝܕܥ ܐܢܐ "I do not know", the wording
+  of Matthew 26:70. A nominal sentence cannot be treated that way — unit 3's ܗܪܟܐ ܗܘ
+  "he is here" does not become ܠܐ ܗܪܟܐ ܗܘ. The copula ܗܘ is replaced by ܠܐ ܗܘܐ,
+  and it moves to the front: ܠܐ ܗܘܐ ܗܪܟܐ, which is how the Peshitta says "he is not
+  here" at Matthew 28:6. And unit 1's ܐܝܬ takes neither: ܠܐ ܐܝܬ ܠܝ ܠܚܡܐ is not
+  Syriac, because ܠܐ + ܐܝܬ contracts to ܠܝܬ — ܠܝܬ ܠܝ ܠܚܡܐ, the ܠܝܬ ܠܗ of
+  Matthew 8:20 and the ܚܡܪܐ ܠܝܬ ܠܗܘܢ of John 2:3. It is the same contraction habit
+  that gave unit 3 ܐܝܟܘ and unit 7 ܡܢܘ. Unit 8's chest asks for ܠܝܬ ܠܝ ܚܡܪܐ with
+  both ܐܝܬ and ܠܐ sitting in the word bank, so the learner has to refuse the English
+  shape on purpose.
+- **ܡܕܡ and ܐܢܫ do not mean "nothing" and "no one".** They are "anything" and
+  "anyone"; the negative lives in ܠܝܬ, not in them. ܠܝܬ ܠܝ ܡܕܡ is word for word
+  "there is not to me anything", and ܠܝܬ ܡܕܡ is Luke 8:17. Teaching them as
+  negatives would leave the learner writing them bare and meaning the opposite, so
+  unit 8 never shows either one outside a ܠܝܬ sentence. Bare ܐܝܢ and ܠܐ, by
+  contrast, are whole answers by themselves — ܐܝܢ ܐܝܢ ܘܠܐ ܠܐ at Matthew 5:37, and
+  John 1:21 answers a question with nothing but ܠܐ.
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
@@ -201,8 +222,15 @@ new unit's lessons continue the numbering rather than restarting at 1.
 
 A new unit needs no frontend work at all. The seeder globs the curriculum
 directory, `unitTheme` rotates the chapter gradient through seven families, and
-`gameArt` rotates the bookmark portrait through nine — so colour and art both
+`artForUnit` rotates the bookmark portrait through nine — so colour and art both
 arrive without being asked for, and repeat only many chapters later.
+
+Concretely: unit *n* takes portrait `(n - 1) % 9` of the pack, and every unit has
+one however far the curriculum runs. There is no unpaired case left to handle.
+Units 6 and 7 shipped against a curated one-portrait-per-unit list and fell
+through it to a generic banner, so commit messages from that stretch say a new
+unit has no portrait — that list is gone, and so is the fallback. Check
+`gameArt.ts` rather than the last unit's commit message.
 
 ## Configuration
 
