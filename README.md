@@ -171,6 +171,11 @@ Format notes that bite:
 Lesson `position` is a single linear counter across the whole curriculum, so a
 new unit's lessons continue the numbering rather than restarting at 1.
 
+A new unit needs no frontend work at all. The seeder globs the curriculum
+directory, `unitTheme` rotates the chapter gradient through seven families, and
+`gameArt` rotates the bookmark portrait through nine — so colour and art both
+arrive without being asked for, and repeat only many chapters later.
+
 ## Configuration
 
 Copy `backend/.env.example` and `frontend/.env.example`. The two that matter:

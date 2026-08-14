@@ -11,7 +11,7 @@ import type { Bookmark as BookmarkModel } from '../pathModel'
  * never moves further down the page as lessons are added.
  */
 export function Bookmark({ bookmark }: { bookmark: BookmarkModel }) {
-  const art = artForUnit(bookmark.sectionNumber, bookmark.unitNumber)
+  const art = artForUnit(bookmark.unitNumber)
   const eyebrow = bookmark.finished ? 'Practise again' : bookmark.fresh ? 'Begin' : 'Continue'
 
   const partly = bookmark.solvedCount > 0 && bookmark.solvedCount < bookmark.exerciseCount
