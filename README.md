@@ -134,6 +134,15 @@ And one from unit 5:
   Unit 5's "it is evening" is ܪܡܫܐ ܗܘ, the same copula the Peshitta uses at
   Luke 24:29.
 
+And one from unit 6, which is the same trap seen from the other side:
+
+- **Prepositions are not one class — check each one.** ܒ attaches, but ܡܢ "from"
+  and ܥܡ "with" are free words: ܒܐܘܪܚܐ is one chip, ܡܢ ܒܝܬܐ and ܥܡ ܐܒܝ are two.
+  Nothing about a preposition tells you which kind it is, so look it up rather
+  than generalising from the last unit. Unit 6's chest asks for ܡܢ ܒܝܬܐ with
+  ܒܒܝܬܐ sitting in the same word bank, so the learner has to make the call too.
+  Its "go" is ܙܠ, imperative of ܐܙܠ — the unit 4 trap again.
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).

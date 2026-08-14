@@ -1,0 +1,260 @@
+{
+  "slug": "s1-u6",
+  "sectionNumber": 1,
+  "unitNumber": 6,
+  "title": "Out on the road",
+  "description": "Morning, and you leave the house you arrived at. Seven new words, and the first unit that lets you go somewhere with someone",
+  "lessons": [
+    {
+      "slug": "s1-u6-morning",
+      "title": "Morning comes",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u6-morning-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܨܦܪܐ",
+          "transliteration": "safro",
+          "correctTokens": "morning",
+          "distractorTokens": "evening night"
+        },
+        {
+          "slug": "s1-u6-morning-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܡܫܐ",
+          "transliteration": "shemsho",
+          "correctTokens": "sun",
+          "distractorTokens": "lamp light"
+        },
+        {
+          "slug": "s1-u6-morning-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܨܦܪܐ ܗܘ",
+          "transliteration": "safro hu",
+          "correctTokens": "it is morning",
+          "distractorTokens": "evening night"
+        },
+        {
+          "slug": "s1-u6-morning-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܢܘܗܪܐ ܒܨܦܪܐ",
+          "transliteration": "nuhro b-safro",
+          "correctTokens": "light in the morning",
+          "distractorTokens": "darkness lamp"
+        },
+        {
+          "slug": "s1-u6-morning-5",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܫܡܫܐ",
+          "transliteration": "shemsho",
+          "correctTokens": "ܫܡܫܐ",
+          "distractorTokens": "ܪܡܫܐ ܫܪܓܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u6-road",
+      "title": "Out to the road",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u6-road-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܘܪܚܐ",
+          "transliteration": "urho",
+          "correctTokens": "road",
+          "distractorTokens": "door house"
+        },
+        {
+          "slug": "s1-u6-road-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܙܠ",
+          "transliteration": "zel",
+          "correctTokens": "go",
+          "distractorTokens": "sit eat"
+        },
+        {
+          "slug": "s1-u6-road-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܒܐܘܪܚܐ",
+          "transliteration": "b-urho",
+          "correctTokens": "on the road",
+          "distractorTokens": "morning here"
+        },
+        {
+          "slug": "s1-u6-road-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܝܟܘ ܐܘܪܚܐ",
+          "transliteration": "aykaw urho",
+          "correctTokens": "where is the road",
+          "distractorTokens": "here sun"
+        },
+        {
+          "slug": "s1-u6-road-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"on the road\"",
+          "aramaicScript": null,
+          "transliteration": "b-urho",
+          "correctTokens": "ܒܐܘܪܚܐ",
+          "distractorTokens": "ܐܘܪܚܐ ܥܠ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u6-treasure",
+      "title": "From the house",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u6-treasure-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܡܢ ܒܝܬܐ",
+          "transliteration": "men bayto",
+          "correctTokens": "from the house",
+          "distractorTokens": "in road"
+        },
+        {
+          "slug": "s1-u6-treasure-2",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"from the house\" — this one takes two words",
+          "aramaicScript": null,
+          "transliteration": "men bayto",
+          "correctTokens": "ܡܢ ܒܝܬܐ",
+          "distractorTokens": "ܒܒܝܬܐ ܐܘܪܚܐ"
+        },
+        {
+          "slug": "s1-u6-treasure-3",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܨܦܪܐ=morning;ܐܘܪܚܐ=road;ܫܡܫܐ=sun",
+          "distractorTokens": "night lamp"
+        },
+        {
+          "slug": "s1-u6-treasure-4",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܙܠ ܡܢ ܗܪܟܐ",
+          "transliteration": "zel men horko",
+          "correctTokens": "ܙܠ ܡܢ ܗܪܟܐ",
+          "distractorTokens": "ܒܝܬܐ ܐܘܪܚܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u6-with",
+      "title": "With my father",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u6-with-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܥܡ ܐܒܝ",
+          "transliteration": "am abi",
+          "correctTokens": "with my father",
+          "distractorTokens": "mother from"
+        },
+        {
+          "slug": "s1-u6-with-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܥܡ ܐܡܝ",
+          "transliteration": "am emi",
+          "correctTokens": "with my mother",
+          "distractorTokens": "father road"
+        },
+        {
+          "slug": "s1-u6-with-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܙܠ ܥܡ ܐܒܝ",
+          "transliteration": "zel am abi",
+          "correctTokens": "go with my father",
+          "distractorTokens": "sit mother"
+        },
+        {
+          "slug": "s1-u6-with-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"with my mother\"",
+          "aramaicScript": null,
+          "transliteration": "am emi",
+          "correctTokens": "ܥܡ ܐܡܝ",
+          "distractorTokens": "ܐܒܝ ܡܢ"
+        },
+        {
+          "slug": "s1-u6-with-5",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܥܡ",
+          "transliteration": "am",
+          "correctTokens": "ܥܡ",
+          "distractorTokens": "ܡܢ ܥܠ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u6-practice",
+      "title": "A good day",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u6-practice-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܝܘܡܐ",
+          "transliteration": "yawmo",
+          "correctTokens": "day",
+          "distractorTokens": "morning night"
+        },
+        {
+          "slug": "s1-u6-practice-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܝܘܡܐ ܛܒܐ",
+          "transliteration": "yawmo tobo",
+          "correctTokens": "a good day|good day",
+          "distractorTokens": "morning evening"
+        },
+        {
+          "slug": "s1-u6-practice-3",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܝܟܘ ܫܡܫܐ",
+          "transliteration": "aykaw shemsho",
+          "correctTokens": "where is the sun",
+          "distractorTokens": "here day"
+        },
+        {
+          "slug": "s1-u6-practice-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"it is morning\"",
+          "aramaicScript": null,
+          "transliteration": "safro hu",
+          "correctTokens": "ܨܦܪܐ ܗܘ",
+          "distractorTokens": "ܪܡܫܐ ܫܡܫܐ"
+        },
+        {
+          "slug": "s1-u6-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܙܠ ܥܡ ܐܒܝ",
+          "transliteration": "zel am abi",
+          "correctTokens": "ܙܠ ܥܡ ܐܒܝ",
+          "distractorTokens": "ܐܡܝ ܡܢ"
+        }
+      ]
+    }
+  ]
+}
