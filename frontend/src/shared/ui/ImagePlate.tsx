@@ -28,6 +28,9 @@ export function ImagePlate({
 }) {
   return (
     // Decorative portraits — Next Image not required for static public assets.
+    // These ship at a fixed size from /public and are mostly aria-hidden, so the
+    // optimiser would add a round trip and a dependency for no benefit.
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={decorative ? '' : alt}

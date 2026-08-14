@@ -1,0 +1,65 @@
+name: CI
+
+# The curriculum is edited far more often than the code around it, and a broken
+# exercise does not crash anything — it just quietly ships. So this runs on every
+# push and every pull request, not only on main.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+# A second push to the same branch makes the first run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (Java)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          # pom.xml targets release 21; 25 is what this is developed against.
+          java-version: '25'
+          distribution: temurin
+          cache: maven
+
+      - name: Test
+        run: ./mvnw --batch-mode --no-transfer-progress test
+
+  frontend:
+    name: Frontend (Next.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      # Each step runs even if an earlier one failed, so one push reports every
+      # problem rather than making you fix them one round trip at a time.
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        if: '!cancelled()'
+        run: npm run lint
+
+      - name: Test
+        if: '!cancelled()'
+        run: npm test

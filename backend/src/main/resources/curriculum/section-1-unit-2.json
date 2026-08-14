@@ -35,7 +35,7 @@
           "aramaicScript": null,
           "transliteration": null,
           "correctTokens": "ܚܕ=one ܬܪܝܢ=two ܬܠܬܐ=three",
-          "distractorTokens": "four five"
+          "distractorTokens": "bread water"
         },
         {
           "slug": "s1-u2-numbers-4",
@@ -69,7 +69,7 @@
           "aramaicScript": "ܐܡܐ",
           "transliteration": "emo",
           "correctTokens": "mother",
-          "distractorTokens": "father brother"
+          "distractorTokens": "father son"
         },
         {
           "slug": "s1-u2-family-3",
@@ -103,7 +103,7 @@
           "aramaicScript": null,
           "transliteration": null,
           "correctTokens": "ܐܒܐ=father ܐܡܐ=mother ܒܪܐ=son",
-          "distractorTokens": "water brother"
+          "distractorTokens": "water bread"
         },
         {
           "slug": "s1-u2-treasure-2",
@@ -128,7 +128,7 @@
           "aramaicScript": "ܐܒܝ",
           "transliteration": "abi",
           "correctTokens": "my father",
-          "distractorTokens": "my mother one"
+          "distractorTokens": "mother one"
         },
         {
           "slug": "s1-u2-phrases-2",
@@ -137,7 +137,7 @@
           "aramaicScript": "ܐܡܝ",
           "transliteration": "emi",
           "correctTokens": "my mother",
-          "distractorTokens": "my father two"
+          "distractorTokens": "father two"
         },
         {
           "slug": "s1-u2-phrases-3",
@@ -171,7 +171,7 @@
           "aramaicScript": "ܐܒܝ",
           "transliteration": "abi",
           "correctTokens": "my father",
-          "distractorTokens": "my mother three"
+          "distractorTokens": "mother three"
         },
         {
           "slug": "s1-u2-practice-2",
@@ -180,7 +180,7 @@
           "aramaicScript": null,
           "transliteration": null,
           "correctTokens": "ܐܒܝ=my father;ܐܡܝ=my mother",
-          "distractorTokens": "son brother"
+          "distractorTokens": "son father"
         },
         {
           "slug": "s1-u2-practice-3",

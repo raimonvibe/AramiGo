@@ -82,6 +82,13 @@ Content lives in `backend/src/main/resources/curriculum/*.json` — not in Java.
 Add or edit a file and restart; the seeder upserts by `slug`, so existing ids and
 learner progress survive content edits, and anything removed from the files is pruned.
 
+The mechanical half of the rules below is enforced by `CurriculumRulesTest`, which
+CI runs on every push. A broken exercise never crashes anything — it just ships —
+so that test is the only thing standing between a typo and a learner meeting a
+word bank whose single option is the answer. The judgement half (seven new words,
+two- or three-word sentences) is still yours: ܒܒܝܬܐ is a new surface form but not
+really a new word, and no test can tell the difference.
+
 ### How a unit is built
 
 `section-1-unit-3.json` ("At the door") is the pattern to copy. A unit is **one
