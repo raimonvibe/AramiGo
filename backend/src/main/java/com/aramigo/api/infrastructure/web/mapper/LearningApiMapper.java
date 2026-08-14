@@ -8,6 +8,7 @@ import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
 import com.aramigo.api.application.dto.LessonSessionResult.ExerciseView;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.RefillEnergyResult;
 import com.aramigo.api.application.dto.ReviewSessionResult;
 import com.aramigo.api.domain.model.LearnerStats;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CheckAnswerResponse;
@@ -19,6 +20,7 @@ import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LessonSessionRespo
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathNodeResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathUnitResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ProfileResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.RefillEnergyResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ReviewSessionResponse;
 
 public final class LearningApiMapper {
@@ -55,6 +57,10 @@ public final class LearningApiMapper {
   public static LessonSessionResponse toResponse(LessonSessionResult result) {
     return new LessonSessionResponse(
         result.lessonId(), result.title(), stats(result.stats()), exercises(result.exercises()));
+  }
+
+  public static RefillEnergyResponse toResponse(RefillEnergyResult result) {
+    return new RefillEnergyResponse(result.gemsSpent(), stats(result.stats()));
   }
 
   public static ReviewSessionResponse toResponse(ReviewSessionResult result) {

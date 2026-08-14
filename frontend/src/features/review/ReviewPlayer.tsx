@@ -23,6 +23,10 @@ export function ReviewPlayer() {
   const [error, setError] = useState<string | null>(null)
   const [outOfEnergy, setOutOfEnergy] = useState<{ message: string; seconds: number } | null>(null)
 
+  // Bumped to retry after a refill, when the first attempt was refused for
+  // want of energy.
+  const [attempt, setAttempt] = useState(0)
+
   useEffect(() => {
     getReview()
       .then(data => {
@@ -36,6 +40,15 @@ export function ReviewPlayer() {
         }
         setError(err instanceof ApiError ? err.message : 'Could not load your review.')
       })
+  }, [attempt])
+
+  const handleRefilled = useCallback((next: LearnerStats) => {
+    setStats(next)
+    setOutOfEnergy(null)
+    setSession(current => {
+      if (!current) setAttempt(a => a + 1)
+      return current
+    })
   }, [])
 
   const handleOutOfEnergy = useCallback((message: string) => {
@@ -99,6 +112,8 @@ export function ReviewPlayer() {
           key={outOfEnergy.seconds}
           message={outOfEnergy.message}
           secondsUntilNextEnergy={outOfEnergy.seconds || (stats?.secondsUntilNextEnergy ?? 0)}
+          gems={stats?.gems}
+          onRefilled={handleRefilled}
         />
       )}
 

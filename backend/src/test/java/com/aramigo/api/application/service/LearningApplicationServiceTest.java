@@ -59,7 +59,7 @@ class LearningApplicationServiceTest {
   @Test
   void claimingALessonYouNeverPlayedIsRejected() {
     assertThrows(
-        LessonIncompleteException.class, () -> service.completeLesson(GUEST, lessonOne.id()));
+        LessonIncompleteException.class, () -> service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC));
   }
 
   @Test
@@ -67,12 +67,12 @@ class LearningApplicationServiceTest {
     service.checkAnswer(GUEST, firstExercise.id(), List.of("hello"));
 
     assertThrows(
-        LessonIncompleteException.class, () -> service.completeLesson(GUEST, lessonOne.id()));
+        LessonIncompleteException.class, () -> service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC));
   }
 
   @Test
   void jumpingAheadToALockedLessonIsRejected() {
-    assertThrows(LessonLockedException.class, () -> service.completeLesson(GUEST, lessonTwo.id()));
+    assertThrows(LessonLockedException.class, () -> service.completeLesson(GUEST, lessonTwo.id(), ZoneOffset.UTC));
     assertThrows(LessonLockedException.class, () -> service.startLesson(GUEST, lessonTwo.id()));
   }
 
@@ -80,7 +80,7 @@ class LearningApplicationServiceTest {
   void solvingEveryExerciseUnlocksTheNextLesson() {
     solveLessonOne();
 
-    CompleteLessonResult result = service.completeLesson(GUEST, lessonOne.id());
+    CompleteLessonResult result = service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
     assertEquals(10, result.gemsReward());
     assertEquals(1, result.stats().streak());
@@ -96,9 +96,9 @@ class LearningApplicationServiceTest {
   @Test
   void replayingALessonPaysNothing() {
     solveLessonOne();
-    service.completeLesson(GUEST, lessonOne.id());
+    service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
-    CompleteLessonResult again = service.completeLesson(GUEST, lessonOne.id());
+    CompleteLessonResult again = service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
     assertEquals(0, again.gemsReward(), "gems must not be farmable by replaying one lesson");
     assertEquals(0, again.energyReward());
@@ -130,7 +130,7 @@ class LearningApplicationServiceTest {
   @Test
   void signingInCarriesGuestProgressOntoTheAccount() {
     solveLessonOne();
-    service.completeLesson(GUEST, lessonOne.id());
+    service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
     service.linkGuestProgress("google:42", "Stefan", GUEST);
 
@@ -145,7 +145,7 @@ class LearningApplicationServiceTest {
   @Test
   void linkingTwiceIsHarmless() {
     solveLessonOne();
-    service.completeLesson(GUEST, lessonOne.id());
+    service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
     service.linkGuestProgress("google:42", "Stefan", GUEST);
     service.linkGuestProgress("google:42", "Stefan", GUEST);
@@ -170,7 +170,7 @@ class LearningApplicationServiceTest {
     assertEquals(2, before.totalLessons());
 
     solveLessonOne();
-    service.completeLesson(GUEST, lessonOne.id());
+    service.completeLesson(GUEST, lessonOne.id(), ZoneOffset.UTC);
 
     var after = service.profile(GUEST, null);
     assertEquals(1, after.completedLessons());

@@ -71,6 +71,8 @@ public final class LearningApiDtos {
   public record CompleteLessonResponse(
       int energyReward, int gemsReward, LearnerStatsResponse stats) {}
 
+  public record RefillEnergyResponse(int gemsSpent, LearnerStatsResponse stats) {}
+
   public record ProfileResponse(
       boolean signedIn,
       String displayName,

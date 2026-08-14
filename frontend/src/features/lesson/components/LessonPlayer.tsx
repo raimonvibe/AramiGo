@@ -29,6 +29,10 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
   // A malformed URL is knowable during render — no effect needed.
   const badLink = !Number.isFinite(lessonId)
 
+  // Bumped to retry the load after a refill, when the first attempt was refused
+  // for want of energy.
+  const [attempt, setAttempt] = useState(0)
+
   useEffect(() => {
     if (badLink) return
     getLesson(lessonId)
@@ -43,7 +47,24 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
         }
         setError(err instanceof ApiError ? err.message : 'Could not load this lesson.')
       })
-  }, [lessonId, badLink])
+  }, [lessonId, badLink, attempt])
+
+  /**
+   * Running out mid-lesson leaves the session loaded, so clearing the notice is
+   * enough and the learner keeps their place. Running out on arrival left
+   * nothing loaded, so that case has to fetch.
+   */
+  const handleRefilled = useCallback(
+    (next: LearnerStats) => {
+      setStats(next)
+      setOutOfEnergy(null)
+      setSession(current => {
+        if (!current) setAttempt(a => a + 1)
+        return current
+      })
+    },
+    [],
+  )
 
   const exercise = session?.exercises[index]
   const total = session?.exercises.length ?? 0
@@ -151,6 +172,8 @@ export function LessonPlayer({ lessonId }: { lessonId: number }) {
           key={outOfEnergy.seconds}
           message={outOfEnergy.message}
           secondsUntilNextEnergy={outOfEnergy.seconds || (stats?.secondsUntilNextEnergy ?? 0)}
+          gems={stats?.gems}
+          onRefilled={handleRefilled}
         />
       )}
 
