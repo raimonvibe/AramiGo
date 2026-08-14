@@ -222,8 +222,15 @@ new unit's lessons continue the numbering rather than restarting at 1.
 
 A new unit needs no frontend work at all. The seeder globs the curriculum
 directory, `unitTheme` rotates the chapter gradient through seven families, and
-`gameArt` rotates the bookmark portrait through nine — so colour and art both
+`artForUnit` rotates the bookmark portrait through nine — so colour and art both
 arrive without being asked for, and repeat only many chapters later.
+
+Concretely: unit *n* takes portrait `(n - 1) % 9` of the pack, and every unit has
+one however far the curriculum runs. There is no unpaired case left to handle.
+Units 6 and 7 shipped against a curated one-portrait-per-unit list and fell
+through it to a generic banner, so commit messages from that stretch say a new
+unit has no portrait — that list is gone, and so is the fallback. Check
+`gameArt.ts` rather than the last unit's commit message.
 
 ## Configuration
 
