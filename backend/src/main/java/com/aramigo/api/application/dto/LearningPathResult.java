@@ -6,7 +6,11 @@ import com.aramigo.api.domain.model.LearnerStats;
 import com.aramigo.api.domain.model.NodeKind;
 import com.aramigo.api.domain.model.NodeStatus;
 
-public record LearningPathResult(LearnerStats stats, List<UnitResult> units) {
+/**
+ * @param reviewDue solved exercises waiting to be reviewed, carried here so the
+ *     home page can offer review without a second request
+ */
+public record LearningPathResult(LearnerStats stats, int reviewDue, List<UnitResult> units) {
 
   public record UnitResult(
       int sectionNumber,

@@ -60,7 +60,7 @@
           "aramaicScript": "ܐܢܐ",
           "transliteration": "eno",
           "correctTokens": "I",
-          "distractorTokens": "you they"
+          "distractorTokens": "you bread"
         },
         {
           "slug": "s1-u1-names-2",
@@ -128,7 +128,7 @@
           "aramaicScript": "ܐܝܬ ܠܝ ܠܚܡܐ",
           "transliteration": "it li lahma",
           "correctTokens": "I have bread",
-          "distractorTokens": "you drink milk"
+          "distractorTokens": "you drink water"
         },
         {
           "slug": "s1-u1-sentences-2",

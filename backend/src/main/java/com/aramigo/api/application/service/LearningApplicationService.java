@@ -3,7 +3,7 @@ package com.aramigo.api.application.service;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +20,8 @@ import com.aramigo.api.application.dto.LearningPathResult.UnitResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
 import com.aramigo.api.application.dto.LessonSessionResult.ExerciseView;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.RefillEnergyResult;
+import com.aramigo.api.application.dto.ReviewSessionResult;
 import com.aramigo.api.application.port.in.LearningUseCases;
 import com.aramigo.api.application.port.out.CurriculumRepositoryPort;
 import com.aramigo.api.application.port.out.ExerciseProgressPort;
@@ -41,8 +43,28 @@ import com.aramigo.api.domain.policy.AnswerMatchingPolicy;
 public class LearningApplicationService implements LearningUseCases {
 
   private static final int ENERGY_COST_WRONG = 1;
+
+  /**
+   * How many due exercises one review sitting hands out.
+   *
+   * <p>Capped because the queue is unbounded after a long absence, and a learner
+   * returning to two hundred waiting cards closes the tab. The count of
+   * everything due still goes back, so the UI can say there is more.
+   */
+  private static final int REVIEW_SESSION_SIZE = 12;
+
   private static final int ENERGY_REWARD_LESSON = 3;
   private static final int GEMS_REWARD_LESSON = 10;
+
+  /**
+   * Five lessons buys one full bar.
+   *
+   * <p>Priced against the wait it replaces rather than picked round: refilling
+   * from empty otherwise takes {@value Learner#MAX_ENERGY} × 10 minutes, a little
+   * over four hours. Cheap enough to be worth saving for, dear enough that it
+   * does not remove the pause the energy bar exists to create.
+   */
+  private static final int GEMS_PER_REFILL = 50;
 
   /** Guest identities are minted by the web adapter with this prefix. */
   private static final String GUEST_PREFIX = "guest:";
@@ -101,7 +123,8 @@ public class LearningApplicationService implements LearningUseCases {
                         solved))
             .toList();
 
-    return new LearningPathResult(learner.stats(now), units);
+    return new LearningPathResult(
+        learner.stats(now), progress.countDueForReview(learner.getId(), now), units);
   }
 
   @Override
@@ -124,6 +147,24 @@ public class LearningApplicationService implements LearningUseCases {
   }
 
   @Override
+  public ReviewSessionResult reviewSession(String identityKey) {
+    Instant now = clock.instant();
+    Learner learner = activeLearner(identityKey, now);
+
+    int dueCount = progress.countDueForReview(learner.getId(), now);
+    List<Long> dueIds = progress.findDueForReview(learner.getId(), now, REVIEW_SESSION_SIZE);
+
+    // Exercises pruned from the curriculum can still have progress rows pointing
+    // at them until the next seed, so a missing one is skipped rather than fatal.
+    List<ExerciseView> views =
+        dueIds.stream().flatMap(id -> curriculum.findExerciseById(id).stream())
+            .map(this::toView)
+            .toList();
+
+    return new ReviewSessionResult(dueCount, learner.stats(now), views);
+  }
+
+  @Override
   public CheckAnswerResult checkAnswer(String identityKey, long exerciseId, List<String> tokens) {
     Instant now = clock.instant();
     Learner learner = activeLearner(identityKey, now);
@@ -135,7 +176,7 @@ public class LearningApplicationService implements LearningUseCases {
     String hint = answers.friendlyHint(exercise.correctTokens());
 
     if (answers.matches(exercise.correctTokens(), tokens)) {
-      progress.recordSolved(learner.getId(), exerciseId);
+      progress.recordCorrect(learner.getId(), exerciseId, now);
       return new CheckAnswerResult(true, "Great job!", hint, 0, learner.stats(now));
     }
 
@@ -145,6 +186,9 @@ public class LearningApplicationService implements LearningUseCases {
           false, "Almost — pick just one word", hint, 0, learner.stats(now));
     }
 
+    // Knocks the review schedule back if this was already known. The row itself
+    // survives, so a slip here can never un-complete a finished lesson.
+    progress.recordLapse(learner.getId(), exerciseId, now);
     learner.spendEnergy(ENERGY_COST_WRONG);
     learners.save(learner);
     return new CheckAnswerResult(
@@ -152,7 +196,7 @@ public class LearningApplicationService implements LearningUseCases {
   }
 
   @Override
-  public CompleteLessonResult completeLesson(String identityKey, long lessonId) {
+  public CompleteLessonResult completeLesson(String identityKey, long lessonId, ZoneId learnerZone) {
     Instant now = clock.instant();
     Learner learner = activeLearner(identityKey, now);
     Lesson lesson = requireLesson(lessonId);
@@ -177,10 +221,21 @@ public class LearningApplicationService implements LearningUseCases {
       learner.addEnergy(energyReward);
       learner.addGems(gemsReward);
     }
-    learner.recordActivityOn(LocalDate.ofInstant(now, ZoneOffset.UTC));
+    learner.recordActivityOn(LocalDate.ofInstant(now, learnerZone));
     learners.save(learner);
 
     return new CompleteLessonResult(energyReward, gemsReward, learner.stats(now));
+  }
+
+  @Override
+  public RefillEnergyResult refillEnergy(String identityKey) {
+    Instant now = clock.instant();
+    Learner learner = activeLearner(identityKey, now);
+
+    learner.refillEnergyWith(GEMS_PER_REFILL);
+    learners.save(learner);
+
+    return new RefillEnergyResult(GEMS_PER_REFILL, learner.stats(now));
   }
 
   @Override

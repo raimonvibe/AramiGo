@@ -62,25 +62,53 @@ App: http://localhost:3000
 ## API
 
 Every request carries an identity: `X-Guest-Key` for anonymous learners, or
-`Authorization: Bearer <Google ID token>` once signed in.
+`Authorization: Bearer <Google ID token>` once signed in. Requests also carry
+`X-Time-Zone` (an IANA zone such as `Europe/Amsterdam`); anything unrecognised
+falls back to UTC.
 
 | Method | Path | Purpose |
 |--------|------|---------|
 | GET | `/health` | Liveness (Render + keepalive) |
-| GET | `/api/path` | All units + learner stats |
+| GET | `/api/path` | All units, learner stats, and how much review is due |
 | GET | `/api/lessons/{id}` | Lesson session |
+| GET | `/api/review` | Solved exercises that have come due again |
 | POST | `/api/exercises/check` | `{ exerciseId, tokens }` |
 | POST | `/api/lessons/complete` | `{ lessonId }` — requires every exercise solved |
+| POST | `/api/energy/refill` | Trade 50 gems for a full energy bar |
 | GET | `/api/me` | Profile + stats |
 | POST | `/api/auth/link` | Merge guest progress into a signed-in account |
 
 Errors are always `{ status, code, message }`; the `message` is written for a learner.
+
+### Review
+
+Solving an exercise schedules it rather than retiring it. Right answers climb a
+Leitner ladder — 1, 3, 7, 16, 35, 75, 160 days — and a wrong answer drops back to
+the first rung. A lapse moves the schedule and never the solve, so getting
+something wrong in review cannot un-complete a finished lesson. Sessions are
+capped at twelve; `dueCount` reports the whole debt behind them.
+
+`ReviewState` is the only class that knows the intervals, so the ladder can be
+replaced with a fitted model once there is enough review history to fit one.
+
+### Streaks
+
+The streak day is the learner's own, taken from `X-Time-Zone`. Counted in UTC it
+rolls over mid-afternoon across much of the world, so an evening habit registers
+as two days at once and then a gap.
 
 ## Adding lessons
 
 Content lives in `backend/src/main/resources/curriculum/*.json` — not in Java.
 Add or edit a file and restart; the seeder upserts by `slug`, so existing ids and
 learner progress survive content edits, and anything removed from the files is pruned.
+
+The mechanical half of the rules below is enforced by `CurriculumRulesTest`, which
+CI runs on every push. A broken exercise never crashes anything — it just ships —
+so that test is the only thing standing between a typo and a learner meeting a
+word bank whose single option is the answer. The judgement half (seven new words,
+two- or three-word sentences) is still yours: ܒܒܝܬܐ is a new surface form but not
+really a new word, and no test can tell the difference.
 
 ### How a unit is built
 

@@ -33,7 +33,7 @@ public final class LearningApiDtos {
       List<PathNodeResponse> nodes) {}
 
   public record LearningPathResponse(
-      LearnerStatsResponse stats, List<PathUnitResponse> units) {}
+      LearnerStatsResponse stats, int reviewDue, List<PathUnitResponse> units) {}
 
   public record ExerciseResponse(
       long id,
@@ -48,6 +48,15 @@ public final class LearningApiDtos {
   public record LessonSessionResponse(
       long lessonId, String title, LearnerStatsResponse stats, List<ExerciseResponse> exercises) {}
 
+  /**
+   * No lesson id and no title: a review is drawn from the whole curriculum and
+   * has nothing to complete, so there is nothing for the client to post back.
+   *
+   * @param dueCount everything waiting, which may exceed {@code exercises}
+   */
+  public record ReviewSessionResponse(
+      int dueCount, LearnerStatsResponse stats, List<ExerciseResponse> exercises) {}
+
   public record CheckAnswerRequest(@NotNull Long exerciseId, @NotEmpty List<String> tokens) {}
 
   public record CheckAnswerResponse(
@@ -61,6 +70,8 @@ public final class LearningApiDtos {
 
   public record CompleteLessonResponse(
       int energyReward, int gemsReward, LearnerStatsResponse stats) {}
+
+  public record RefillEnergyResponse(int gemsSpent, LearnerStatsResponse stats) {}
 
   public record ProfileResponse(
       boolean signedIn,

@@ -18,6 +18,9 @@ export interface LearnerStats {
   secondsUntilNextEnergy: number
 }
 
+/** What a full energy bar costs, mirroring GEMS_PER_REFILL on the server. */
+export const GEMS_PER_REFILL = 50
+
 export interface PathNode {
   lessonId: number
   position: number
@@ -38,6 +41,8 @@ export interface PathUnit {
 
 export interface LearningPath {
   stats: LearnerStats
+  /** Solved exercises waiting to be reviewed — carried here to save a request. */
+  reviewDue: number
   units: PathUnit[]
 }
 
@@ -61,11 +66,29 @@ export interface LessonSession {
   exercises: ExerciseView[]
 }
 
+/**
+ * Due exercises drawn from the whole curriculum.
+ *
+ * No lesson id and no title: there is nothing to complete and nothing to post
+ * back, which is what separates this from a {@link LessonSession}.
+ */
+export interface ReviewSession {
+  /** Everything waiting, which may exceed the exercises handed out. */
+  dueCount: number
+  stats: LearnerStats
+  exercises: ExerciseView[]
+}
+
 export interface CheckAnswerResponse {
   correct: boolean
   message: string
   correctAnswer: string
   energyDelta: number
+  stats: LearnerStats
+}
+
+export interface RefillEnergyResponse {
+  gemsSpent: number
   stats: LearnerStats
 }
 
@@ -127,6 +150,22 @@ export function guestKey(): string {
   return created
 }
 
+/**
+ * The browser's IANA zone, e.g. `Europe/Amsterdam`.
+ *
+ * Streaks are counted in whole days, and which day it is depends on where the
+ * learner is. A zone rather than an offset, because an offset is wrong half the
+ * year wherever there is daylight saving. Empty when the browser will not say,
+ * and the API then falls back to UTC.
+ */
+export function timeZone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? ''
+  } catch {
+    return ''
+  }
+}
+
 export function storedToken(): string | null {
   if (typeof window === 'undefined') return null
   return localStorage.getItem(TOKEN_STORAGE)
@@ -172,6 +211,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
       headers: {
         'Content-Type': 'application/json',
         'X-Guest-Key': guestKey(),
+        'X-Time-Zone': timeZone(),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(init?.headers ?? {}),
       },
@@ -195,6 +235,8 @@ export const getPath = () => api<LearningPath>('/api/path')
 
 export const getLesson = (lessonId: number) => api<LessonSession>(`/api/lessons/${lessonId}`)
 
+export const getReview = () => api<ReviewSession>('/api/review')
+
 export const checkAnswer = (exerciseId: number, tokens: string[]) =>
   api<CheckAnswerResponse>('/api/exercises/check', {
     method: 'POST',
@@ -206,6 +248,9 @@ export const completeLesson = (lessonId: number) =>
     method: 'POST',
     body: JSON.stringify({ lessonId }),
   })
+
+export const refillEnergy = () =>
+  api<RefillEnergyResponse>('/api/energy/refill', { method: 'POST' })
 
 export const getProfile = () => api<Profile>('/api/me')
 

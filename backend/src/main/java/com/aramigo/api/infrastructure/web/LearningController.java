@@ -10,6 +10,8 @@ import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CompleteLessonResp
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LearningPathResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LessonSessionResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ProfileResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.RefillEnergyResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ReviewSessionResponse;
 import com.aramigo.api.infrastructure.web.mapper.LearningApiMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +44,14 @@ public class LearningController {
     return LearningApiMapper.toResponse(learning.getPath(identity(authorization, guestKey).key()));
   }
 
+  @GetMapping("/review")
+  public ReviewSessionResponse review(
+      @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
+      @RequestHeader(value = GUEST_HEADER, required = false) String guestKey) {
+    return LearningApiMapper.toResponse(
+        learning.reviewSession(identity(authorization, guestKey).key()));
+  }
+
   @GetMapping("/lessons/{lessonId}")
   public LessonSessionResponse lesson(
       @PathVariable long lessonId,
@@ -65,9 +75,21 @@ public class LearningController {
   public CompleteLessonResponse complete(
       @Valid @RequestBody CompleteLessonRequest request,
       @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
+      @RequestHeader(value = GUEST_HEADER, required = false) String guestKey,
+      @RequestHeader(value = ClientTimeZone.HEADER, required = false) String timeZone) {
+    return LearningApiMapper.toResponse(
+        learning.completeLesson(
+            identity(authorization, guestKey).key(),
+            request.lessonId(),
+            ClientTimeZone.resolve(timeZone)));
+  }
+
+  @PostMapping("/energy/refill")
+  public RefillEnergyResponse refillEnergy(
+      @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
       @RequestHeader(value = GUEST_HEADER, required = false) String guestKey) {
     return LearningApiMapper.toResponse(
-        learning.completeLesson(identity(authorization, guestKey).key(), request.lessonId()));
+        learning.refillEnergy(identity(authorization, guestKey).key()));
   }
 
   @GetMapping("/me")

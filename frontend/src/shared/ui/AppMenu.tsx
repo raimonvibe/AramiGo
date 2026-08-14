@@ -29,13 +29,8 @@ export function AppMenu() {
   const [openedAt, setOpenedAt] = useState<string | null>(null)
   const open = openedAt !== null && openedAt === pathname
   const triggerRef = useRef<HTMLButtonElement | null>(null)
-  const [mounted, setMounted] = useState(false)
 
   const close = useCallback(() => setOpenedAt(null), [])
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -57,8 +52,12 @@ export function AppMenu() {
 
   return (
     <div className="app-menu">
+      {/*
+        No "have we hydrated yet" guard: the portal needs document.body, and it
+        is only reached when `open`, which starts false and can only be flipped
+        by a click. A server render therefore never gets here.
+      */}
       {open &&
-        mounted &&
         createPortal(
           <button
             type="button"

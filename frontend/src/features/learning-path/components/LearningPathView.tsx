@@ -144,6 +144,27 @@ export function LearningPathView() {
 
       {bookmark && <Bookmark bookmark={bookmark} />}
 
+      {/*
+        Below the bookmark on purpose. Continuing where you left off is still the
+        primary action; review is the one that only appears when there is
+        something to do, and vanishes again once it is cleared.
+      */}
+      {path && path.reviewDue > 0 && (
+        <Link
+          href="/review"
+          className="review-call"
+          aria-label={`Review ${path.reviewDue} ${path.reviewDue === 1 ? 'word' : 'words'} due today`}
+        >
+          <span className="review-call-copy">
+            <span className="review-call-eyebrow">Review</span>
+            <span className="review-call-title brand-font">
+              {path.reviewDue} {path.reviewDue === 1 ? 'word' : 'words'} due
+            </span>
+            <span className="review-call-meta">Seen before — worth seeing again</span>
+          </span>
+        </Link>
+      )}
+
       {summaries.length > 0 && (
         <ol className="contents-list" aria-label="Course contents" ref={contentsRef}>
           {summaries.map(summary => {

@@ -1,10 +1,15 @@
 package com.aramigo.api.infrastructure.web.mapper;
 
+import java.util.List;
+
 import com.aramigo.api.application.dto.CheckAnswerResult;
 import com.aramigo.api.application.dto.CompleteLessonResult;
 import com.aramigo.api.application.dto.LearningPathResult;
 import com.aramigo.api.application.dto.LessonSessionResult;
+import com.aramigo.api.application.dto.LessonSessionResult.ExerciseView;
 import com.aramigo.api.application.dto.ProfileResult;
+import com.aramigo.api.application.dto.RefillEnergyResult;
+import com.aramigo.api.application.dto.ReviewSessionResult;
 import com.aramigo.api.domain.model.LearnerStats;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CheckAnswerResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.CompleteLessonResponse;
@@ -15,6 +20,8 @@ import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.LessonSessionRespo
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathNodeResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.PathUnitResponse;
 import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ProfileResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.RefillEnergyResponse;
+import com.aramigo.api.infrastructure.web.dto.LearningApiDtos.ReviewSessionResponse;
 
 public final class LearningApiMapper {
 
@@ -23,6 +30,7 @@ public final class LearningApiMapper {
   public static LearningPathResponse toResponse(LearningPathResult result) {
     return new LearningPathResponse(
         stats(result.stats()),
+        result.reviewDue(),
         result.units().stream()
             .map(
                 unit ->
@@ -48,22 +56,32 @@ public final class LearningApiMapper {
 
   public static LessonSessionResponse toResponse(LessonSessionResult result) {
     return new LessonSessionResponse(
-        result.lessonId(),
-        result.title(),
-        stats(result.stats()),
-        result.exercises().stream()
-            .map(
-                exercise ->
-                    new ExerciseResponse(
-                        exercise.id(),
-                        exercise.type(),
-                        exercise.prompt(),
-                        exercise.tip(),
-                        exercise.aramaicScript(),
-                        exercise.transliteration(),
-                        exercise.audioText(),
-                        exercise.wordBank()))
-            .toList());
+        result.lessonId(), result.title(), stats(result.stats()), exercises(result.exercises()));
+  }
+
+  public static RefillEnergyResponse toResponse(RefillEnergyResult result) {
+    return new RefillEnergyResponse(result.gemsSpent(), stats(result.stats()));
+  }
+
+  public static ReviewSessionResponse toResponse(ReviewSessionResult result) {
+    return new ReviewSessionResponse(
+        result.dueCount(), stats(result.stats()), exercises(result.exercises()));
+  }
+
+  private static List<ExerciseResponse> exercises(List<ExerciseView> views) {
+    return views.stream()
+        .map(
+            exercise ->
+                new ExerciseResponse(
+                    exercise.id(),
+                    exercise.type(),
+                    exercise.prompt(),
+                    exercise.tip(),
+                    exercise.aramaicScript(),
+                    exercise.transliteration(),
+                    exercise.audioText(),
+                    exercise.wordBank()))
+        .toList();
   }
 
   public static CheckAnswerResponse toResponse(CheckAnswerResult result) {

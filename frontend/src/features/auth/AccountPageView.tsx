@@ -47,6 +47,11 @@ function ProfileAvatar({
 
   if (pictureUrl) {
     return (
+      // A 96px avatar already on Google's CDN. next/image would need Google in
+      // remotePatterns and would proxy it through the optimiser — paying quota
+      // to make a small image slower, and complicating the no-referrer policy
+      // this needs to keep the account page out of Google's logs.
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={pictureUrl}
         alt={displayName ? `${displayName}'s profile photo` : 'Google profile photo'}
@@ -163,6 +168,10 @@ export function AccountPageView() {
   }, [])
 
   useEffect(() => {
+    // Fetch-on-mount, not a synchronous setState cascade — the rule cannot see
+    // the await. It has to happen here: the profile is keyed by a guest id in
+    // localStorage, so this cannot move to the server.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void refresh()
   }, [refresh])
 

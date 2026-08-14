@@ -19,6 +19,7 @@ import com.aramigo.api.domain.model.Exercise;
 import com.aramigo.api.domain.model.Learner;
 import com.aramigo.api.domain.model.Lesson;
 import com.aramigo.api.domain.model.LessonUnit;
+import com.aramigo.api.domain.model.ReviewState;
 
 /** Hand-rolled test doubles — the ports are small enough that fakes beat mocks. */
 final class InMemoryPorts {
@@ -177,10 +178,65 @@ final class InMemoryPorts {
   static final class Progress implements ExerciseProgressPort {
 
     private final Map<Long, Set<Long>> solved = new HashMap<>();
+    /** Review schedules, keyed the same way the real table keys its unique index. */
+    private final Map<List<Long>, ReviewState> schedules = new HashMap<>();
+
+    private static List<Long> key(long learnerId, long exerciseId) {
+      return List.of(learnerId, exerciseId);
+    }
 
     @Override
-    public void recordSolved(long learnerId, long exerciseId) {
-      solved.computeIfAbsent(learnerId, id -> new LinkedHashSet<>()).add(exerciseId);
+    public void recordCorrect(long learnerId, long exerciseId, Instant now) {
+      boolean isNew =
+          solved.computeIfAbsent(learnerId, id -> new LinkedHashSet<>()).add(exerciseId);
+      ReviewState existing = schedules.get(key(learnerId, exerciseId));
+      schedules.put(
+          key(learnerId, exerciseId),
+          isNew || existing == null
+              ? ReviewState.firstCorrect(now)
+              : existing.afterCorrect(now));
+    }
+
+    /**
+     * Drops the schedule while keeping the solve, reproducing a row written
+     * before scheduling existed. Those columns are nullable and {@code ddl-auto}
+     * cannot invent values for them, so this state is real, not hypothetical.
+     */
+    void forgetSchedule(long learnerId, long exerciseId) {
+      schedules.remove(key(learnerId, exerciseId));
+    }
+
+    @Override
+    public void recordLapse(long learnerId, long exerciseId, Instant now) {
+      ReviewState existing = schedules.get(key(learnerId, exerciseId));
+      if (existing != null) {
+        schedules.put(key(learnerId, exerciseId), existing.afterLapse(now));
+      }
+    }
+
+    @Override
+    public List<Long> findDueForReview(long learnerId, Instant now, int limit) {
+      return dueFor(learnerId, now).limit(Math.max(0, limit)).toList();
+    }
+
+    @Override
+    public int countDueForReview(long learnerId, Instant now) {
+      return (int) dueFor(learnerId, now).count();
+    }
+
+    private java.util.stream.Stream<Long> dueFor(long learnerId, Instant now) {
+      return solved.getOrDefault(learnerId, Set.of()).stream()
+          .filter(
+              exerciseId -> {
+                ReviewState state = schedules.get(key(learnerId, exerciseId));
+                return state == null || state.isDue(now);
+              })
+          .sorted(
+              java.util.Comparator.comparing(
+                  exerciseId -> {
+                    ReviewState state = schedules.get(key(learnerId, exerciseId));
+                    return state == null ? Instant.EPOCH : state.dueAt();
+                  }));
     }
 
     @Override

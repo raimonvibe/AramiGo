@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import com.aramigo.api.domain.exception.RefillRefusedException;
+
 /**
  * Learner aggregate — gamification + linear path progress.
  * Pure domain: no persistence or framework types.
@@ -184,6 +186,28 @@ public class Learner {
 
   public void addGems(int amount) {
     this.gems += amount;
+  }
+
+  /**
+   * Trades gems for a full energy bar.
+   *
+   * <p>The only thing gems have ever been good for. They were awarded from the
+   * first lesson and had no use at all, and a currency that does nothing teaches
+   * the learner that the rewards are decorative.
+   *
+   * @throws RefillRefusedException when the bar is already full or the gems are
+   *     short — either way the trade would cost something and return nothing
+   */
+  public void refillEnergyWith(int gemCost) {
+    if (energy >= MAX_ENERGY) {
+      throw new RefillRefusedException("Your energy is already full");
+    }
+    if (gems < gemCost) {
+      throw new RefillRefusedException(
+          "That costs " + gemCost + " gems, and you have " + gems + " so far");
+    }
+    gems -= gemCost;
+    energy = MAX_ENERGY;
   }
 
   /** @return true when this completion advanced the path (first time through) */
