@@ -28,6 +28,7 @@ public final class LearningApiMapper {
   public static LearningPathResponse toResponse(LearningPathResult result) {
     return new LearningPathResponse(
         stats(result.stats()),
+        result.reviewDue(),
         result.units().stream()
             .map(
                 unit ->

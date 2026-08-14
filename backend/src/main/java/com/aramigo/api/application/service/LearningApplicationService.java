@@ -112,7 +112,8 @@ public class LearningApplicationService implements LearningUseCases {
                         solved))
             .toList();
 
-    return new LearningPathResult(learner.stats(now), units);
+    return new LearningPathResult(
+        learner.stats(now), progress.countDueForReview(learner.getId(), now), units);
   }
 
   @Override

@@ -38,6 +38,8 @@ export interface PathUnit {
 
 export interface LearningPath {
   stats: LearnerStats
+  /** Solved exercises waiting to be reviewed — carried here to save a request. */
+  reviewDue: number
   units: PathUnit[]
 }
 
@@ -57,6 +59,19 @@ export interface ExerciseView {
 export interface LessonSession {
   lessonId: number
   title: string
+  stats: LearnerStats
+  exercises: ExerciseView[]
+}
+
+/**
+ * Due exercises drawn from the whole curriculum.
+ *
+ * No lesson id and no title: there is nothing to complete and nothing to post
+ * back, which is what separates this from a {@link LessonSession}.
+ */
+export interface ReviewSession {
+  /** Everything waiting, which may exceed the exercises handed out. */
+  dueCount: number
   stats: LearnerStats
   exercises: ExerciseView[]
 }
@@ -194,6 +209,8 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 export const getPath = () => api<LearningPath>('/api/path')
 
 export const getLesson = (lessonId: number) => api<LessonSession>(`/api/lessons/${lessonId}`)
+
+export const getReview = () => api<ReviewSession>('/api/review')
 
 export const checkAnswer = (exerciseId: number, tokens: string[]) =>
   api<CheckAnswerResponse>('/api/exercises/check', {

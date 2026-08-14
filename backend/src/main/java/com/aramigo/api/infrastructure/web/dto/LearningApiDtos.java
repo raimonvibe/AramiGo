@@ -33,7 +33,7 @@ public final class LearningApiDtos {
       List<PathNodeResponse> nodes) {}
 
   public record LearningPathResponse(
-      LearnerStatsResponse stats, List<PathUnitResponse> units) {}
+      LearnerStatsResponse stats, int reviewDue, List<PathUnitResponse> units) {}
 
   public record ExerciseResponse(
       long id,

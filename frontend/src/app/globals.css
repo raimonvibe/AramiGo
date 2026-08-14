@@ -715,6 +715,52 @@ a.bookmark:hover {
   }
 }
 
+/*
+ * Review sits under the bookmark and is deliberately quieter than it: outlined
+ * rather than filled, so the two cards cannot compete. Continuing the course is
+ * the primary action and keeps the gradient; review is the one that appears only
+ * when something is owed and disappears again once it is cleared.
+ */
+.review-call {
+  display: block;
+  padding: 0.9rem 1.15rem;
+  margin: -0.9rem 0 1.75rem;
+  border: 1px solid rgba(196, 163, 90, 0.45);
+  border-radius: var(--radius);
+  background: rgba(196, 163, 90, 0.07);
+  color: var(--text);
+}
+
+a.review-call:hover {
+  background: rgba(196, 163, 90, 0.12);
+}
+
+.review-call-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.review-call-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.review-call-title {
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.review-call-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;

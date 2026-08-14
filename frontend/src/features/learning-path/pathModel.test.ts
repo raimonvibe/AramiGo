@@ -24,6 +24,7 @@ function node(position: number, status: NodeStatus, solved = 0): PathNode {
 function path(units: PathNode[][]): LearningPath {
   return {
     stats: { energy: 5, maxEnergy: 5, gems: 0, streak: 0, secondsUntilNextEnergy: 0 },
+    reviewDue: 0,
     units: units.map((nodes, index) => ({
       sectionNumber: 1,
       unitNumber: index + 1,
