@@ -1,0 +1,260 @@
+{
+  "slug": "s1-u7",
+  "sectionNumber": 1,
+  "unitNumber": 7,
+  "title": "Who is this?",
+  "description": "Someone is coming up the road. Seven new words, and the first questions that ask after a person rather than a place",
+  "lessons": [
+    {
+      "slug": "s1-u7-who",
+      "title": "Who is this?",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u7-who-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܗܢܐ",
+          "transliteration": "hono",
+          "correctTokens": "this",
+          "distractorTokens": "here from"
+        },
+        {
+          "slug": "s1-u7-who-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܡܢܘ ܗܢܐ",
+          "transliteration": "manu hono",
+          "correctTokens": "who is this",
+          "distractorTokens": "where road"
+        },
+        {
+          "slug": "s1-u7-who-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܗܢܐ ܐܒܝ",
+          "transliteration": "hono abi",
+          "correctTokens": "this is my father",
+          "distractorTokens": "mother who"
+        },
+        {
+          "slug": "s1-u7-who-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܡܢܘ ܒܐܘܪܚܐ",
+          "transliteration": "manu b-urho",
+          "correctTokens": "who is on the road",
+          "distractorTokens": "this house"
+        },
+        {
+          "slug": "s1-u7-who-5",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܗܢܐ",
+          "transliteration": "hono",
+          "correctTokens": "ܗܢܐ",
+          "distractorTokens": "ܡܢܘ ܡܢ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u7-people",
+      "title": "A man and a woman",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u7-people-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܓܒܪܐ",
+          "transliteration": "gavro",
+          "correctTokens": "man",
+          "distractorTokens": "father son"
+        },
+        {
+          "slug": "s1-u7-people-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܢܬܬܐ",
+          "transliteration": "attho",
+          "correctTokens": "woman",
+          "distractorTokens": "mother man"
+        },
+        {
+          "slug": "s1-u7-people-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܗܢܐ ܓܒܪܐ",
+          "transliteration": "hono gavro",
+          "correctTokens": "this man",
+          "distractorTokens": "woman who"
+        },
+        {
+          "slug": "s1-u7-people-4",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܓܒܪܐ ܒܐܘܪܚܐ",
+          "transliteration": "gavro b-urho",
+          "correctTokens": "a man on the road|man on the road",
+          "distractorTokens": "woman house"
+        },
+        {
+          "slug": "s1-u7-people-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"this man\"",
+          "aramaicScript": null,
+          "transliteration": "hono gavro",
+          "correctTokens": "ܗܢܐ ܓܒܪܐ",
+          "distractorTokens": "ܐܢܬܬܐ ܡܢܘ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u7-treasure",
+      "title": "This is my mother",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u7-treasure-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܗܕܐ ܐܡܝ",
+          "transliteration": "hode emi",
+          "correctTokens": "this is my mother",
+          "distractorTokens": "father man"
+        },
+        {
+          "slug": "s1-u7-treasure-2",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"this is my father\" — \"this\" changes shape",
+          "aramaicScript": null,
+          "transliteration": "hono abi",
+          "correctTokens": "ܗܢܐ ܐܒܝ",
+          "distractorTokens": "ܗܕܐ ܐܡܝ"
+        },
+        {
+          "slug": "s1-u7-treasure-3",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܓܒܪܐ=man;ܐܢܬܬܐ=woman;ܗܢܐ=this",
+          "distractorTokens": "father who"
+        },
+        {
+          "slug": "s1-u7-treasure-4",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܗܕܐ ܐܢܬܬܐ",
+          "transliteration": "hode attho",
+          "correctTokens": "ܗܕܐ ܐܢܬܬܐ",
+          "distractorTokens": "ܗܢܐ ܓܒܪܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u7-name",
+      "title": "What is your name?",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u7-name-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܡܢܐ ܗܢܐ",
+          "transliteration": "mono hono",
+          "correctTokens": "what is this",
+          "distractorTokens": "who road"
+        },
+        {
+          "slug": "s1-u7-name-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܡܢܐ ܫܡܟ",
+          "transliteration": "mono shmakh",
+          "correctTokens": "what is your name",
+          "distractorTokens": "who this"
+        },
+        {
+          "slug": "s1-u7-name-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܡܢܘ ܗܢܐ",
+          "transliteration": "manu hono",
+          "correctTokens": "who is this",
+          "distractorTokens": "what name"
+        },
+        {
+          "slug": "s1-u7-name-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"what is your name?\"",
+          "aramaicScript": null,
+          "transliteration": "mono shmakh",
+          "correctTokens": "ܡܢܐ ܫܡܟ",
+          "distractorTokens": "ܡܢܘ ܗܢܐ"
+        },
+        {
+          "slug": "s1-u7-name-5",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܡܢܐ",
+          "transliteration": "mono",
+          "correctTokens": "ܡܢܐ",
+          "distractorTokens": "ܡܢܘ ܡܢ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u7-practice",
+      "title": "I have a daughter",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u7-practice-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܒܪܬܐ",
+          "transliteration": "bartho",
+          "correctTokens": "daughter",
+          "distractorTokens": "son woman"
+        },
+        {
+          "slug": "s1-u7-practice-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܝܬ ܠܝ ܒܪܬܐ",
+          "transliteration": "it li bartho",
+          "correctTokens": "I have a daughter",
+          "distractorTokens": "son this"
+        },
+        {
+          "slug": "s1-u7-practice-3",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܢܬܬܐ ܒܒܝܬܐ",
+          "transliteration": "attho b-bayto",
+          "correctTokens": "a woman in the house|woman in the house",
+          "distractorTokens": "man road"
+        },
+        {
+          "slug": "s1-u7-practice-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"this is my mother\"",
+          "aramaicScript": null,
+          "transliteration": "hode emi",
+          "correctTokens": "ܗܕܐ ܐܡܝ",
+          "distractorTokens": "ܗܢܐ ܐܒܝ"
+        },
+        {
+          "slug": "s1-u7-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܡܢܘ ܗܢܐ",
+          "transliteration": "manu hono",
+          "correctTokens": "ܡܢܘ ܗܢܐ",
+          "distractorTokens": "ܡܢܐ ܡܢ"
+        }
+      ]
+    }
+  ]
+}

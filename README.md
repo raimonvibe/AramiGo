@@ -143,6 +143,21 @@ And one from unit 6, which is the same trap seen from the other side:
   ܒܒܝܬܐ sitting in the same word bank, so the learner has to make the call too.
   Its "go" is ܙܠ, imperative of ܐܙܠ — the unit 4 trap again.
 
+Two from unit 7:
+
+- **Unpointed ܡܢ is two different words.** ܡܶܢ "from" (unit 6) and ܡܰܢ "who" are
+  spelled identically, and this content is unpointed, so bare ܡܢ in a question
+  is genuinely ambiguous. Syriac's own answer is the contraction: ܡܢܘ is ܡܢ + ܗܘ
+  "who is he", formed exactly the way ܐܝܟܘ is ܐܝܟܐ + ܗܘ. Unit 7 therefore always
+  asks with ܡܢܘ and never with bare ܡܢ — ܡܢܘ ܗܢܐ "who is this?", the wording of
+  Matthew 21:10. Its "what" is ܡܢܐ, and ܡܢܐ ܫܡܟ "what is your name?" is Mark 5:9.
+- **Demonstratives agree with the noun.** ܗܢܐ ܐܒܝ "this is my father" but ܗܕܐ ܐܡܝ
+  "this is my mother" — same English word, two Syriac forms, which is why unit 7
+  spends its chest lesson on that one contrast. The feminine ending shows up in
+  the nouns too: ܐܢܬܬܐ and ܒܪܬܐ against ܒܪܐ. Adjectives agree the same way, so
+  ܛܒܐ would need ܛܒܬܐ on a feminine noun — that is an eighth new word, and it is
+  why nothing in unit 7 is described as good.
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
