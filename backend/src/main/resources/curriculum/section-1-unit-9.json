@@ -1,0 +1,269 @@
+{
+  "slug": "s1-u9",
+  "sectionNumber": 1,
+  "unitNumber": 9,
+  "title": "Come and see",
+  "description": "A voice calls from the house: he is here after all. Seven new words, and two commands that refuse to look like the verbs they come from",
+  "lessons": [
+    {
+      "slug": "s1-u9-come",
+      "title": "Come here",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u9-come-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܐ",
+          "transliteration": "ta",
+          "correctTokens": "come",
+          "distractorTokens": "go enter"
+        },
+        {
+          "slug": "s1-u9-come-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܐ ܗܪܟܐ",
+          "transliteration": "ta horko",
+          "correctTokens": "come here",
+          "distractorTokens": "go house"
+        },
+        {
+          "slug": "s1-u9-come-3",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܬܐ",
+          "transliteration": "ta",
+          "correctTokens": "ܬܐ",
+          "distractorTokens": "ܙܠ ܥܘܠ"
+        },
+        {
+          "slug": "s1-u9-come-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"come here\"",
+          "aramaicScript": null,
+          "transliteration": "ta horko",
+          "correctTokens": "ܬܐ ܗܪܟܐ",
+          "distractorTokens": "ܙܠ ܒܝܬܐ"
+        },
+        {
+          "slug": "s1-u9-come-5",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܐ",
+          "transliteration": "ta",
+          "correctTokens": "come",
+          "distractorTokens": "no yes"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u9-he-comes",
+      "title": "He comes",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u9-he-comes-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܬܐ",
+          "transliteration": "othe",
+          "correctTokens": "he comes",
+          "distractorTokens": "come go"
+        },
+        {
+          "slug": "s1-u9-he-comes-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܬܐ ܐܢܐ",
+          "transliteration": "othe eno",
+          "correctTokens": "I come",
+          "distractorTokens": "you here"
+        },
+        {
+          "slug": "s1-u9-he-comes-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܬܐ ܗܪܟܐ",
+          "transliteration": "othe horko",
+          "correctTokens": "he comes here",
+          "distractorTokens": "go house"
+        },
+        {
+          "slug": "s1-u9-he-comes-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"he comes\" — the command you just learned is not this word",
+          "aramaicScript": null,
+          "transliteration": "othe",
+          "correctTokens": "ܐܬܐ",
+          "distractorTokens": "ܬܐ ܙܠ"
+        },
+        {
+          "slug": "s1-u9-he-comes-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܐܬܐ ܐܢܐ",
+          "transliteration": "othe eno",
+          "correctTokens": "ܐܬܐ ܐܢܐ",
+          "distractorTokens": "ܬܐ ܐܢܬ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u9-treasure",
+      "title": "Come and see",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u9-treasure-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܚܙܝ",
+          "transliteration": "hzay",
+          "correctTokens": "see",
+          "distractorTokens": "come here"
+        },
+        {
+          "slug": "s1-u9-treasure-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܚܙܐ",
+          "transliteration": "hoze",
+          "correctTokens": "he sees",
+          "distractorTokens": "see come"
+        },
+        {
+          "slug": "s1-u9-treasure-3",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܚܙܐ ܐܢܐ",
+          "transliteration": "hoze eno",
+          "correctTokens": "I see",
+          "distractorTokens": "you come"
+        },
+        {
+          "slug": "s1-u9-treasure-4",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܬܐ=come;ܐܬܐ=he comes;ܚܙܝ=see;ܚܙܐ=he sees",
+          "distractorTokens": "go enter"
+        },
+        {
+          "slug": "s1-u9-treasure-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"see\" — the word for \"he sees\" is not the command",
+          "aramaicScript": null,
+          "transliteration": "hzay",
+          "correctTokens": "ܚܙܝ",
+          "distractorTokens": "ܚܙܐ ܬܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u9-voice",
+      "title": "A voice calls",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u9-voice-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܩܠܐ",
+          "transliteration": "qolo",
+          "correctTokens": "voice",
+          "distractorTokens": "see house"
+        },
+        {
+          "slug": "s1-u9-voice-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܩܪܐ",
+          "transliteration": "qore",
+          "correctTokens": "he calls",
+          "distractorTokens": "come sees"
+        },
+        {
+          "slug": "s1-u9-voice-3",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܩܠܐ ܩܪܐ",
+          "transliteration": "qolo qore",
+          "correctTokens": "a voice calls|the voice calls",
+          "distractorTokens": "house here"
+        },
+        {
+          "slug": "s1-u9-voice-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܗܐ",
+          "transliteration": "ha",
+          "correctTokens": "behold|look",
+          "distractorTokens": "see come"
+        },
+        {
+          "slug": "s1-u9-voice-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"a voice calls\"",
+          "aramaicScript": null,
+          "transliteration": "qolo qore",
+          "correctTokens": "ܩܠܐ ܩܪܐ",
+          "distractorTokens": "ܐܬܐ ܬܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u9-practice",
+      "title": "He is here after all",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u9-practice-1",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܐ ܚܙܝ",
+          "transliteration": "ta hzay",
+          "correctTokens": "come and see|come see",
+          "distractorTokens": "go house"
+        },
+        {
+          "slug": "s1-u9-practice-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܗܐ ܗܪܟܐ ܗܘ",
+          "transliteration": "ha horko hu",
+          "correctTokens": "behold he is here|look he is here",
+          "distractorTokens": "see house"
+        },
+        {
+          "slug": "s1-u9-practice-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"come and see\"",
+          "aramaicScript": null,
+          "transliteration": "ta hzay",
+          "correctTokens": "ܬܐ ܚܙܝ",
+          "distractorTokens": "ܐܬܐ ܚܙܐ"
+        },
+        {
+          "slug": "s1-u9-practice-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"I see\"",
+          "aramaicScript": null,
+          "transliteration": "hoze eno",
+          "correctTokens": "ܚܙܐ ܐܢܐ",
+          "distractorTokens": "ܚܙܝ ܐܢܬ"
+        },
+        {
+          "slug": "s1-u9-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܗܐ ܐܒܝ",
+          "transliteration": "ha abi",
+          "correctTokens": "ܗܐ ܐܒܝ",
+          "distractorTokens": "ܗܘ ܩܠܐ"
+        }
+      ]
+    }
+  ]
+}

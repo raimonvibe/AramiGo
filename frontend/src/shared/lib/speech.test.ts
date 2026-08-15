@@ -13,6 +13,9 @@ describe('toHebrewScript', () => {
     expect(toHebrewScript('ܚܕ')).toBe('חד') // had — one
     expect(toHebrewScript('ܬܠܬܐ')).toBe('תלתא') // tloto — three
     expect(toHebrewScript('ܐܒܐ')).toBe('אבא') // abo — father
+    expect(toHebrewScript('ܬܐ')).toBe('תא') // ta — come
+    expect(toHebrewScript('ܚܙܝ')).toBe('חזי') // hzay — see
+    expect(toHebrewScript('ܩܠܐ')).toBe('קלא') // qolo — voice
   })
 
   it('keeps word order and spacing in a phrase', () => {

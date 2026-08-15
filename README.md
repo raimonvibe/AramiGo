@@ -207,6 +207,23 @@ Two from unit 8:
   contrast, are whole answers by themselves — ܐܝܢ ܐܝܢ ܘܠܐ ܠܐ at Matthew 5:37, and
   John 1:21 answers a question with nothing but ܠܐ.
 
+Two from unit 9:
+
+- **The imperative of ܐܬܐ is ܬܐ, not ܐܬܐ.** The aleph drops, the way unit 4's
+  ܬܒ does not look like ܝܬܒ and unit 6's ܙܠ does not look like ܐܙܠ. ܐܬܐ is the
+  participle "he comes"; ܐܬܐ ܐܢܐ is "I come", pronoun after the participle as in
+  unit 8's ܝܕܥ ܐܢܐ. Unpointed ܐܬܐ is also the perfect "he came" — the unit treats
+  it as the present because ܐܬܐ ܐܢܐ can only be the participle. The chest puts
+  ܬܐ and ܐܬܐ in the same word bank. John 1:46 is ܬܐ ܚܙܝ "come, see"; Matthew 28:6
+  continues unit 8's ܠܐ ܗܘܐ ܗܪܟܐ with the plural ܬܘ ܚܙܘ, and this unit keeps the
+  singular the learner has been using.
+- **The imperative of ܚܙܐ is ܚܙܝ, not ܚܙܐ.** III-weak: "see!" keeps the yudh,
+  and ܚܙܐ is "he sees". Same trap as ܬܐ / ܐܬܐ, shown on purpose in the chest.
+  ܗܐ is a particle, not a verb — ܗܐ ܐܒܝ "behold my father", no copula. ܗܐ ܗܪܟܐ ܗܘ
+  "behold, he is here" is the presentative in front of unit 3's clause, which is
+  how the scene answers unit 8. A voice that calls is ܩܠܐ ܩܪܐ, noun then
+  participle, not an English "calls a voice".
+
 Format notes that bite:
 
 - `correctTokens` separates alternate answers with `|` (`"a good house|good house"`).
