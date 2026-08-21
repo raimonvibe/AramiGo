@@ -65,7 +65,7 @@ Render builds from the Dockerfile on each deploy. First build can take several m
 
 | Key | Value |
 |-----|--------|
-| `ARAMIGO_CORS_ALLOWED_ORIGINS` | The site origin, `https://troubigue.com` (no trailing slash). Add `http://localhost:3000` too if you still hit prod API from local UI: `https://troubigue.com,http://localhost:3000` |
+| `ARAMIGO_CORS_ALLOWED_ORIGINS` | The site origin, `https://aramaic.eu` (no trailing slash). Add `http://localhost:3000` too if you still hit prod API from local UI: `https://aramaic.eu,http://localhost:3000` |
 | `DATABASE_URL` | `jdbc:postgresql://HOST/DB?sslmode=require` — **required**, or progress is lost on every restart |
 | `DATABASE_USERNAME` | Database user |
 | `DATABASE_PASSWORD` | Database password |
@@ -117,34 +117,34 @@ Run **Actions → Keep Render webapp awake → Run workflow** once to verify.
 | Key | Value | Environments |
 |-----|--------|----------------|
 | `NEXT_PUBLIC_API_URL` | `https://YOUR-SERVICE.onrender.com` | Production (and Preview if you want) |
-| `NEXT_PUBLIC_SITE_URL` | `https://troubigue.com` | Production (leave unset on Preview) |
+| `NEXT_PUBLIC_SITE_URL` | `https://aramaic.eu` | Production (leave unset on Preview) |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | The same OAuth client id set on Render | Production (omit to run guests-only) |
 
 **Important:** `NEXT_PUBLIC_*` is baked in at **build** time. After changing it, **redeploy** the frontend.
 
 `NEXT_PUBLIC_SITE_URL` is only the origin used to build absolute share-image URLs.
-The code already falls back to `https://troubigue.com`, so setting it matters only
+The code already falls back to `https://aramaic.eu`, so setting it matters only
 if the app is ever served from somewhere else.
 
 ### 2.3 The domain
 
-The app is served from **troubigue.com**. It is still called AramiGo everywhere a
+The app is served from **aramaic.eu**. It is still called AramiGo everywhere a
 learner sees it — the domain is where it lives, not what it is called.
 
 Add the domain in **Vercel → Project → Settings → Domains**, and point DNS there.
-If `www.troubigue.com` serves the app rather than redirecting to the apex, it is a
+If `www.aramaic.eu` serves the app rather than redirecting to the apex, it is a
 second origin and needs listing everywhere an origin is listed below.
 
 ### 2.4 CORS must match
 
 Every origin the app is served from must appear in Render’s
-`ARAMIGO_CORS_ALLOWED_ORIGINS` — `https://troubigue.com`, plus the `www` host if it
+`ARAMIGO_CORS_ALLOWED_ORIGINS` — `https://aramaic.eu`, plus the `www` host if it
 serves rather than redirects, plus any Vercel preview URL you want to hit the
 production API from. Change it and **redeploy the API**.
 
 ### 2.5 Deploy
 
-Click **Deploy**. Open https://troubigue.com → home path should load lessons from Render.
+Click **Deploy**. Open https://aramaic.eu → home path should load lessons from Render.
 
 ---
 
@@ -179,15 +179,15 @@ Click **Deploy**. Open https://troubigue.com → home path should load lessons f
 | Render | `DATABASE_URL` | The Neon connection string, pasted as-is (libpq form is converted at startup) |
 | Render | `DATABASE_USERNAME` | `neondb_owner` |
 | Render | `DATABASE_PASSWORD` | From the Neon dashboard |
-| Render | `ARAMIGO_CORS_ALLOWED_ORIGINS` | `https://troubigue.com` |
+| Render | `ARAMIGO_CORS_ALLOWED_ORIGINS` | `https://aramaic.eu` |
 | Render | `GOOGLE_CLIENT_ID` | The OAuth client id |
 | Vercel | `NEXT_PUBLIC_API_URL` | `https://aramigo.onrender.com` |
-| Vercel | `NEXT_PUBLIC_SITE_URL` | `https://troubigue.com` |
+| Vercel | `NEXT_PUBLIC_SITE_URL` | `https://aramaic.eu` |
 | Vercel | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | The same OAuth client id |
-| Vercel | Domain | `troubigue.com` |
+| Vercel | Domain | `aramaic.eu` |
 
 **No trailing slashes** in `ARAMIGO_CORS_ALLOWED_ORIGINS` or `NEXT_PUBLIC_API_URL`.
-A browser's `Origin` header never carries one, so `https://troubigue.com/`
+A browser's `Origin` header never carries one, so `https://aramaic.eu/`
 will not match and every API call gets blocked by CORS.
 
 ---
@@ -217,7 +217,7 @@ Sign-in is optional. Skip this whole section and the app runs guests-only.
 2. Application type: **Web application**
 3. **Authorised JavaScript origins** — add every origin that will show the button:
    - `http://localhost:3000`
-   - `https://troubigue.com`
+   - `https://aramaic.eu`
 4. **Authorised redirect URIs** — leave empty. This uses Google Identity Services,
    which hands an ID token to the page; there is no redirect leg.
 5. The Render URL is **not** entered anywhere in the OAuth client. The browser talks

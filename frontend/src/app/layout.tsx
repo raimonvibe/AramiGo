@@ -30,16 +30,16 @@ const siteDescription =
 
 /**
  * Absolute base for Open Graph / Twitter image URLs when sharing the site.
- * The app is served from troubigue.com; override per-environment if that moves.
+ * The app is served from aramaic.eu; override per-environment if that moves.
  */
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://troubigue.com'
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://aramaic.eu'
 
 /**
- * The learning app is still called AramiGo everywhere a learner sees it — nav,
- * headings, install name, error copy. Only the page title names its home.
+ * The learning app is called AramiGo everywhere a learner sees it — nav,
+ * headings, install name, error copy.
  */
-const siteTitle = 'AramiGo at Troubigue'
+const siteTitle = 'AramiGo'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
