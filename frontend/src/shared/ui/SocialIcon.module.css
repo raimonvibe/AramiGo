@@ -1,0 +1,48 @@
+.link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 14px;
+  color: var(--brand);
+  text-decoration: none;
+  transition:
+    transform 150ms ease,
+    background 200ms ease;
+}
+
+@media (min-width: 720px) {
+  .link {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.icon {
+  display: block;
+  opacity: 0.88;
+  transition: opacity 200ms ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  transform: translateY(-1px);
+  background: color-mix(in oklab, currentColor 12%, transparent);
+  text-decoration: none;
+}
+
+.link:hover .icon,
+.link:focus-visible .icon {
+  opacity: 1;
+}
+
+.brandFill {
+  fill: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link:hover,
+  .link:focus-visible {
+    transform: none;
+  }
+}

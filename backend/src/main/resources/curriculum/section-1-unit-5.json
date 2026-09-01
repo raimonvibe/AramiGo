@@ -1,0 +1,260 @@
+{
+  "slug": "s1-u5",
+  "sectionNumber": 1,
+  "unitNumber": 5,
+  "title": "When evening comes",
+  "description": "The meal ends and the light goes. Seven new words, one lamp, and everything from the table comes with you",
+  "lessons": [
+    {
+      "slug": "s1-u5-evening",
+      "title": "Evening comes",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u5-evening-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܪܡܫܐ",
+          "transliteration": "ramsho",
+          "correctTokens": "evening",
+          "distractorTokens": "table wine"
+        },
+        {
+          "slug": "s1-u5-evening-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܠܠܝܐ",
+          "transliteration": "lelyo",
+          "correctTokens": "night",
+          "distractorTokens": "evening house"
+        },
+        {
+          "slug": "s1-u5-evening-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܪܡܫܐ ܗܘ",
+          "transliteration": "ramsho hu",
+          "correctTokens": "it is evening",
+          "distractorTokens": "here night"
+        },
+        {
+          "slug": "s1-u5-evening-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܪܡܫܐ ܛܒܐ",
+          "transliteration": "ramsho tobo",
+          "correctTokens": "good evening",
+          "distractorTokens": "night house"
+        },
+        {
+          "slug": "s1-u5-evening-5",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܪܡܫܐ",
+          "transliteration": "ramsho",
+          "correctTokens": "ܪܡܫܐ",
+          "distractorTokens": "ܠܠܝܐ ܦܬܘܪܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u5-lamp",
+      "title": "A lamp on the table",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u5-lamp-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܪܓܐ",
+          "transliteration": "shrogo",
+          "correctTokens": "lamp",
+          "distractorTokens": "table wine"
+        },
+        {
+          "slug": "s1-u5-lamp-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܪܓܐ ܥܠ ܦܬܘܪܐ",
+          "transliteration": "shrogo al pothuro",
+          "correctTokens": "lamp on the table",
+          "distractorTokens": "bread evening"
+        },
+        {
+          "slug": "s1-u5-lamp-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "One Syriac word, three English ones",
+          "aramaicScript": "ܒܒܝܬܐ",
+          "transliteration": "b-bayto",
+          "correctTokens": "in the house",
+          "distractorTokens": "on evening"
+        },
+        {
+          "slug": "s1-u5-lamp-4",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܪܓܐ ܒܒܝܬܐ",
+          "transliteration": "shrogo b-bayto",
+          "correctTokens": "a lamp in the house|lamp in the house",
+          "distractorTokens": "evening table"
+        },
+        {
+          "slug": "s1-u5-lamp-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"in the house\"",
+          "aramaicScript": null,
+          "transliteration": "b-bayto",
+          "correctTokens": "ܒܒܝܬܐ",
+          "distractorTokens": "ܒܝܬܐ ܥܠ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u5-treasure",
+      "title": "Night in the house",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u5-treasure-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܒܠܠܝܐ",
+          "transliteration": "b-lelyo",
+          "correctTokens": "at night|in the night",
+          "distractorTokens": "house evening"
+        },
+        {
+          "slug": "s1-u5-treasure-2",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܪܡܫܐ=evening;ܠܠܝܐ=night;ܫܪܓܐ=lamp",
+          "distractorTokens": "house door"
+        },
+        {
+          "slug": "s1-u5-treasure-3",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܫܪܓܐ ܒܒܝܬܐ",
+          "transliteration": "shrogo b-bayto",
+          "correctTokens": "ܫܪܓܐ ܒܒܝܬܐ",
+          "distractorTokens": "ܒܝܬܐ ܦܬܘܪܐ"
+        },
+        {
+          "slug": "s1-u5-treasure-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܠܠܝܐ",
+          "transliteration": "lelyo",
+          "correctTokens": "ܠܠܝܐ",
+          "distractorTokens": "ܪܡܫܐ ܫܪܓܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u5-light",
+      "title": "A great light",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u5-light-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܢܘܗܪܐ",
+          "transliteration": "nuhro",
+          "correctTokens": "light",
+          "distractorTokens": "lamp night"
+        },
+        {
+          "slug": "s1-u5-light-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܪܒܐ",
+          "transliteration": "rabo",
+          "correctTokens": "great|big",
+          "distractorTokens": "good here"
+        },
+        {
+          "slug": "s1-u5-light-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܢܘܗܪܐ ܪܒܐ",
+          "transliteration": "nuhro rabo",
+          "correctTokens": "a great light|great light",
+          "distractorTokens": "lamp night"
+        },
+        {
+          "slug": "s1-u5-light-4",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܒܝܬܐ ܪܒܐ",
+          "transliteration": "bayto rabo",
+          "correctTokens": "a big house|big house",
+          "distractorTokens": "good light"
+        },
+        {
+          "slug": "s1-u5-light-5",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"a great light\"",
+          "aramaicScript": null,
+          "transliteration": "nuhro rabo",
+          "correctTokens": "ܢܘܗܪܐ ܪܒܐ",
+          "distractorTokens": "ܒܝܬܐ ܫܪܓܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u5-practice",
+      "title": "Light in the darkness",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u5-practice-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܚܫܘܟܐ",
+          "transliteration": "heshukho",
+          "correctTokens": "darkness",
+          "distractorTokens": "light night"
+        },
+        {
+          "slug": "s1-u5-practice-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܝܟܘ ܫܪܓܐ",
+          "transliteration": "aykaw shrogo",
+          "correctTokens": "where is the lamp",
+          "distractorTokens": "here evening"
+        },
+        {
+          "slug": "s1-u5-practice-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܢܘܗܪܐ ܒܚܫܘܟܐ",
+          "transliteration": "nuhro b-heshukho",
+          "correctTokens": "light in the darkness",
+          "distractorTokens": "great lamp"
+        },
+        {
+          "slug": "s1-u5-practice-4",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"good evening\"",
+          "aramaicScript": null,
+          "transliteration": "ramsho tobo",
+          "correctTokens": "ܪܡܫܐ ܛܒܐ",
+          "distractorTokens": "ܠܠܝܐ ܢܘܗܪܐ"
+        },
+        {
+          "slug": "s1-u5-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܢܘܗܪܐ ܒܚܫܘܟܐ",
+          "transliteration": "nuhro b-heshukho",
+          "correctTokens": "ܢܘܗܪܐ ܒܚܫܘܟܐ",
+          "distractorTokens": "ܪܡܫܐ ܫܪܓܐ"
+        }
+      ]
+    }
+  ]
+}

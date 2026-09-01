@@ -1,0 +1,215 @@
+{
+  "slug": "s1-u1",
+  "sectionNumber": 1,
+  "unitNumber": 1,
+  "title": "Use basic phrases",
+  "description": "Greetings and simple sentences in Classical Syriac Aramaic",
+  "lessons": [
+    {
+      "slug": "s1-u1-greetings",
+      "title": "Greetings",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u1-greetings-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܠܡܐ",
+          "transliteration": "shlomo",
+          "correctTokens": "hello|peace",
+          "distractorTokens": "water bread"
+        },
+        {
+          "slug": "s1-u1-greetings-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܒܪܝܟ",
+          "transliteration": "brikh",
+          "correctTokens": "blessed",
+          "distractorTokens": "house you"
+        },
+        {
+          "slug": "s1-u1-greetings-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "How do you say hello?",
+          "aramaicScript": null,
+          "transliteration": "shlomo",
+          "correctTokens": "ܫܠܡܐ",
+          "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-greetings-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܫܠܡܐ",
+          "transliteration": "shlomo",
+          "correctTokens": "ܫܠܡܐ",
+          "distractorTokens": "ܒܪܝܟ ܠܚܡܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u1-names",
+      "title": "Names",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u1-names-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܢܐ",
+          "transliteration": "eno",
+          "correctTokens": "I",
+          "distractorTokens": "you bread"
+        },
+        {
+          "slug": "s1-u1-names-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܢܬ",
+          "transliteration": "at",
+          "correctTokens": "you",
+          "distractorTokens": "I water"
+        },
+        {
+          "slug": "s1-u1-names-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "How do you say \"I\"?",
+          "aramaicScript": null,
+          "transliteration": "eno",
+          "correctTokens": "ܐܢܐ",
+          "distractorTokens": "ܐܢܬ ܫܠܡܐ"
+        },
+        {
+          "slug": "s1-u1-names-4",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word to its meaning",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܐܢܐ=I ܐܢܬ=you",
+          "distractorTokens": "water peace"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u1-treasure",
+      "title": "Treasure",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u1-treasure-1",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܠܡܐ ܥܠܝܟ",
+          "transliteration": "shlomo alayk",
+          "correctTokens": "peace upon you",
+          "distractorTokens": "bread house"
+        },
+        {
+          "slug": "s1-u1-treasure-2",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܫܠܡܐ ܥܠܝܟ",
+          "transliteration": "shlomo alayk",
+          "correctTokens": "ܫܠܡܐ ܥܠܝܟ",
+          "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u1-sentences",
+      "title": "Simple sentences",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u1-sentences-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܝܬ ܠܝ ܠܚܡܐ",
+          "transliteration": "it li lahma",
+          "correctTokens": "I have bread",
+          "distractorTokens": "you drink water"
+        },
+        {
+          "slug": "s1-u1-sentences-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܢܬ ܫܬܐ ܡܝܐ",
+          "transliteration": "at shote maya",
+          "correctTokens": "you drink water",
+          "distractorTokens": "I have bread"
+        },
+        {
+          "slug": "s1-u1-sentences-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"I have bread\"",
+          "aramaicScript": null,
+          "transliteration": "it li lahma",
+          "correctTokens": "ܐܝܬ ܠܝ ܠܚܡܐ",
+          "distractorTokens": "ܐܢܬ ܫܬܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-sentences-4",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word to its meaning",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܠܚܡܐ=bread ܡܝܐ=water",
+          "distractorTokens": "house peace"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u1-practice",
+      "title": "Practice with Arami",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u1-practice-1",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܫܠܡܐ",
+          "transliteration": "shlomo",
+          "correctTokens": "hello|peace",
+          "distractorTokens": "blessed water"
+        },
+        {
+          "slug": "s1-u1-practice-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܒܪܝܟ ܫܡܟ",
+          "transliteration": "brikh shmakh",
+          "correctTokens": "blessed is your name",
+          "distractorTokens": "I have bread"
+        },
+        {
+          "slug": "s1-u1-practice-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"peace upon you\"",
+          "aramaicScript": null,
+          "transliteration": "shlomo alayk",
+          "correctTokens": "ܫܠܡܐ ܥܠܝܟ",
+          "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u1-practice-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܒܪܝܟ",
+          "transliteration": "brikh",
+          "correctTokens": "ܒܪܝܟ",
+          "distractorTokens": "ܫܠܡܐ ܐܢܐ"
+        },
+        {
+          "slug": "s1-u1-practice-5",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܒܪܝܟ ܫܡܟ",
+          "transliteration": "brikh shmakh",
+          "correctTokens": "ܒܪܝܟ ܫܡܟ",
+          "distractorTokens": "ܐܢܐ ܠܚܡܐ"
+        }
+      ]
+    }
+  ]
+}

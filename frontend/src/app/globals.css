@@ -1,0 +1,929 @@
+:root {
+  --bg: #121a1f;
+  --bg-elevated: #1a242c;
+  --bg-chip: #243038;
+  --line: #2f3d47;
+  --text: #f3f0e8;
+  --muted: #9aabb6;
+  --brand: #c4a35a;
+  --brand-deep: #8f7435;
+  --accent: #3f9f84;
+  --accent-deep: #2d7a64;
+  --danger: #e07a5f;
+  --energy: #e8a0b5;
+  --gem: #6ec6ff;
+  --streak: #f0a35e;
+  --radius: 18px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  /* Per-unit gradient (see docs/COLOR.md). Intro unit by default. */
+  --unit-from: #3f9f84;
+  --unit-to: #8f7435;
+
+  /* Page measure: phone column → tablet sheet → desktop spread */
+  --page-max: 34rem;
+  --page-pad-x: 1rem;
+  --page-pad-y: 1.25rem;
+  --nav-icon: 20px;
+  --nav-label: 0.72rem;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --page-max: 46rem;
+    --page-pad-x: 1.75rem;
+    --page-pad-y: 1.75rem;
+    --nav-icon: 22px;
+    --nav-label: 0.8rem;
+  }
+
+  html {
+    font-size: 106%;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-max: 58rem;
+    --page-pad-x: 2rem;
+    --page-pad-y: 2rem;
+    --nav-icon: 24px;
+    --nav-label: 0.85rem;
+  }
+
+  html {
+    font-size: 110%;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-max: 64rem;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(196, 163, 90, 0.12), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(63, 159, 132, 0.1), transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Keyboard users need to see where they are; chips are all buttons. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.syriac {
+  font-family: var(--font-syriac), 'Noto Sans', serif;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.syriac-inline {
+  font-family: var(--font-syriac), 'Noto Sans', serif;
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.brand-font {
+  font-family: var(--font-brand), Georgia, serif;
+}
+
+/* ---------------------------------------------------------------------------
+   Shared page chrome — one composition that grows with the viewport.
+   --------------------------------------------------------------------------- */
+
+.page-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+}
+
+.page-main {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  padding: var(--page-pad-y) var(--page-pad-x) 2rem;
+}
+
+.page-title {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.4vw + 1rem, 2.15rem);
+  color: var(--brand);
+}
+
+.page-lede {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+/* Account: profile full-width; progress + rewards sit side-by-side on wide sheets */
+.account-body {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.account-span {
+  grid-column: 1 / -1;
+}
+
+.account-panel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.15rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+  min-width: 0;
+}
+
+@media (min-width: 860px) {
+  .account-body {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1.5rem 1.75rem;
+    align-items: start;
+  }
+
+  .account-panel {
+    padding: 1.35rem 1.25rem;
+    min-height: 100%;
+  }
+}
+
+/* Alphabet grid opens up with the wider page measure */
+.alphabet-grid {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 720px) {
+  .alphabet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 0.9rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .alphabet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* About: readable columns once the sheet is wide enough */
+.about-copy {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 860px) {
+  .about-copy {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 2rem;
+  }
+
+  .about-copy > :first-child {
+    grid-column: 1 / -1;
+    font-size: 1.08rem;
+    max-width: 40rem;
+  }
+}
+
+/* Path header can sit as brand + stats on one row without crushing */
+.path-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.15rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 720px) {
+  .path-header {
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Bottom nav hugs the page measure so icons stay grouped on ultrawide */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  border-top: 1px solid var(--line);
+  background: rgba(18, 26, 31, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 0.65rem var(--page-pad-x) calc(0.65rem + env(safe-area-inset-bottom));
+}
+
+/* Menu open: stop path scroll; bar stays fully opaque over lesson seals */
+body.app-menu-open {
+  overflow: hidden;
+}
+
+body.app-menu-open .bottom-nav {
+  background: var(--bg);
+  backdrop-filter: none;
+}
+
+.bottom-nav-inner {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bottom-nav-links {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.bottom-nav-link {
+  display: grid;
+  place-items: center;
+  gap: 0.2rem;
+  padding: 0.55rem 0.25rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  color: var(--muted);
+  font-size: var(--nav-label);
+  font-weight: 700;
+  text-align: center;
+  min-width: 0;
+}
+
+.bottom-nav-link[aria-current='page'] {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.site-footer {
+  width: min(var(--page-max), 100%);
+  margin: 0 auto;
+  padding: 1.35rem var(--page-pad-x) 0.95rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.85rem;
+  justify-items: center;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.35rem;
+  max-width: 100%;
+}
+
+@media (min-width: 720px) {
+  .site-footer-links {
+    gap: 0.35rem 0.5rem;
+  }
+}
+
+/* Square game portraits — destination art only, never path seals */
+.image-plate {
+  display: block;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 22%;
+  border: 1px solid rgba(196, 163, 90, 0.35);
+  box-shadow: var(--shadow);
+  background: var(--bg-elevated);
+}
+
+.stage-art {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+}
+
+.about-hero {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.alphabet-hero {
+  display: grid;
+  gap: 1rem;
+  margin: 1.15rem 0 0.25rem;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .about-hero,
+  .alphabet-hero {
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem 1.75rem;
+  }
+}
+
+.support-platforms {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.support-platform-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  color: var(--brand);
+  line-height: 1.2;
+}
+
+.support-platform-summary {
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.support-platform-steps {
+  margin: 0;
+  padding-inline-start: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+@media (min-width: 860px) {
+  .support-platforms {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+  }
+
+  .support-platforms > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 36rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Learning path — a codex: a contents page with one chapter open.
+
+   Deliberately NOT a winding game map. Every row — unit or lesson — hangs off
+   one straight ruled line down the margin, the way chapter roundels run down an
+   illuminated page. Units collapse to a single line so the page height stays
+   flat as the curriculum grows; only the unit the learner is in is expanded.
+   See docs/COLOR.md "Layout rules".
+
+   The rule is drawn as one ::before segment per row rather than a single
+   full-height element, so the gold/plain break lands exactly at the learner's
+   row no matter which units happen to be open.
+   --------------------------------------------------------------------------- */
+
+/* Rail geometry — every row shares this, which is what keeps the rule straight
+   through unit lines and lesson rows alike. */
+.contents-list,
+.path-list {
+  --rail-column: 3.5rem;
+  --rail-center: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.path-item,
+.unit-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--rail-column) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+}
+
+/* The ruled line, drawn behind the seals and running between them. The
+   description sits between a chapter's line and its first lesson, so it carries
+   a segment too — otherwise the rule breaks every time a chapter opens. */
+.path-item::before,
+.unit-row::before,
+.unit-description::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--rail-center) - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+/* The rule starts and stops at a seal centre, not in mid-air. */
+.contents-list > .contents-unit:first-child .unit-row::before {
+  top: 50%;
+}
+
+.contents-list > .contents-unit:last-child:not(:has(.path-item)) .unit-row::before {
+  bottom: 50%;
+}
+
+.path-list > .path-item:last-child::before {
+  bottom: 0;
+}
+
+.contents-list > .contents-unit:last-child .path-item:last-child::before {
+  bottom: 50%;
+}
+
+/* Gold above the learner's position, plain rule below it. */
+.path-item[data-reached='true']::before,
+.unit-row[data-reached='true']::before,
+.unit-description[data-reached='true']::before {
+  background: var(--brand-deep);
+}
+
+.path-seal {
+  position: relative;
+  justify-self: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Double ring reads as a wax seal rather than a game button. */
+.path-seal[data-status='COMPLETED'] {
+  background: radial-gradient(circle at 35% 30%, var(--brand), var(--brand-deep));
+  color: #1b1406;
+  box-shadow:
+    0 0 0 1px var(--brand-deep),
+    0 0 0 4px rgba(196, 163, 90, 0.18);
+}
+
+.path-seal[data-status='CURRENT'] {
+  background: radial-gradient(circle at 35% 30%, var(--accent), var(--accent-deep));
+  color: #05130f;
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 0 0 5px rgba(63, 159, 132, 0.2);
+}
+
+.path-seal[data-status='LOCKED'] {
+  background: var(--bg-elevated);
+  color: var(--muted);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.path-link {
+  display: contents;
+  color: inherit;
+}
+
+.path-link:hover .path-seal[data-status='CURRENT'],
+.path-link:hover .path-seal[data-status='COMPLETED'] {
+  filter: brightness(1.08);
+}
+
+.path-title {
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+/* Kind and progress are stated in words — never as a pictogram. */
+.path-meta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.path-meta[data-status='CURRENT'] {
+  color: var(--accent);
+}
+
+.path-meta[data-status='COMPLETED'] {
+  color: var(--brand);
+}
+
+/* --- The contents page ---------------------------------------------------- */
+
+.contents-unit {
+  position: relative;
+}
+
+/* The whole unit line is the disclosure control, so it must not look like a
+   button — it is a line of a contents page that happens to be clickable. */
+.unit-row {
+  width: 100%;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  border-radius: 12px;
+}
+
+.unit-row:hover .unit-title,
+.unit-row:focus-visible .unit-title {
+  color: var(--brand);
+}
+
+.unit-row:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Chapter seal — the unit gradient lives here, per docs/COLOR.md. */
+.unit-seal {
+  position: relative;
+  justify-self: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--bg-elevated);
+  color: var(--muted);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.unit-seal[data-reached='true'] {
+  background: linear-gradient(135deg, var(--unit-from), var(--unit-to));
+  color: #07130f;
+  box-shadow: 0 0 0 1px rgba(196, 163, 90, 0.45);
+}
+
+.unit-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.unit-title {
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.unit-meta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.unit-aside {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+}
+
+.unit-caret {
+  transition: transform 160ms ease;
+}
+
+.unit-row[aria-expanded='true'] .unit-caret {
+  transform: rotate(180deg);
+}
+
+/* The open chapter: a description in the margin, then its lessons on the rail.
+   No gap and no margin anywhere in here — every pixel between the chapter line
+   and its last lesson has to belong to some row, or the rule breaks. Breathing
+   room comes from padding, which a row's rail segment covers. */
+.unit-open {
+  display: grid;
+  gap: 0;
+}
+
+.unit-description {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0.6rem calc(var(--rail-column) + 0.9rem);
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 34rem;
+}
+
+/* --- The bookmark: where the learner actually is -------------------------- */
+
+/*
+   The one illuminated panel on the page: teal into brand gold, the app's two
+   fixed brand colours. It carries the brand pair rather than a unit gradient —
+   the bookmark is chrome, not a chapter, and per-unit colour stays on the seals
+   where docs/COLOR.md puts it.
+
+   Everything on it is dark ink, and that is a requirement rather than a taste.
+   On this gradient the page's usual text colours collapse: parchment reaches
+   only 2.84:1, --muted 1.36:1 and --brand 1.34:1. Dark ink holds 5.86:1 across
+   the whole card, so hierarchy here comes from size and weight, never from
+   washing the colour out. Both stops are brand tokens, so re-theming the brand
+   re-themes this without touching the numbers.
+*/
+.bookmark {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.75rem;
+  border: 1px solid rgba(7, 19, 15, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent), var(--brand));
+  box-shadow: var(--shadow);
+  color: #07130f;
+}
+
+a.bookmark:hover {
+  filter: brightness(1.05);
+}
+
+.bookmark-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.bookmark-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #07130f;
+}
+
+.bookmark-title {
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  color: #07130f;
+}
+
+/* Softest ink that still clears 4.5:1 at the teal end (4.66:1). */
+.bookmark-meta {
+  font-size: 0.85rem;
+  color: #182a25;
+}
+
+@media (min-width: 720px) {
+  .bookmark {
+    padding: 1.15rem 1.35rem;
+  }
+}
+
+/*
+ * Review sits under the bookmark and is deliberately quieter than it: outlined
+ * rather than filled, so the two cards cannot compete. Continuing the course is
+ * the primary action and keeps the gradient; review is the one that appears only
+ * when something is owed and disappears again once it is cleared.
+ */
+.review-call {
+  display: block;
+  padding: 0.9rem 1.15rem;
+  margin: -0.9rem 0 1.75rem;
+  border: 1px solid rgba(196, 163, 90, 0.45);
+  border-radius: var(--radius);
+  background: rgba(196, 163, 90, 0.07);
+  color: var(--text);
+}
+
+a.review-call:hover {
+  background: rgba(196, 163, 90, 0.12);
+}
+
+.review-call-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.review-call-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.review-call-title {
+  font-family: var(--font-brand), Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.review-call-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- App menu -------------------------------------------------------------
+   Mobile trades the four-across bar for a single seal that opens a manuscript
+   panel holding destinations, sign-in, and the maker links — one reachable
+   place instead of three. Wider screens keep the bar and use the seal for
+   sign-in, which no longer clutters the top of the path. */
+
+.app-menu {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.app-menu-trigger {
+  position: relative;
+  z-index: 42;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.9rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-weight: 800;
+  font-size: var(--nav-label);
+}
+
+.app-menu-trigger[aria-expanded='true'] {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* Portaled to body; sits under .bottom-nav (z-index 50) so the bar stays usable */
+.app-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: rgba(7, 12, 14, 0.78);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Wax-seal motif, echoing the lesson nodes on the path */
+.app-menu-trigger-seal,
+.app-menu-seal {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  background: radial-gradient(circle at 30% 25%, rgba(196, 163, 90, 0.35), transparent 65%);
+  color: var(--brand);
+}
+
+.app-menu-seal .syriac,
+.app-menu-trigger-seal .syriac {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.app-menu-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.6rem);
+  z-index: 41;
+  width: min(21rem, calc(100vw - 2 * var(--page-pad-x)));
+  max-height: min(70vh, 34rem);
+  overflow-y: auto;
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(196, 163, 90, 0.45);
+  background: var(--bg);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Ruled line, as on a manuscript leaf */
+.app-menu-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(196, 163, 90, 0.55) 15%,
+    rgba(196, 163, 90, 0.55) 85%,
+    transparent
+  );
+}
+
+.app-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.app-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.app-menu-label {
+  margin-right: auto;
+}
+
+.app-menu-link[aria-current='page'] {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: rgba(196, 163, 90, 0.1);
+}
+
+.app-menu-social {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+
+.app-menu-madeby {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Mobile: the seal stands in for the whole bar and the footer. It spans the
+   bar so the panel, anchored to its right edge, lands inside the viewport. */
+@media (max-width: 719px) {
+  .bottom-nav-links,
+  .site-footer {
+    display: none;
+  }
+
+  .app-menu {
+    flex: 1;
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "slug": "s1-u3",
+  "sectionNumber": 1,
+  "unitNumber": 3,
+  "title": "At the door",
+  "description": "One arrival at a house, learned line by line. Seven new words, and every lesson reuses the last",
+  "lessons": [
+    {
+      "slug": "s1-u3-house",
+      "title": "You reach the house",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u3-house-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܒܝܬܐ",
+          "transliteration": "bayto",
+          "correctTokens": "house",
+          "distractorTokens": "bread water"
+        },
+        {
+          "slug": "s1-u3-house-2",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܥܘܠ",
+          "transliteration": "ul",
+          "correctTokens": "enter",
+          "distractorTokens": "hello blessed"
+        },
+        {
+          "slug": "s1-u3-house-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "How do you say \"house\"?",
+          "aramaicScript": null,
+          "transliteration": "bayto",
+          "correctTokens": "ܒܝܬܐ",
+          "distractorTokens": "ܠܚܡܐ ܡܝܐ"
+        },
+        {
+          "slug": "s1-u3-house-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܥܘܠ",
+          "transliteration": "ul",
+          "correctTokens": "ܥܘܠ",
+          "distractorTokens": "ܫܠܡܐ ܒܝܬܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u3-where",
+      "title": "Where is my father",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u3-where-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܗܪܟܐ",
+          "transliteration": "horko",
+          "correctTokens": "here",
+          "distractorTokens": "house bread"
+        },
+        {
+          "slug": "s1-u3-where-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܗܪܟܐ ܗܘ",
+          "transliteration": "horko hu",
+          "correctTokens": "he is here|it is here",
+          "distractorTokens": "house my father"
+        },
+        {
+          "slug": "s1-u3-where-3",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܐܝܟܘ ܐܒܝ",
+          "transliteration": "aykaw abi",
+          "correctTokens": "where is my father",
+          "distractorTokens": "here mother"
+        },
+        {
+          "slug": "s1-u3-where-4",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܒܝ ܗܪܟܐ ܗܘ",
+          "transliteration": "abi horko hu",
+          "correctTokens": "my father is here",
+          "distractorTokens": "mother where"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u3-treasure",
+      "title": "Door and house",
+      "nodeKind": "CHEST",
+      "exercises": [
+        {
+          "slug": "s1-u3-treasure-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܬܪܥܐ",
+          "transliteration": "taro",
+          "correctTokens": "door",
+          "distractorTokens": "house bread"
+        },
+        {
+          "slug": "s1-u3-treasure-2",
+          "type": "MATCH_PAIRS",
+          "prompt": "Match each word",
+          "aramaicScript": null,
+          "transliteration": null,
+          "correctTokens": "ܒܝܬܐ=house;ܬܪܥܐ=door;ܗܪܟܐ=here",
+          "distractorTokens": "bread water"
+        },
+        {
+          "slug": "s1-u3-treasure-3",
+          "type": "LISTEN_BUILD_ARAMAIC",
+          "prompt": "Build what you hear",
+          "aramaicScript": "ܬܪܥܐ",
+          "transliteration": "taro",
+          "correctTokens": "ܬܪܥܐ",
+          "distractorTokens": "ܒܝܬܐ ܥܘܠ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u3-good",
+      "title": "A good house",
+      "nodeKind": "STAR",
+      "exercises": [
+        {
+          "slug": "s1-u3-good-1",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܛܒܐ",
+          "transliteration": "tobo",
+          "correctTokens": "good",
+          "distractorTokens": "here door"
+        },
+        {
+          "slug": "s1-u3-good-2",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܒܝܬܐ ܛܒܐ",
+          "transliteration": "bayto tobo",
+          "correctTokens": "a good house|good house",
+          "distractorTokens": "door here"
+        },
+        {
+          "slug": "s1-u3-good-3",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"a good house\"",
+          "aramaicScript": null,
+          "transliteration": "bayto tobo",
+          "correctTokens": "ܒܝܬܐ ܛܒܐ",
+          "distractorTokens": "ܬܪܥܐ ܗܪܟܐ"
+        },
+        {
+          "slug": "s1-u3-good-4",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܛܒܐ",
+          "transliteration": "tobo",
+          "correctTokens": "ܛܒܐ",
+          "distractorTokens": "ܒܝܬܐ ܬܪܥܐ"
+        }
+      ]
+    },
+    {
+      "slug": "s1-u3-practice",
+      "title": "The whole scene",
+      "nodeKind": "CHARACTER",
+      "exercises": [
+        {
+          "slug": "s1-u3-practice-1",
+          "type": "LISTEN_CHOOSE_MEANING",
+          "prompt": "What does this mean?",
+          "aramaicScript": "ܐܝܟܘ ܬܪܥܐ",
+          "transliteration": "aykaw taro",
+          "correctTokens": "where is the door",
+          "distractorTokens": "here my father"
+        },
+        {
+          "slug": "s1-u3-practice-2",
+          "type": "TRANSLATE_TO_ARAMAIC",
+          "prompt": "Say \"it is here\"",
+          "aramaicScript": null,
+          "transliteration": "horko hu",
+          "correctTokens": "ܗܪܟܐ ܗܘ",
+          "distractorTokens": "ܬܪܥܐ ܐܝܟܘ"
+        },
+        {
+          "slug": "s1-u3-practice-3",
+          "type": "TAP_WHAT_YOU_HEAR",
+          "prompt": "Tap what you hear",
+          "aramaicScript": "ܥܘܠ",
+          "transliteration": "ul",
+          "correctTokens": "ܥܘܠ",
+          "distractorTokens": "ܛܒܐ ܗܪܟܐ"
+        },
+        {
+          "slug": "s1-u3-practice-4",
+          "type": "TRANSLATE_TO_ENGLISH",
+          "prompt": "Build the English sentence",
+          "aramaicScript": "ܒܝܬܐ ܛܒܐ",
+          "transliteration": "bayto tobo",
+          "correctTokens": "a good house|good house",
+          "distractorTokens": "door where"
+        }
+      ]
+    }
+  ]
+}
