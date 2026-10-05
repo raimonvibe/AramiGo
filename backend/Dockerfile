@@ -1,7 +1,7 @@
 # Render has no native Java runtime — deploy this API as Docker.
 # Multi-stage: build with Maven, run on a slim JRE.
 
-FROM maven:3.9.15-eclipse-temurin-26 AS build
+FROM maven:3-eclipse-temurin-24 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
