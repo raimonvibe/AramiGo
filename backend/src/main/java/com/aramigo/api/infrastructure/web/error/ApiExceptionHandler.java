@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Every failure leaves here as {@code {status, code, message}}.
@@ -64,6 +65,15 @@ public class ApiExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   ResponseEntity<ErrorResponse> invalidBody(MethodArgumentNotValidException ex) {
     return respond(HttpStatus.BAD_REQUEST, "invalid_request", "That request was missing something");
+  }
+
+  /**
+   * A path nothing serves, such as {@code /}, which Render probes on every deploy.
+   * Not a failure on our side, so no stack trace in the log.
+   */
+  @ExceptionHandler(NoResourceFoundException.class)
+  ResponseEntity<ErrorResponse> noResource(NoResourceFoundException ex) {
+    return respond(HttpStatus.NOT_FOUND, "not_found", "There's nothing here");
   }
 
   /** Last resort: log the detail, tell the learner nothing they can't act on. */
