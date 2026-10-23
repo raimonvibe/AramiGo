@@ -8,6 +8,8 @@ COPY src ./src
 RUN mvn -q -DskipTests package
 
 FROM eclipse-temurin:25-jre-alpine
+# Latest CA bundle (eMudhra intermediate compromise, Oct 2026).
+RUN apk add --no-cache --upgrade ca-certificates
 WORKDIR /app
 COPY --from=build /app/target/aramigo-api-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
