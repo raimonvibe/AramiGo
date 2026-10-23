@@ -1,5 +1,5 @@
 # Manual scan trigger: 2026-09-27T01:31:21Z (fresh Dependabot version-update check)
-# Dependabot version updates — checks every Monday (Europe/Amsterdam).
+# Dependabot version updates — checks every Saturday (Europe/Amsterdam).
 # Pushing this file also triggers an immediate first run on the default branch.
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
@@ -8,8 +8,8 @@ updates:
   - package-ecosystem: npm
     directory: /frontend
     schedule:
-      interval: weekly
-      day: monday
+      interval: "weekly"
+      day: "saturday"
       time: "09:00"
       timezone: Europe/Amsterdam
     open-pull-requests-limit: 10
@@ -17,8 +17,8 @@ updates:
   - package-ecosystem: maven
     directory: /backend
     schedule:
-      interval: weekly
-      day: monday
+      interval: "weekly"
+      day: "saturday"
       time: "09:00"
       timezone: Europe/Amsterdam
     open-pull-requests-limit: 10
@@ -26,8 +26,8 @@ updates:
   - package-ecosystem: docker
     directory: /backend
     schedule:
-      interval: weekly
-      day: monday
+      interval: "weekly"
+      day: "saturday"
       time: "09:00"
       timezone: Europe/Amsterdam
     open-pull-requests-limit: 5
@@ -35,8 +35,8 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: "weekly"
+      day: "saturday"
       time: "09:00"
       timezone: Europe/Amsterdam
     open-pull-requests-limit: 5
