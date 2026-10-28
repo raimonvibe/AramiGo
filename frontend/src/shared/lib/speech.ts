@@ -1,3 +1,4 @@
+import { genuineVoices } from './noveltyVoices'
 /**
  * Browser speech for listen prompts.
  *
@@ -176,7 +177,8 @@ function isHebrewVoice(voice: SpeechSynthesisVoice): boolean {
 function allVoices(): SpeechSynthesisVoice[] {
   const speech = synth()
   if (!speech) return []
-  return speech.getVoices()
+  // Novelty voices (Bubbles, Junior…) never reach the picker or the default.
+  return genuineVoices(speech.getVoices())
 }
 
 /** Prefer Hebrew; otherwise any installed voice. */
