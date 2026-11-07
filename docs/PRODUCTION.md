@@ -85,15 +85,17 @@ Deploy, then open:
 
 `https://YOUR-SERVICE.onrender.com/health`
 
-### 1.4 Keepalive (free tier sleeps ~15 min)
+### 1.4 Sleeping on the free tier (~15 min idle)
 
-1. GitHub repo → **Settings → Secrets and variables → Actions → Variables**
-2. New variable:
-   - Name: `RENDER_APP_URL`
-   - Value: `https://YOUR-SERVICE.onrender.com` (no trailing slash)
-3. Workflow already in repo: `.github/workflows/keepalive.yml` (pings `/health` every 10 minutes)
+The free web service sleeps after ~15 minutes without traffic, and the first request
+afterwards waits for a cold start (30–60s for Spring Boot). This is accepted on purpose:
+there is no keep-alive. A GitHub Actions schedule can't keep it awake (GitHub fires
+scheduled workflows hours apart), and an always-on pinger would use nearly all of the
+workspace's 750 free instance hours, which the other free services share.
 
-Run **Actions → Keep Render webapp awake → Run workflow** once to verify.
+If AramiGo ever needs to stay awake, use the Starter instance type (paid) or an external
+pinger (UptimeRobot / cron-job.org) on `/health` every 5 minutes, after checking the
+free-hours budget in Render → Billing.
 
 ---
 
@@ -155,7 +157,7 @@ Click **Deploy**. Open https://aramaic.eu → home path should load lessons from
 3. Vercel site loads; unit/chapters visible  
 4. Start a lesson; CHECK an answer  
 5. Browser Network tab: API calls go to Render, not `localhost`  
-6. GitHub keepalive workflow succeeds (manual run)
+6. After 15+ minutes idle, the first request wakes the API (expect a 30–60s cold start)
 
 ---
 
@@ -163,7 +165,7 @@ Click **Deploy**. Open https://aramaic.eu → home path should load lessons from
 
 | Topic | Reality |
 |--------|---------|
-| Cold start | First request after sleep can take 30–60s; keepalive reduces this |
+| Cold start | First request after sleep can take 30–60s (no keep-alive; see 1.4) |
 | Cold database | Neon suspends idle compute; the first query after that pays a wake-up too |
 | No `DATABASE_URL` | Falls back to in-memory H2 and every learner loses progress on restart |
 | Guest keys | Without signing in, progress lives in one browser's `localStorage` |
@@ -204,8 +206,8 @@ Render's free Postgres is **not** a long-term option and no amount of pinging ch
 | **Render Postgres (paid)** | ~$6/month if you want everything on one platform. |
 
 The two free timers are different things: the **web service** sleeps after 15 minutes idle
-(which `keepalive.yml` fixes), while free **Render Postgres** counts down from creation
-(which nothing fixes).
+(only paying or an external pinger avoids that), while free **Render Postgres** counts down
+from creation (which nothing fixes).
 
 ---
 
@@ -265,7 +267,6 @@ NEXT_PUBLIC_API_URL=https://YOUR-SERVICE.onrender.com npm run dev
 ## 6. Order of operations (recommended)
 
 1. Deploy **Render API** first → confirm `/health`  
-2. Set GitHub `RENDER_APP_URL` → run keepalive once  
-3. Deploy **Vercel** with `NEXT_PUBLIC_API_URL`  
-4. Set Render `ARAMIGO_CORS_ALLOWED_ORIGINS` to the Vercel URL → **redeploy API**  
-5. Smoke-test the live site  
+2. Deploy **Vercel** with `NEXT_PUBLIC_API_URL`  
+3. Set Render `ARAMIGO_CORS_ALLOWED_ORIGINS` to the Vercel URL → **redeploy API**  
+4. Smoke-test the live site  

@@ -68,7 +68,7 @@ falls back to UTC.
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| GET | `/health` | Liveness (Render + keepalive) |
+| GET | `/health` | Liveness (Render health check) |
 | GET | `/api/path` | All units, learner stats, and how much review is due |
 | GET | `/api/lessons/{id}` | Lesson session |
 | GET | `/api/review` | Solved exercises that have come due again |
@@ -256,18 +256,11 @@ Copy `backend/.env.example` and `frontend/.env.example`. The two that matter:
 - `DATABASE_URL` — without it the API uses in-memory H2 and loses progress on restart
 - `GOOGLE_CLIENT_ID` / `NEXT_PUBLIC_GOOGLE_CLIENT_ID` — unset means guests-only, which works fine
 
-## Keep Render awake (free tier)
+## Render free tier: sleeping is expected
 
-Free Render web services sleep after ~15 minutes idle. (This does **not** apply to
-free Render Postgres, which expires 30 days after creation no matter how often you
-ping it — see `docs/PRODUCTION.md` for database options.)
-
-
-`.github/workflows/keepalive.yml` pings `/health` every 10 minutes via GitHub Actions.
-
-1. Push this project to GitHub (Actions enabled).
-2. Deploy the Spring API on Render.
-3. Repo **Settings → Secrets and variables → Actions → Variables**  
-   - Name: `RENDER_APP_URL`  
-   - Value: `https://your-service.onrender.com` (no trailing slash)
-4. Optionally run **Actions → Keep Render webapp awake → Run workflow** once to verify.
+Free Render web services sleep after ~15 minutes idle, so the first request afterwards
+waits for a 30–60s cold start. There is deliberately no keep-alive: GitHub's scheduled
+workflows fire hours apart, and an always-on pinger would use nearly all of the
+workspace's 750 free instance hours. See `docs/PRODUCTION.md` §1.4. (Free Render Postgres
+is a separate timer: it expires 30 days after creation no matter what; see the database
+options there.)
